@@ -1,0 +1,127 @@
+<div class="container">
+    <div class="row">
+        <div class="col-8">
+            <mat-card class="bg-warning my-4">
+                <form (ngSubmit)="addBusiness()">
+                    <p class="mat-display-4">Registro de negocios</p>
+                    <mat-form-field class="w-75" appearance="outline">
+                        <mat-label>Nombre</mat-label>
+                        <input name="name" #name="ngModel" [(ngModel)]="business.name" matInput placeholder="Ej: Pupuseria La Chela" required>
+                    </mat-form-field>
+                    <mat-form-field class="w-75" appearance="outline">
+                        <mat-label>Descripción</mat-label>
+                        <textarea name="description" #description="ngModel" [(ngModel)]="business.description" matInput></textarea>
+                    </mat-form-field>
+                    <mat-form-field class="w-50 mr-1" appearance="outline">
+                        <mat-label>Teléfono</mat-label>
+                        <input name="phone" #phone="ngModel" [(ngModel)]="business.phone" matInput placeholder="Ej: 0000-0000" required>
+                    </mat-form-field>
+                    <mat-form-field class="w-50" appearance="outline">
+                        <mat-label>Tipo de negocio</mat-label>
+                        <mat-select name="type" #type="ngModel" [(ngModel)]="business.type">
+                            <mat-option value="Restaurante">Restaurante</mat-option>
+                            <mat-option value="Ferretería">Ferretería</mat-option>
+                            <mat-option value="Farmacia">Farmacia</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <p class="mat-h1 ml-3">Horario de atención</p>
+                    <section>
+                        <mat-radio-group name="type" #type="ngModel" [(ngModel)]="scheduleType">
+                            <mat-radio-button class="mr-3" value="general">General</mat-radio-button>
+                            <mat-radio-button value="detallado">Detallado</mat-radio-button>
+                        </mat-radio-group>
+                    </section>
+                    <div *ngIf="scheduleType=='general'">
+                        <mat-form-field class="w-25 mr-3" appearance="outline">
+                            <mat-label>De</mat-label>
+                            <input name="generalStart" #generalStart="ngModel" [(ngModel)]="general.start" matInput type="time">
+                        </mat-form-field>
+                        <mat-form-field class="w-25" appearance="outline">
+                            <mat-label>Hasta</mat-label>
+                            <input name="generalEnd" #generalEnd="ngModel" [(ngModel)]="general.end" matInput type="time">
+                        </mat-form-field>
+                    </div>
+                    <div *ngIf="scheduleType=='detallado'">
+                        <p class="mat-h2 ml-3">Lunes</p>
+                        <mat-form-field class="w-25 mr-3" appearance="outline">
+                            <mat-label>De</mat-label>
+                            <input name="mondayStart" #mondayStart="ngModel" [(ngModel)]="business.schedule.monday.start" matInput type="time">
+                        </mat-form-field>
+                        <mat-form-field class="w-25" appearance="outline">
+                            <mat-label>Hasta</mat-label>
+                            <input name="mondayEnd" #mondayEnd="ngModel" [(ngModel)]="business.schedule.monday.end" matInput type="time">
+                        </mat-form-field>
+                        <p class="mat-h2 ml-3">Martes</p>
+                        <mat-form-field class="w-25 mr-3" appearance="outline">
+                            <mat-label>De</mat-label>
+                            <input name="tuesdayStart" #tuesdayStart="ngModel" [(ngModel)]="business.schedule.tuesday.start" matInput type="time">
+                        </mat-form-field>
+                        <mat-form-field class="w-25" appearance="outline">
+                            <mat-label>Hasta</mat-label>
+                            <input name="tuesdayEnd" #tuesdayEnd="ngModel" [(ngModel)]="business.schedule.tuesday.end" matInput type="time">
+                        </mat-form-field>
+                        <p class="mat-h2 ml-3">Miercoles</p>
+                        <mat-form-field class="w-25 mr-3" appearance="outline">
+                            <mat-label>De</mat-label>
+                            <input name="wednesdayStart" #wednesdayStart="ngModel" [(ngModel)]="business.schedule.wednesday.start" matInput type="time">
+                        </mat-form-field>
+                        <mat-form-field class="w-25" appearance="outline">
+                            <mat-label>Hasta</mat-label>
+                            <input name="wednesdayEnd" #wednesdayEnd="ngModel" [(ngModel)]="business.schedule.wednesday.end" matInput type="time">
+                        </mat-form-field>
+                        <p class="mat-h2 ml-3">Jueves</p>
+                        <mat-form-field class="w-25 mr-3" appearance="outline">
+                            <mat-label>De</mat-label>
+                            <input name="thursdayStart" #thursdayStart="ngModel" [(ngModel)]="business.schedule.thursday.start" matInput type="time">
+                        </mat-form-field>
+                        <mat-form-field class="w-25" appearance="outline">
+                            <mat-label>Hasta</mat-label>
+                            <input name="thursdayEnd" #thursdayEnd="ngModel" [(ngModel)]="business.schedule.thursday.end" matInput type="time">
+                        </mat-form-field>
+                        <p class="mat-h2 ml-3">Viernes</p>
+                        <mat-form-field class="w-25 mr-3" appearance="outline">
+                            <mat-label>De</mat-label>
+                            <input name="fridayStart" #fridayStart="ngModel" [(ngModel)]="business.schedule.friday.start" matInput type="time">
+                        </mat-form-field>
+                        <mat-form-field class="w-25" appearance="outline">
+                            <mat-label>Hasta</mat-label>
+                            <input name="fridayEnd" #fridayEnd="ngModel" [(ngModel)]="business.schedule.friday.end" matInput type="time">
+                        </mat-form-field>
+                        <p class="mat-h2 ml-3">Sábado</p>
+                        <mat-form-field class="w-25 mr-3" appearance="outline">
+                            <mat-label>De</mat-label>
+                            <input name="saturdayStart" #saturdayStart="ngModel" [(ngModel)]="business.schedule.saturday.start" matInput type="time">
+                        </mat-form-field>
+                        <mat-form-field class="w-25" appearance="outline">
+                            <mat-label>Hasta</mat-label>
+                            <input name="saturdayEnd" #saturdayEnd="ngModel" [(ngModel)]="business.schedule.saturday.end" matInput type="time">
+                        </mat-form-field>
+                        <p class="mat-h2 ml-3">Domingo</p>
+                        <mat-form-field class="w-25 mr-3" appearance="outline">
+                            <mat-label>De</mat-label>
+                            <input name="sundayStart" #sundayStart="ngModel" [(ngModel)]="business.schedule.sunday.start" matInput type="time">
+                        </mat-form-field>
+                        <mat-form-field class="w-25" appearance="outline">
+                            <mat-label>Hasta</mat-label>
+                            <input name="sundayEnd" #sundayEnd="ngModel" [(ngModel)]="business.schedule.sunday.end" matInput type="time">
+                        </mat-form-field>
+                    </div>
+                    <p class="mat-h1 ml-3">Fotos del negocio</p>
+                    <p class="mat-h2 ml-2">Portada</p>
+                    <input type="file" name="cover" (change)="getCoverInfo($event)">
+                    <p class="mat-h2 ml-2">Logo</p>
+                    <input type="file" name="logo" (change)="getLogoInfo($event)">
+                    <p class="mat-h1 ml-3 mt-3">Ubicación</p>
+                    <mat-card class="w-100">
+                        <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" (mapClick)="mapClicked($event)">
+                            <agm-marker [latitude]="business.address.latitude" [longitude]="business.address.longitude"
+                                [markerDraggable]="true">
+                            </agm-marker>
+                        </agm-map>
+                    </mat-card>
+                    <button type="submit" mat-stroked-button class="p-4" id="send">Registrar negocio</button>
+                </form>
+            </mat-card>
+        </div>
+    </div>
+</div>
