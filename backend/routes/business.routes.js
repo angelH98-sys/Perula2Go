@@ -34,5 +34,7 @@ router.post('/file/logo', upload.single('logo'), (req, res, next) => {
   });
 });
 
+router.get('/catalog', businessCtrl.getBusiness);
+
 
 module.exports = router;

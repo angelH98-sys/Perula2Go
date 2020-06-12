@@ -4,8 +4,8 @@ import { NgForm } from '@angular/forms';
 import { MouseEvent } from '@agm/core';
 
 
-import { BusinessService } from '../services/business.service';
-import { Business } from '../models/business';
+import { BusinessService } from '../../services/business.service';
+import { Business } from '../../models/business';
 
 @Component({
   selector: 'app-business',

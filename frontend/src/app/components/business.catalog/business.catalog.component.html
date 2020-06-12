@@ -1,0 +1,14 @@
+<div class="container mt-5">
+  <div [@listAnimation]="cardList.length" class="row">
+    <div *ngFor="let card of cardList" class="col-4">
+      <mat-card class="mx-auto bg-warning col-10" [@zoom]="card.zoom" (mouseover)="zoomIn(card)" (mouseout)="zoomOut(card)">
+        <img mat-card-image src="../../../assets/business/{{card.business.picture.logo}}">
+        <mat-card-content>
+          <p class="mat-h2 mat-title">
+            {{card.business.name}}
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

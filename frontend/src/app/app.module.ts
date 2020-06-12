@@ -8,15 +8,19 @@ import { MaterialModule } from './material';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BusinessComponent } from './business/business.component';
+import { BusinessComponent } from './components/business/business.component';
 
 //Google Maps API
 import { AgmCoreModule } from '@agm/core';
+import { BusinessCatalogComponent } from './components/business.catalog/business.catalog.component';
+import { ProductComponent } from './components/product/product.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    BusinessComponent
+    BusinessComponent,
+    BusinessCatalogComponent,
+    ProductComponent
   ],
   imports: [
     BrowserModule,

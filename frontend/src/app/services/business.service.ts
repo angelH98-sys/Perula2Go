@@ -9,6 +9,7 @@ import { NgForm } from '@angular/forms';
 export class BusinessService {
 
   readonly URL_API = 'http://localhost:3000/business';
+  readonly URL_GET = 'http://localhost:3000/business/catalog';
   readonly URL_API_COVER = 'http://localhost:3000/business/file/cover';
   readonly URL_API_LOGO = 'http://localhost:3000/business/file/logo';
 
@@ -18,6 +19,10 @@ export class BusinessService {
 
   constructor( private http: HttpClient ) { 
     this.selectedBusiness = new Business();
+  }
+
+  getBusiness(){
+    return this.http.get(this.URL_GET);
   }
 
   postBusiness(business: Business){

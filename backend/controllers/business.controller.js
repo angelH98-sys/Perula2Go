@@ -19,4 +19,9 @@ businessCtrl.createBusiness = (req, res) => {
     });
 }
 
+businessCtrl.getBusiness = async (req, res) => {
+    const businesses = await Business.find();
+    res.json(businesses);
+}
+
 module.exports = businessCtrl;
