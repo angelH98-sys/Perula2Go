@@ -68,20 +68,20 @@ export class BusinessComponent implements OnInit {
     }
 
     const cover = new FormData();
-    cover.append('cover', this.cover);
+    cover.append('image', this.cover);
 
     const logo = new FormData();
-    logo.append('logo', this.logo);
+    logo.append('image', this.logo);
 
     interface format {
       image: String;
     }
 
     new Promise(resolve => {
-      this.businessService.uploadImage(cover, "cover").subscribe((res: format) => {
+      this.businessService.uploadImage(cover).subscribe((res: format) => {
         this.business.picture.cover = res.image;
         resolve(new Promise(resolve2 => {
-          this.businessService.uploadImage(logo, "logo").subscribe((res: format) => {
+          this.businessService.uploadImage(logo).subscribe((res: format) => {
             this.business.picture.logo = res.image;
             resolve2();
           });

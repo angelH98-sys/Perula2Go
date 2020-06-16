@@ -30,7 +30,11 @@ app.use(cors({origin: 'http://localhost:4200'}));//Le permitimos al servidor del
                     ROUTES
 /////////////////////////////////////////////////////
 */
+app.use('/fileUpload', require('./imagesUploader'));
 app.use('/business', require('./routes/business.routes'));
+app.use('/product', require('./routes/product.routes'));
+app.use('/category', require('./routes/category.routes'));
+
 
 /*////////////////////////////////////
             STARTING THE SERVER

@@ -10,9 +10,7 @@ export class BusinessService {
 
   readonly URL_API = 'http://localhost:3000/business';
   readonly URL_GET = 'http://localhost:3000/business/catalog';
-  readonly URL_API_COVER = 'http://localhost:3000/business/file/cover';
-  readonly URL_API_LOGO = 'http://localhost:3000/business/file/logo';
-
+  readonly URL_IMAGE = 'http://localhost:3000/fileUpload/business';
 
   businesses: Business[];
   selectedBusiness: Business;
@@ -31,11 +29,7 @@ export class BusinessService {
     });
   }
 
-  uploadImage (image: FormData, type: String){
-    if(type == "cover"){
-      return this.http.post(this.URL_API_COVER, image)
-    }else{
-      return this.http.post(this.URL_API_LOGO, image);
-    }
+  uploadImage (image: FormData){
+      return this.http.post(this.URL_IMAGE, image);
   }
 }
