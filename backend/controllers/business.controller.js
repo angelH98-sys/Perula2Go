@@ -24,4 +24,9 @@ businessCtrl.getBusiness = async (req, res) => {
     res.json(businesses);
 }
 
+businessCtrl.getBusinessById = async (req, res) => {
+    const business = await Business.find({_id: req.params.id});
+    res.json(business);
+}
+
 module.exports = businessCtrl;

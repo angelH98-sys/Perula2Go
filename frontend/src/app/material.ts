@@ -10,6 +10,9 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatButtonModule} from '@angular/material/button';
 import {MatDividerModule} from '@angular/material/divider';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatDialogModule} from '@angular/material/dialog';
 
 import { NgModule } from '@angular/core';
 
@@ -24,7 +27,10 @@ import { NgModule } from '@angular/core';
         MatCheckboxModule,
         MatRadioModule,
         MatButtonModule,
-        MatDividerModule
+        MatDividerModule,
+        MatProgressSpinnerModule,
+        MatProgressBarModule,
+        MatDialogModule
     ],
     exports:[
         BrowserAnimationsModule,
@@ -36,7 +42,10 @@ import { NgModule } from '@angular/core';
         MatCheckboxModule,
         MatRadioModule,
         MatButtonModule,
-        MatDividerModule
+        MatDividerModule,
+        MatProgressSpinnerModule,
+        MatProgressBarModule,
+        MatDialogModule
     ]
 })
 export class MaterialModule{}

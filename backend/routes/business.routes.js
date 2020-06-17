@@ -6,5 +6,8 @@ router.post('/', businessCtrl.createBusiness);
 
 router.get('/catalog', businessCtrl.getBusiness);
 
+router.get('/:id', businessCtrl.getBusinessById);
+
+
 
 module.exports = router;

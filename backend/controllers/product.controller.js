@@ -21,4 +21,9 @@ productCtrl.createProduct = (req, res) => {
     });
 }
 
+productCtrl.getProduct = async (req, res) => {
+    const products = await Product.find({business: req.params.id});
+    res.json(products);
+}
+
 module.exports = productCtrl;

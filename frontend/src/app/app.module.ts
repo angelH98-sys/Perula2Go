@@ -14,13 +14,15 @@ import { BusinessComponent } from './components/business/business.component';
 import { AgmCoreModule } from '@agm/core';
 import { BusinessCatalogComponent } from './components/business.catalog/business.catalog.component';
 import { ProductComponent } from './components/product/product.component';
+import { ProductCatalogComponent } from './components/product.catalog/product.catalog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     BusinessComponent,
     BusinessCatalogComponent,
-    ProductComponent
+    ProductComponent,
+    ProductCatalogComponent
   ],
   imports: [
     BrowserModule,

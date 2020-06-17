@@ -1,0 +1,35 @@
+#coverContainer{
+    height: 400px;
+    background-size: cover;
+    background-position: center;
+}
+#mainMatCard{
+    margin-top: 150px;
+}
+#logoContainer{
+    margin-top: -150px;
+}
+
+@media (min-width: 576px) {
+    #logoContainer{
+        height: 127px;
+    }
+}
+
+@media (min-width: 768px) {
+    #logoContainer{
+        height: 172px;
+    }
+}
+
+@media (min-width: 992px) {
+    #logoContainer{
+        height: 232px;
+    }
+}
+
+@media (min-width: 1200px) {
+    #logoContainer{
+        height: 277px;
+    }
+}

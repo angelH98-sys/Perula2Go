@@ -1,0 +1,38 @@
+<div class="container-fluid bg-warning position-absolute" style="height: 400px;">
+    <div class="row bg-light h-100">
+        <mat-progress-bar class="my-auto" mode="indeterminate"></mat-progress-bar>
+    </div>
+</div>
+<div [@fade]="fade" id="coverContainer" class="container-fluid position-absolute" style="background-image: url('{{cover}}');">
+</div>
+<div class="container-fluid position-absolute" style="margin-top: 100px;">
+    <div class="container" style="height: 500px;">
+        <div class="row">
+            <mat-card id="mainMatCard" class="bg-light shadow-lg w-100">
+                <div id="logoContainer" class="w-25 mx-auto position-relative">
+                    <div class="row w-100 h-100 mx-auto position-absolute">
+                        <mat-spinner class="m-auto bg-light rounded-circle"></mat-spinner>
+                    </div>
+                    <img [@fade]="fade" class="img-thumbnail img-fluid rounded-circle position-absolute" src="{{logo}}">
+                </div>
+                <p class="mt-5 display-2 mat-display-2 text-center">{{business.name}}</p>
+                <mat-divider></mat-divider>
+                <div [@listAnimation]="cardList.length" class="row">
+                    <div *ngFor="let card of cardList" class="col-4 mt-5">
+                        <mat-card class="mx-auto bg-warning col-10" [@zoom]="card.zoom" (mouseover)="zoomIn(card)" (mouseout)="zoomOut(card)">
+                            <img mat-card-image src="../../../assets/product/{{card.product.picture}}">
+                            <mat-card-content>
+                                <p class="mat-h1 mat-headline">
+                                    {{card.product.name}}
+                                </p>
+                                <p class="mat-h2 mat-title">
+                                    ${{card.product.price.toFixed(2)}}
+                                </p>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                </div>
+            </mat-card>
+        </div>
+    </div>
+</div>

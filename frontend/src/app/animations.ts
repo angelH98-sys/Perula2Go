@@ -12,6 +12,18 @@ export let hoverZoom = trigger('zoom', [
   ])
 ])
 
+export let fade = trigger('fade', [
+  state('in', style({
+    opacity: 1
+  })),
+  state('out', style({
+    opacity: 0
+  })),
+  transition('in <=> out',[
+    animate('100ms')
+  ])
+])
+
 export let listAnimation = trigger('listAnimation', [
     transition('* <=> *', [
       query(':enter', [

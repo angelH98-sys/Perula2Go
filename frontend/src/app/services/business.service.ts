@@ -10,6 +10,7 @@ export class BusinessService {
 
   readonly URL_API = 'http://localhost:3000/business';
   readonly URL_GET = 'http://localhost:3000/business/catalog';
+  readonly URL_GET_BY_ID = 'http://localhost:3000/business/';
   readonly URL_IMAGE = 'http://localhost:3000/fileUpload/business';
 
   businesses: Business[];
@@ -21,6 +22,10 @@ export class BusinessService {
 
   getBusiness(){
     return this.http.get(this.URL_GET);
+  }
+
+  getBusinessById(id: String){
+    return this.http.get(this.URL_GET_BY_ID + id);
   }
 
   postBusiness(business: Business){
