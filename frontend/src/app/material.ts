@@ -13,6 +13,7 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatChipsModule} from '@angular/material/chips';
 
 import { NgModule } from '@angular/core';
 
@@ -30,7 +31,8 @@ import { NgModule } from '@angular/core';
         MatDividerModule,
         MatProgressSpinnerModule,
         MatProgressBarModule,
-        MatDialogModule
+        MatDialogModule,
+        MatChipsModule
     ],
     exports:[
         BrowserAnimationsModule,
@@ -45,7 +47,8 @@ import { NgModule } from '@angular/core';
         MatDividerModule,
         MatProgressSpinnerModule,
         MatProgressBarModule,
-        MatDialogModule
+        MatDialogModule,
+        MatChipsModule
     ]
 })
 export class MaterialModule{}

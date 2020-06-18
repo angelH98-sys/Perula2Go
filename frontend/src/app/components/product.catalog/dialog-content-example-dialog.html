@@ -1,0 +1,31 @@
+<mat-dialog-content>
+  <div class="row">
+    <div class="col-6">
+      <img class="img-fluid mb-3" src="../../../assets/product/{{data.product.picture}}">
+      <mat-chip-list>
+        <mat-chip *ngFor="let category of categories">{{category.name}}</mat-chip>
+      </mat-chip-list>
+    </div>
+    <div class="col-6">
+      <h1 class="text-center display-4">{{data.product.name}}</h1>
+      <mat-divider></mat-divider>
+      <br>
+      <h1 class="mat-h3 mat-subheading-2">
+        {{data.product.description}}
+        <br>
+        Tiempo de preparación: <b>{{data.product.productionTime}} minutos</b>
+      </h1>
+      <mat-radio-group>
+        <mat-radio-button value="default" checked>Regular</mat-radio-button>
+        <ng-template ngFor let-size [ngForOf]="data.product.size">
+          <br>
+          <mat-radio-button *ngIf="size" value="{{size._id}}">{{size.name}} <b>+ ${{size.price.toFixed(2)}}</b></mat-radio-button>
+        </ng-template>
+      </mat-radio-group>
+      <mat-divider></mat-divider>
+      <br>
+      <h1 class="text-center mat-h1 mat-headline">Total: <b>${{data.product.price.toFixed(2)}}</b></h1>
+      <button mat-raised-button color="primary" class="py-3 w-100">Agregar a orden</button>
+    </div>
+  </div>
+</mat-dialog-content>

@@ -12,9 +12,11 @@ import { BusinessComponent } from './components/business/business.component';
 
 //Google Maps API
 import { AgmCoreModule } from '@agm/core';
+
+
 import { BusinessCatalogComponent } from './components/business.catalog/business.catalog.component';
 import { ProductComponent } from './components/product/product.component';
-import { ProductCatalogComponent } from './components/product.catalog/product.catalog.component';
+import { ProductCatalogComponent, DialogContentExampleDialog } from './components/product.catalog/product.catalog.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,8 @@ import { ProductCatalogComponent } from './components/product.catalog/product.ca
     BusinessComponent,
     BusinessCatalogComponent,
     ProductComponent,
-    ProductCatalogComponent
+    ProductCatalogComponent,
+    DialogContentExampleDialog
   ],
   imports: [
     BrowserModule,

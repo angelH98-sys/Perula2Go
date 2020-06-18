@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Product } from 'src/app/models/product';
 import { ProductService } from 'src/app/services/product.service';
 import { BusinessService } from 'src/app/services/business.service';
 import { Business } from 'src/app/models/business';
 import { fade, hoverZoom, listAnimation } from 'src/app/animations';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { CategoryService } from 'src/app/services/category.service';
+import { Category } from 'src/app/models/category';
 
 export interface productCard {
   product: Product;
@@ -29,7 +32,10 @@ export class ProductCatalogComponent implements OnInit {
 
   fade = "out";
 
-  constructor(private route: ActivatedRoute, public productService: ProductService, public businessService: BusinessService) { }
+  constructor(private route: ActivatedRoute, 
+    public productService: ProductService, 
+    public businessService: BusinessService,
+    public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.loadData();
@@ -61,5 +67,45 @@ export class ProductCatalogComponent implements OnInit {
 
   zoomOut(card: productCard){
     card.zoom = 'out';
+  }
+
+  openDialog(p: Product) {
+    const dialogRef = this.dialog.open(DialogContentExampleDialog, {
+
+      data: {product: p}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
+}
+
+@Component({
+  selector: 'dialog-content-example-dialog',
+  templateUrl: 'dialog-content-example-dialog.html',
+  styleUrls: ['./product.catalog.component.css']
+})
+export class DialogContentExampleDialog {
+
+  categories: Category[] = [];
+
+  constructor(public dialogRef: MatDialogRef<DialogContentExampleDialog>,
+    @Inject(MAT_DIALOG_DATA) public data,
+    public categoryService: CategoryService) {
+      categoryService.getCategories().subscribe(res => {
+        this.getCategoryName(res as Category[]);
+      })
+    }
+  
+  getCategoryName(list: Category[]){
+    for(let l of list){
+      for(let c of this.data.product.category as []){
+        if(c == l._id){
+          this.categories.push(l);
+        }
+      }
+    }
   }
 }
