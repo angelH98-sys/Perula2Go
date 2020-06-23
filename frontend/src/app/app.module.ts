@@ -17,6 +17,7 @@ import { AgmCoreModule } from '@agm/core';
 import { BusinessCatalogComponent } from './components/business.catalog/business.catalog.component';
 import { ProductComponent } from './components/product/product.component';
 import { ProductCatalogComponent, DialogContentExampleDialog } from './components/product.catalog/product.catalog.component';
+import { UserComponent } from './components/user/user.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { ProductCatalogComponent, DialogContentExampleDialog } from './component
     BusinessCatalogComponent,
     ProductComponent,
     ProductCatalogComponent,
-    DialogContentExampleDialog
+    DialogContentExampleDialog,
+    UserComponent
   ],
   imports: [
     BrowserModule,

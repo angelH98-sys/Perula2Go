@@ -30,5 +30,10 @@ router.post('/product', upload('product').single('image'), (req, res, next) => {
         'image' : req.file.filename
     });
 });
+router.post('/user', upload('user').single('image'), (req, res, next) => {
+    res.send({
+        'image' : req.file.filename
+    });
+});
 
 module.exports = router;

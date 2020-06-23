@@ -1,0 +1,59 @@
+<div class="container">
+    <div class="row">
+        <div class="col-8">
+            <mat-card class="bg-success my-4">
+                <form (ngSubmit)="addUser()">
+                    <p class="mat-display-4">Registro de usuarios</p>
+                    <mat-form-field class="w-75" appearance="outline">
+                        <mat-label>Nombre</mat-label>
+                        <input name="name" #name="ngModel" [(ngModel)]="user.name" matInput placeholder="Ej: Pancracio Orantes" required>
+                    </mat-form-field>
+                    <mat-form-field class="w-50 mr-1" appearance="outline">
+                        <mat-label>Correo electrónico</mat-label>
+                        <input name="email" #email="ngModel" [(ngModel)]="user.email" type="email" matInput placeholder="Ej: pancracio@gmail.com" required>
+                    </mat-form-field>
+                    <mat-form-field class="w-50 mr-1" appearance="outline">
+                        <mat-label>Teléfono</mat-label>
+                        <input name="phone" #phone="ngModel" [(ngModel)]="user.phone" matInput placeholder="Ej: 0000-0000" required>
+                    </mat-form-field>
+                    <mat-form-field class="w-75" appearance="outline">
+                        <mat-label>Usuario</mat-label>
+                        <input name="username" #username="ngModel" [(ngModel)]="user.user" matInput placeholder="Ej: pani777" required>
+                    </mat-form-field>
+                    <mat-form-field class="w-75" appearance="outline">
+                        <mat-label>Contraseña</mat-label>
+                        <input name="pass" #pass="ngModel" [(ngModel)]="password" type="password" matInput required>
+                    </mat-form-field>
+                    <mat-form-field class="w-75" appearance="outline">
+                        <mat-label>Comprobar contraseña</mat-label>
+                        <input name="pass2" #pass2="ngModel" [(ngModel)]="comprobationPassword" type="password" matInput required>
+                    </mat-form-field>
+                    <mat-divider></mat-divider>
+                    <mat-form-field class="w-75 mt-4" appearance="outline">
+                        <mat-label>Pregunta de seguridad</mat-label>
+                        <input name="question" #question="ngModel" [(ngModel)]="user.question" matInput placeholder="Ej: ¿Cuál es mi fruta favorita?">
+                    </mat-form-field>
+                    <mat-form-field class="w-75" appearance="outline">
+                        <mat-label>Respuesta</mat-label>
+                        <input name="answer" #answer="ngModel" [(ngModel)]="user.answer" matInput placeholder="Ej: Sandía">
+                    </mat-form-field>
+                    <p class="mat-h1 ml-3">Foto de perfíl</p>
+                    <input name="picture" (change)="getPictureInfo($event)" type="file">
+                    <p class="mat-h1 ml-3 mt-3">Ubicación para entregas</p>
+                    <mat-card class="w-100">
+                        <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" (mapClick)="mapClicked($event)">
+                            <agm-marker [latitude]="latMarker" [longitude]="lngMarker"
+                                [markerDraggable]="true">
+                            </agm-marker>
+                        </agm-map>
+                    </mat-card>
+                    <mat-form-field class="w-75 mt-4" appearance="outline">
+                        <mat-label>Referencia de ubicación</mat-label>
+                        <input name="ref" #ref="ngModel" [(ngModel)]="reference" matInput placeholder="Ej: Media cuadra abajo de la escuela">
+                    </mat-form-field>
+                    <button type="submit" mat-stroked-button class="p-4 " id="send">Registrar usuario</button>
+                </form>
+            </mat-card>
+        </div>
+    </div>
+</div>

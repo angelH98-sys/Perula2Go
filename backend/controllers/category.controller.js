@@ -8,8 +8,7 @@ categoryCtrl.createCategory = (req, res) => {
     });
     category.save();
     res.json({
-        'status': 'Category saved',
-        'body': req.body
+        'status': 'Category saved'
     });
 }
 

@@ -11,7 +11,20 @@ let UserSchema = new Schema({
     answer: String,
     picture: String,
     status: String,
-    userType: String
+    userType: String,
+    phone: String,
+    address: [{
+        'latitude': Number,
+        'longitude': Number,
+        'reference': String
+    }],
+    employee: {
+        'vehicle': String,
+        'dui': String,
+        'driverLicense': String,
+        'status': String,
+        'qualification': Number
+    }
 });
 
 module.exports = mongoose.model('user', UserSchema);
