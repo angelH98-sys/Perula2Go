@@ -18,6 +18,7 @@ import { BusinessCatalogComponent } from './components/business.catalog/business
 import { ProductComponent } from './components/product/product.component';
 import { ProductCatalogComponent, DialogContentExampleDialog } from './components/product.catalog/product.catalog.component';
 import { UserComponent } from './components/user/user.component';
+import { ExtraComponent } from './components/extra/extra.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { UserComponent } from './components/user/user.component';
     ProductComponent,
     ProductCatalogComponent,
     DialogContentExampleDialog,
-    UserComponent
+    UserComponent,
+    ExtraComponent
   ],
   imports: [
     BrowserModule,

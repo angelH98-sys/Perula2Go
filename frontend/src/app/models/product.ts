@@ -7,11 +7,9 @@ export class Product {
         this.price = 0;
         this.business = "";
         this.picture = "";
-        this.category = [];
+        this.category = "";
         this.status = "";
-        this.productionTime = "";
-        this.combo = []
-        this.size = [{'name':'','price':0}];
+        this.productionTime = 0;
     }
 
     _id: String;
@@ -20,12 +18,7 @@ export class Product {
     price: Number;
     business: String;
     picture: String;
-    category: [];
+    category: String;
     status: String;
-    productionTime: String;
-    combo: [];
-    size: [{
-        'name': String,
-        'price': Number
-    }]
+    productionTime: Number;
 }

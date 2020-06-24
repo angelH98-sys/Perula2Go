@@ -18,10 +18,8 @@ let OrderSchema = new Schema({
         'reference': String
     },
     productDetail: [{
-        'product': Number,
-        'combo': [],
-        'size': String,
-        'topping': []
+        'product': String,
+        'extra': []
     }]
 });
 

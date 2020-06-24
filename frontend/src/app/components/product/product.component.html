@@ -1,45 +1,42 @@
 <div class="container">
     <div class="row">
-        <div class="col-8">
-            <mat-card class="bg-light my-4">
-                <form>
-                    <p class="mat-display-4">Registro de productos</p>
-                    <mat-form-field class="w-50" appearance="outline">
-                        <mat-label>Negocio</mat-label>
-                        <mat-select name="business" #business="ngModel" [(ngModel)]="product.business">
-                            <mat-option *ngFor="let b of businessList" value="{{b._id}}">{{b.name}}</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <mat-form-field class="w-75" appearance="outline">
+        <div class="col-xl-6 mx-auto">
+            <mat-card class="bg-warning my-4">
+                <form (ngSubmit)="addProduct()">
+                    <h1 class="mat-display-3 mt-3">Registro de productos</h1>
+                    <mat-form-field class="w-100 mt-n5" appearance="outline">
                         <mat-label>Nombre</mat-label>
                         <input name="name" #name="ngModel" [(ngModel)]="product.name" matInput type="text" placeholder="Ej: Hamburguesa con queso" required>
                     </mat-form-field>
-                    <mat-form-field class="w-75 mr-3" appearance="outline">
+                    <mat-form-field class="w-100 mr-3" appearance="outline">
                         <mat-label>Descripción</mat-label>
                         <textarea name="description" #description="ngModel" [(ngModel)]="product.description" matInput></textarea>
                     </mat-form-field>
-                    <mat-form-field class="w-25" appearance="outline">
+                    <p class="mat-h1 ml-3">Foto del producto</p>
+                    <input type="file" (change)="getPictureInfo($event)">
+                    <mat-form-field class="w-100 mt-5" appearance="outline">
+                        <mat-label>Categoria</mat-label>
+                        <mat-select name="categories" #categories="ngModel" [(ngModel)]="product.category">
+                            <mat-option value="Promoción">Promoción</mat-option>
+                            <mat-option value="Para compartir">Para compartir</mat-option>
+                            <mat-option value="Combo">Combo</mat-option>
+                            <mat-option value="Individual">Individual</mat-option>
+                            <mat-option value="Extra">Extra</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <br>
+                    <mat-form-field class="w-25 mr-5" appearance="outline">
                         <mat-label>Precio</mat-label>
                         <input name="price" #price="ngModel" [(ngModel)]="product.price" matInput class="text-right" type="number" value="0.00" min="0.00" step="0.01">
                         <span matPrefix>$</span>
                     </mat-form-field>
-                    <p class="mat-h1 ml-3">Foto del producto</p>
-                    <input type="file" (change)="getPictureInfo($event)">
-                    <mat-form-field class="w-50 mt-5" appearance="outline">
-                        <mat-label>Categoria</mat-label>
-                        <mat-select name="categories" #categories="ngModel" [(ngModel)]="product.category" multiple>
-                            <mat-option *ngFor="let category of categoryList" 
-                            value="{{category._id}}">{{category.name}}</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <br>
                     <mat-form-field class="w-25" appearance="outline">
                         <mat-label>Preparación</mat-label>
                         <input name="productionTime" #productionTime="ngModel" [(ngModel)]="product.productionTime" matInput class="text-left" type="number" value="0" min="0" step="1">
-                        <span matSuffix> minutos</span>
+                        <span matSuffix>min</span>
                     </mat-form-field>
                     <br>
-                    <p class="mat-h1 ml-3 d-inline mr-3">Tamaño del producto</p>
+                    <!--p class="mat-h1 ml-3 d-inline mr-3">Tamaño del producto</p>
                     <button mat-mini-fab class="d-inline" (click)="addSize()">+</button>
                     <div *ngFor="let size of sizeList; index as i">
                         <mat-form-field class="w-50 mr-4" appearance="outline">
@@ -51,8 +48,8 @@
                             <span matPrefix>$</span>
                         </mat-form-field>
                     </div>
-                    <br>
-                    <button type="submit" mat-stroked-button class="p-4" id="send" (click)="addProduct()">Registrar producto</button>
+                    <br-->
+                    <button type="submit" mat-stroked-button class="py-4 w-100" id="send">Registrar producto</button>
                 </form>
             </mat-card>
         </div>

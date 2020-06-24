@@ -11,9 +11,7 @@ productCtrl.createProduct = (req, res) => {
         picture: req.body.picture,
         category: req.body.category,
         status: req.body.status,
-        productionTime: req.body.productionTime,
-        combo: req.body.combo,
-        size: req.body.size
+        productionTime: req.body.productionTime
     });
     product.save();
     res.json({
@@ -24,6 +22,11 @@ productCtrl.createProduct = (req, res) => {
 productCtrl.getProduct = async (req, res) => {
     const products = await Product.find({business: req.params.id});
     res.json(products);
+}
+
+productCtrl.getProductById = async (req, res) => {
+    const product = await Product.find({_id: req.params.id});
+    res.json(product);
 }
 
 module.exports = productCtrl;

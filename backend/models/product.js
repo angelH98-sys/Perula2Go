@@ -8,14 +8,9 @@ let ProductSchema = new Schema({
     price: Number,
     business: String,
     picture: String,
-    category: [],
+    category: String,
     status: String,
-    productionTime: String,
-    combo: [],
-    size: [{
-        'name': String,
-        'price': Number
-    }]
+    productionTime: Number
 });
 
 module.exports = mongoose.model('product', ProductSchema);

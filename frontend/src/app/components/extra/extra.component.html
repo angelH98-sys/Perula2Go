@@ -1,0 +1,56 @@
+<div class="container">
+    <div class="row">
+        <div class="col-xl-6 mx-auto">
+            <mat-card class="bg-warning my-4">
+                <form>
+                    <p class="mat-display-1 d-inline mt-4 mr-3">Extras para {{productName}}</p>
+                    <button mat-mini-fab class="d-inline" (click)="addExtra()">+</button>
+                    <br>
+                    <mat-accordion>
+                        <mat-expansion-panel class="mt-4" *ngFor="let extra of extraList; index as i" [expanded]="isLastElement(i)">
+                            <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                {{extra.name}}
+                            </mat-panel-title>
+                            <mat-icon (click)="deleteExtra(i)" class="mr-3">delete</mat-icon>
+                            </mat-expansion-panel-header>
+                        
+                            <mat-form-field class="w-100" appearance="outline">
+                                <mat-label>Nombre</mat-label>
+                                <input name="name{{i}}" #name{{i}}="ngModel" [(ngModel)]="extra.name" matInput type="text" placeholder="Ej: Tamaño, sabor de bebida, complementos..." required>
+                            </mat-form-field>
+                            <mat-slide-toggle name="multiple{{i}}" #multiple{{i}} [(ngModel)]="extra.multiple">Selección multiple</mat-slide-toggle>
+                            <br>
+                            <br>
+                            <p class="mat-h1 ml-3 d-inline mr-3">Opciones</p>
+                            <button mat-mini-fab class="d-inline" (click)="addOption(i)">+</button>
+                            <br>
+                            <mat-accordion>
+                                <ng-template ngFor let-op [ngForOf]="extra.option" let-j="index">
+                                    <mat-expansion-panel class="mt-4" [expanded]="isLastOptionElement(i, j)">
+                                        <mat-expansion-panel-header>
+                                            <mat-panel-title>
+                                                {{op.name}}
+                                            </mat-panel-title>
+                                            <mat-icon (click)="deleteOption(i, j)" class="mr-3">delete</mat-icon>
+                                        </mat-expansion-panel-header>
+                                        <mat-form-field class="w-100" appearance="outline">
+                                            <mat-label>Nombre</mat-label>
+                                            <input name="opName{{i}}{{j}}" #opName{{i}}{{j}}="ngModel" [(ngModel)]="op.name" matInput type="text" required>
+                                        </mat-form-field>
+                                        <mat-form-field class="w-50" appearance="outline">
+                                            <mat-label>Precio</mat-label>
+                                            <input name="opPrice{{i}}{{j}}" #opPrice{{i}}{{j}}="ngModel" [(ngModel)]="op.price" matInput class="text-right" type="number" value="0.00" min="0.00" step="0.01">
+                                            <span matPrefix>$</span>
+                                        </mat-form-field>
+                                    </mat-expansion-panel>
+                                </ng-template>
+                            </mat-accordion>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                    <button type="submit" mat-stroked-button class="py-4 w-100" id="send" (click)="createExtra()">Registrar extra(s)</button>
+                </form>
+            </mat-card>
+        </div>
+    </div>
+</div>

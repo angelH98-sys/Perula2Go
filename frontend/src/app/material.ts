@@ -14,6 +14,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatChipsModule} from '@angular/material/chips';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 import { NgModule } from '@angular/core';
 
@@ -23,7 +25,6 @@ import { NgModule } from '@angular/core';
         MatInputModule,
         MatFormFieldModule,
         MatCardModule,
-        MatIconModule,
         MatSelectModule,
         MatCheckboxModule,
         MatRadioModule,
@@ -32,7 +33,8 @@ import { NgModule } from '@angular/core';
         MatProgressSpinnerModule,
         MatProgressBarModule,
         MatDialogModule,
-        MatChipsModule
+        MatChipsModule,
+        MatExpansionModule
     ],
     exports:[
         BrowserAnimationsModule,
@@ -48,7 +50,9 @@ import { NgModule } from '@angular/core';
         MatProgressSpinnerModule,
         MatProgressBarModule,
         MatDialogModule,
-        MatChipsModule
+        MatChipsModule,
+        MatExpansionModule,
+        MatSlideToggleModule
     ]
 })
 export class MaterialModule{}

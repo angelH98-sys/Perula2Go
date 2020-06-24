@@ -23,6 +23,10 @@ export class ProductService {
     return this.http.get(this.URL_GET + '/' + business);
   }
 
+  getProductById(id: String){
+    return this.http.get(this.URL_API + '/' + id);
+  }
+
   uploadImage(image: FormData){
     return this.http.post(this.URL_IMAGE, image);
   }

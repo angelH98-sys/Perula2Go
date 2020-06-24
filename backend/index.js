@@ -35,6 +35,7 @@ app.use('/business', require('./routes/business.routes'));
 app.use('/product', require('./routes/product.routes'));
 app.use('/category', require('./routes/category.routes'));
 app.use('/user', require('./routes/user.routes'));
+app.use('/extra', require('./routes/extra.routes'));
 
 
 /*////////////////////////////////////
