@@ -17,4 +17,8 @@ export class ExtraService {
     })
   }
 
+  getExtraByProduct(id){
+    return this.http.get(this.URL_API + "/" + id);
+  }
+
 }

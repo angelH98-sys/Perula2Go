@@ -8,6 +8,8 @@ import { fade, hoverZoom, listAnimation } from 'src/app/animations';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CategoryService } from 'src/app/services/category.service';
 import { Category } from 'src/app/models/category';
+import { ExtraService } from 'src/app/services/extra.service';
+import { Extra } from 'src/app/models/extra';
 
 export interface productCard {
   product: Product;
@@ -35,7 +37,8 @@ export class ProductCatalogComponent implements OnInit {
   constructor(private route: ActivatedRoute, 
     public productService: ProductService, 
     public businessService: BusinessService,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog,
+    private extraService: ExtraService) { }
 
   ngOnInit(): void {
     this.loadData();
@@ -70,14 +73,19 @@ export class ProductCatalogComponent implements OnInit {
   }
 
   openDialog(p: Product) {
-    const dialogRef = this.dialog.open(DialogContentExampleDialog, {
-
-      data: {product: p}
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
+    new Promise((respond, reject) => {
+      this.extraService.getExtraByProduct(p._id).subscribe(res => {
+        respond(res as Extra[]);
+      })
+    }).then((extras) => {
+      const dialogRef = this.dialog.open(DialogContentExampleDialog, {
+        data: {product: p, extra: extras}
+      });
+  
+      /*dialogRef.afterClosed().subscribe(result => {
+        console.log(`Dialog result: ${result}`);
+      });*/
+    })
   }
 
 }

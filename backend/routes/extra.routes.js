@@ -3,7 +3,7 @@ const router = express.Router();
 const extraCtrl = require('../controllers/extra.controller');
 
 router.post('/', extraCtrl.createExtra);
-/*
-router.get('/', categoryCtrl.getCategories);
-*/
+
+router.get('/:id', extraCtrl.getExtrasByProduct);
+
 module.exports = router;
