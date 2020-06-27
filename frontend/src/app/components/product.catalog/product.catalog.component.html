@@ -3,22 +3,18 @@
         <mat-progress-bar class="my-auto" mode="indeterminate"></mat-progress-bar>
     </div>
 </div>
-<div [@fade]="fade" id="coverContainer" class="container-fluid position-absolute" style="background-image: url('{{cover}}');">
+<div [@fade]="fadeIn" id="coverContainer" class="container-fluid position-absolute" style="background-image: url('{{cover}}');">
 </div>
-<div class="container-fluid position-absolute" style="margin-top: 100px;">
-    <div class="container" style="height: 500px;">
+<div class="container-fluid position-absolute mb-3">
+    <div class="container-lg">
         <div class="row">
-            <mat-card id="mainMatCard" class="bg-light shadow-lg w-100">
-                <div id="logoContainer" class="w-25 mx-auto position-relative">
-                    <div class="row w-100 h-100 mx-auto position-absolute">
-                        <mat-spinner class="m-auto bg-light rounded-circle"></mat-spinner>
-                    </div>
-                    <img [@fade]="fade" class="img-thumbnail img-fluid rounded-circle position-absolute" src="{{logo}}">
+            <mat-card id="mainMatCard" class="bg-light shadow-lg col-12">
+                <div id="logoContainer" class="p-0 shadow col-xl-3 col-lg-4 col-md-5 col-sm-7 col-9 mx-auto" style="background-image: url('{{logo}}');">
                 </div>
-                <p class="mt-5 display-2 mat-display-2 text-center">{{business.name}}</p>
+                <p class="mt-4 mb-4 display-2 mat-display-2 text-center">{{business.name}}</p>
                 <mat-divider></mat-divider>
                 <div [@listAnimation]="cardList.length" class="row">
-                    <div *ngFor="let card of cardList" class="col-4 mt-5">
+                    <div *ngFor="let card of cardList" class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 mt-5">
                         <mat-card class="mx-auto bg-warning col-10" [@zoom]="card.zoom" (mouseover)="zoomIn(card)" (mouseout)="zoomOut(card)" (click)="openDialog(card.product)">
                             <img mat-card-image src="../../../assets/product/{{card.product.picture}}">
                             <mat-card-content>

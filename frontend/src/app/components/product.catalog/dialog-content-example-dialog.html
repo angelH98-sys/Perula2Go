@@ -12,7 +12,6 @@
         <br>
         Tiempo de preparación: <b>{{data.product.productionTime}} minutos</b>
       </h1>
-      <h1 *ngIf="data.extra" class="mb-0 text-center mat-display-1">Complementos</h1>
       <mat-divider></mat-divider>
       <ng-template ngFor let-item [ngForOf]="data.extra" let-i="index">
         <br>
@@ -48,5 +47,5 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button color="primary" class="py-2 px-3" mat-button mat-dialog-close>Cancelar</button>
-  <button color="primary" class="py-2 px-3" mat-button [mat-dialog-close]="true" cdkFocusInitial>Agregar a orden</button>
+  <button color="primary" class="py-2 px-3" mat-button [mat-dialog-close]="true">Agregar a orden</button>
 </mat-dialog-actions>

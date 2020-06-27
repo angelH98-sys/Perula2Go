@@ -32,7 +32,8 @@ export class ProductCatalogComponent implements OnInit {
 
   logo = "../../../assets/loading/homer.gif";
 
-  fade = "out";
+  fadeIn = "out";
+  fadeOut = "in";
 
   constructor(private route: ActivatedRoute, 
     public productService: ProductService, 
@@ -59,7 +60,8 @@ export class ProductCatalogComponent implements OnInit {
         this.business = res[0] as Business;
         this.cover = "../../../assets/business/" + this.business.picture.cover;
         this.logo = "../../../assets/business/" + this.business.picture.logo;
-        this.fade = "in";
+        this.fadeIn = "in";
+        this.fadeOut = "out";
       })
     })
   }
