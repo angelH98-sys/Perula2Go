@@ -10,8 +10,10 @@
     position: relative;
     border-radius: 50%;
     width: 100%;
+    background-color: white;
     background-position: center;
     background-size: contain;
+    background-repeat: no-repeat;
     margin-top: -40%;
 }
 #logoContainer::after{

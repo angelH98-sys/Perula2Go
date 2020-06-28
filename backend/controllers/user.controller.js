@@ -23,9 +23,9 @@ userCtrl.createUser = (req, res) => {
     });
 }
 
-/*categoryCtrl.getCategories = async (req, res) => {
-    const categories = await Category.find();
-    res.json(categories);
-}*/
+userCtrl.getUserByEmail = async (req, res) => {
+    const user = await User.find({email: req.params.email});
+    res.json(user[0]);
+}
 
 module.exports = userCtrl;

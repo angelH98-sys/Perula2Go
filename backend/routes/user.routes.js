@@ -4,4 +4,6 @@ const userCtrl = require('../controllers/user.controller');
 
 router.post('/', userCtrl.createUser);
 
+router.get('/:email', userCtrl.getUserByEmail);
+
 module.exports = router;

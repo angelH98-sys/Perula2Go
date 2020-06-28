@@ -4,6 +4,8 @@ import { NgForm } from '@angular/forms';
 import { MouseEvent } from '@agm/core';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
+import { OrderService } from 'src/app/services/order.service';
+import { Order } from 'src/app/models/order';
 
 
 @Component({
@@ -27,7 +29,8 @@ export class UserComponent implements OnInit {
   comprobationPassword;
   picture;
 
-  constructor( private userService: UserService) { }
+  constructor( private userService: UserService,
+    private orderService: OrderService) { }
 
   ngOnInit(): void {
   }
@@ -47,7 +50,6 @@ export class UserComponent implements OnInit {
   }
 
   addUser(){
-    console.log(this.user);
     this.user.address[0].reference = this.reference;
 
     this.user.password = this.password;

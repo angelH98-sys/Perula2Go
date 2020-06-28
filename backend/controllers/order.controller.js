@@ -7,7 +7,7 @@ orderCtrl.createOrder = (req, res) => {
         status: req.body.status,
         comment: req.body.comment,
         totalAmount: req.body.totalAmount,
-        totalWait: req.body.totalWait,
+        wait: req.body.wait,
         customer: req.body.customer,
         employee: req.body.employee,
         qualification: req.body.qualification,
@@ -15,15 +15,15 @@ orderCtrl.createOrder = (req, res) => {
         address: req.body.address,
         productDetail: req.body.productDetail
     });
-    category.save();
+    order.save();
     res.json({
-        'status': 'Category saved'
+        'status': 'Order saved'
     });
 }
-
+/*
 categoryCtrl.getCategories = async (req, res) => {
     const categories = await Category.find();
     res.json(categories);
-}
+}*/
 
-module.exports = categoryCtrl;
+module.exports = orderCtrl;

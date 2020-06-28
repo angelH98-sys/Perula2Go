@@ -19,6 +19,7 @@ import { ProductComponent } from './components/product/product.component';
 import { ProductCatalogComponent, DialogContentExampleDialog } from './components/product.catalog/product.catalog.component';
 import { UserComponent } from './components/user/user.component';
 import { ExtraComponent } from './components/extra/extra.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { ExtraComponent } from './components/extra/extra.component';
     ProductCatalogComponent,
     DialogContentExampleDialog,
     UserComponent,
-    ExtraComponent
+    ExtraComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,

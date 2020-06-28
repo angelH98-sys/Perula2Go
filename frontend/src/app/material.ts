@@ -16,6 +16,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 import { NgModule } from '@angular/core';
 
@@ -34,7 +35,8 @@ import { NgModule } from '@angular/core';
         MatProgressBarModule,
         MatDialogModule,
         MatChipsModule,
-        MatExpansionModule
+        MatExpansionModule,
+        MatToolbarModule
     ],
     exports:[
         BrowserAnimationsModule,
@@ -52,7 +54,8 @@ import { NgModule } from '@angular/core';
         MatDialogModule,
         MatChipsModule,
         MatExpansionModule,
-        MatSlideToggleModule
+        MatSlideToggleModule,
+        MatToolbarModule
     ]
 })
 export class MaterialModule{}

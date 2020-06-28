@@ -1,13 +1,13 @@
 <mat-dialog-content>
   <div class="row">
-    <div class="col-xl-6">
+    <div class="col-xl-6 col-lg-6 col-md-6">
       <img class="img-fluid mb-3" src="../../../assets/product/{{data.product.picture}}">
     </div>
-    <div class="col-xl-6">
+    <div class="col-xl-6 col-lg-6 col-md-6">
       <h1 class="text-center mb-0 mat-display-3">{{data.product.name}}</h1>
       <mat-divider></mat-divider>
       <br>
-      <h1 class="mat-h3 mat-subheading-2">
+      <h1 class="mat-h2 mat-title">
         {{data.product.description}}
         <br>
         Tiempo de preparación: <b>{{data.product.productionTime}} minutos</b>
@@ -18,13 +18,13 @@
         <h1 class="mr-3 mat-h1 mat-headline">{{item.name}}</h1>
         <mat-radio-group *ngIf="!item.multiple">
           <ng-template ngFor let-op [ngForOf]="item.option" let-j="index">
-            <mat-radio-button value="{{op.name}}">{{op.name}} <b *ngIf="op.price > 0">+ ${{op.price.toFixed(2)}}</b></mat-radio-button>
+            <mat-radio-button class="mat-h2 mat-title" value="{{op.name}}">{{op.name}} <b *ngIf="op.price > 0">+ ${{op.price.toFixed(2)}}</b></mat-radio-button>
             <br>  
           </ng-template>
         </mat-radio-group>
         <ng-template [ngIf]="item.multiple">
           <ng-template ngFor let-op [ngForOf]="item.option" let-j="index">
-            <mat-checkbox>{{op.name}} <b *ngIf="op.price > 0">+ ${{op.price.toFixed(2)}}</b></mat-checkbox>
+            <mat-checkbox class="mat-h2 mat-title">{{op.name}} <b *ngIf="op.price > 0">+ ${{op.price.toFixed(2)}}</b></mat-checkbox>
             <br>
           </ng-template>
         </ng-template>
