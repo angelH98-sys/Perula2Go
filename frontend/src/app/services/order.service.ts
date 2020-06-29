@@ -18,4 +18,14 @@ export class OrderService {
     });
   }
 
+  getEraserOrder(userId: String){
+    return this.http.get(`${this.URL_API}/${userId}`);
+  }
+
+  putOrder(order: Order){
+    this.http.put(`${this.URL_API}/${order._id}`, order).subscribe((res: any) => {
+      console.log(res.status);
+    });
+  }
+
 }

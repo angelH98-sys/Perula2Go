@@ -4,6 +4,8 @@ const orderCtrl = require('../controllers/order.controller');
 
 router.post('/', orderCtrl.createOrder);
 
-//router.get('/', categoryCtrl.getCategories);
+router.get('/:userId', orderCtrl.getEraserOrder);
+
+router.put('/:id', orderCtrl.editOrder);
 
 module.exports = router;

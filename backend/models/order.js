@@ -18,6 +18,7 @@ let OrderSchema = new Schema({
     },
     productDetail: [{
         'product': String,
+        'price': Number,
         'extra': [{
             'name': String,
             'price': Number

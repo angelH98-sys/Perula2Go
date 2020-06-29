@@ -13,39 +13,34 @@
         Tiempo de preparación: <b>{{data.product.productionTime}} minutos</b>
       </h1>
       <mat-divider></mat-divider>
-      <ng-template ngFor let-item [ngForOf]="data.extra" let-i="index">
-        <br>
-        <h1 class="mr-3 mat-h1 mat-headline">{{item.name}}</h1>
-        <mat-radio-group *ngIf="!item.multiple">
-          <ng-template ngFor let-op [ngForOf]="item.option" let-j="index">
-            <mat-radio-button class="mat-h2 mat-title" value="{{op.name}}">{{op.name}} <b *ngIf="op.price > 0">+ ${{op.price.toFixed(2)}}</b></mat-radio-button>
-            <br>  
-          </ng-template>
-        </mat-radio-group>
-        <ng-template [ngIf]="item.multiple">
-          <ng-template ngFor let-op [ngForOf]="item.option" let-j="index">
-            <mat-checkbox class="mat-h2 mat-title">{{op.name}} <b *ngIf="op.price > 0">+ ${{op.price.toFixed(2)}}</b></mat-checkbox>
-            <br>
-          </ng-template>
-        </ng-template>
-        <ng-template #elseBlock>
-          
-        </ng-template>
-      </ng-template>
-      <!--mat-radio-group>
-        <mat-radio-button value="default" checked>Regular</mat-radio-button>
-        <ng-template ngFor let-size [ngForOf]="data.product.size">
+      <form>
+        <ng-template ngFor let-item [ngForOf]="data.extra" let-i="index">
           <br>
-          <mat-radio-button *ngIf="size" value="{{size._id}}">{{size.name}} <b>+ ${{size.price.toFixed(2)}}</b></mat-radio-button>
+          <h1 class="mr-3 mat-h1 mat-headline">{{item.extraName}}</h1>
+          <mat-radio-group name="radio-{{item.extraName}}" [(ngModel)]="item.radioValue" (change)="controlChange()" *ngIf="!item.multiple">
+            <ng-template ngFor let-op [ngForOf]="item.option" let-j="index">
+              <mat-radio-button *ngIf="op.status == 'Disponible'" class="mat-h2 mat-title" value="{{op.name}}">{{op.name}} <b *ngIf="op.price > 0">+ ${{op.price.toFixed(2)}}</b></mat-radio-button>
+              <br>  
+            </ng-template>
+          </mat-radio-group>
+          <ng-template [ngIf]="item.multiple">
+            <ng-template ngFor let-op [ngForOf]="item.option" let-j="index">
+              <mat-checkbox *ngIf="op.status == 'Disponible'" (change)="controlChange()" name="check-{{op.name}}" [(ngModel)]="op.selected" class="mat-h2 mat-title">{{op.name}} <b *ngIf="op.price > 0">+ ${{op.price.toFixed(2)}}</b></mat-checkbox>
+              <br>
+            </ng-template>
+          </ng-template>
+          <ng-template #elseBlock>
+            
+          </ng-template>
         </ng-template>
-      </mat-radio-group-->
+      </form>
       <mat-divider></mat-divider>
       <br>
-      <h1 class="text-center mat-h1 mat-headline">Total: <b>${{data.product.price.toFixed(2)}}</b></h1>
+      <h1 class="text-center mat-h1 mat-headline">Total: <b>${{data.totalAmount.toFixed(2)}}</b></h1>
     </div>
   </div>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button color="primary" class="py-2 px-3" mat-button mat-dialog-close>Cancelar</button>
-  <button color="primary" class="py-2 px-3" mat-button [mat-dialog-close]="true">Agregar a orden</button>
+  <button color="primary" class="py-2 px-3" mat-button [mat-dialog-close]="data">Agregar a orden</button>
 </mat-dialog-actions>

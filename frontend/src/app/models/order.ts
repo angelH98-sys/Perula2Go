@@ -17,6 +17,7 @@ export class Order {
         };
         this.productDetail = [{
             'product': '',
+            'price': 0,
             'extra': [{
                 'name': '',
                 'price': 0
@@ -40,6 +41,7 @@ export class Order {
     };
     productDetail: [{
         'product': String,
+        'price': Number,
         'extra': [{
             'name': String,
             'price': Number
