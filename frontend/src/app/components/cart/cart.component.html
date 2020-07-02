@@ -1,0 +1,106 @@
+<div class="container-fluid">
+    <div class="container-lg my-4 shadow-lg rounded-lg pt-4">
+        <p class="mat-display-3 mb-4 text-center">Tu pedido</p>
+        <mat-divider></mat-divider>
+        <div class="row mt-4">
+            <div class="col-xl-6 col-lg-6 col-md-6">
+                <mat-card class="mb-3">
+                    <mat-card-content>
+                        <div class="row">
+                            <div class="col-3 mx-auto">
+                                <img class="mx-auto d-block img-thumbnail rounded-circle" src="../../../assets/images/deliverybyke.png">
+                            </div>
+                        </div>
+                        <p class="mat-headline mt-2 mb-n1 mat-h1 text-center">Perula2Go</p>
+                        <p class="mat-h3 mat-subheading-2 text-center text-secondary">{{order.productDetail.length}} producto(s) seleccionado(s)</p>
+                        <ng-template [ngIf]="order.totalAmount > 0">
+                            <table class="table">
+                                <tbody>
+                                    <ng-template ngFor let-item [ngForOf]="order.productDetail" let-i="index">
+                                        <tr>
+                                            <th scope="row" class="align-middle">1</th>
+                                            <td class="align-middle">
+                                                <p class="mat-body mat-body-1 d-inline">
+                                                    {{productNameList[i]}}
+                                                </p>
+                                            </td>
+                                            <td class="align-middle">
+                                                <p class="mat-body mat-body-1 font-weight-bold d-inline">
+                                                    ${{item.price.toFixed(2)}}
+                                                </p>
+                                            </td>
+                                            <td class="align-middle">
+                                                <button mat-mini-fab color="primary">
+                                                    <mat-icon>delete</mat-icon>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <ng-template ngFor let-extra [ngForOf]="item.extra">
+                                            <tr *ngIf="extra.name !=''">
+                                                <th scope="row"></th>
+                                                <td class="align-middle">
+                                                    <p class="mat-body mat-body-1 text-secondary d-inline">
+                                                        {{extra.name}}
+                                                    </p>
+                                                </td>
+                                                <td class="align-middle">
+                                                    <p class="mat-body mat-body-1 text-secondary d-inline">
+                                                        + ${{extra.price.toFixed(2)}}
+                                                    </p>
+                                                </td>
+                                                <td class="align-middle">
+                                                    <button mat-icon-button>
+                                                        <mat-icon>clear</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                    </ng-template>
+                                    <tr>
+                                        <th scope="row"></th>
+                                        <td class="align-middle">
+                                            <p class="mat-h3 mat-subheading-2 font-weight-bold d-inline">
+                                                TOTAL
+                                            </p>
+                                        </td>
+                                        <td colspan="2" class="align-middle">
+                                            <p class="mat-h3 mat-subheading-2 font-weight-bold d-inline">
+                                                ${{order.totalAmount.toFixed(2)}}
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </ng-template>
+                    </mat-card-content>
+                  </mat-card>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6">
+                <mat-card class="mb-3">
+                    <h1 class="mat-h1 mat-headline text-center">Dirección de entrega</h1>
+                    <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
+                        <agm-marker [latitude]="lat" [longitude]="lng">
+                        </agm-marker>
+                    </agm-map>
+                    <mat-form-field class="w-100 mt-3" appearance="outline">
+                        <mat-label>Direcciones registradas</mat-label>
+                        <mat-select name="address" [(ngModel)]="addressSelected" [(value)]="addressSelected" (selectionChange)="changeAddress()">
+                            <ng-template ngFor let-item [ngForOf]="addressList" let-i="index">
+                                <mat-option [value]="item._id" >
+                                    {{item.direction}}
+                                </mat-option>
+                            </ng-template>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-card>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-3 mx-auto">
+                <button mat-raised-button color="primary" class="mb-3 py-2 w-100" (click)="confirmOrder()">
+                    <h1 class="mat-h1 mat-headline m-0">Confirmar orden</h1>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

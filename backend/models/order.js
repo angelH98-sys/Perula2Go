@@ -14,6 +14,10 @@ let OrderSchema = new Schema({
     address: {
         'latitude': Number,
         'longitude': Number,
+        'direction': String,
+        'homeNumber': String,
+        'department': String,
+        'city': String,
         'reference': String
     },
     productDetail: [{

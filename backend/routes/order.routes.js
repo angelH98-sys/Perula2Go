@@ -8,4 +8,6 @@ router.get('/:userId', orderCtrl.getEraserOrder);
 
 router.put('/:id', orderCtrl.editOrder);
 
+router.put('/onprocess/:id', orderCtrl.onProcess);
+
 module.exports = router;

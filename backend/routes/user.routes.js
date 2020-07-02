@@ -4,6 +4,10 @@ const userCtrl = require('../controllers/user.controller');
 
 router.post('/', userCtrl.createUser);
 
-router.get('/:email', userCtrl.getUserByEmail);
+router.get('/:id', userCtrl.getUserById);
+
+router.get('/address/:id', userCtrl.getUserAddress);
+
+router.put('/address/:id', userCtrl.editAddress);
 
 module.exports = router;

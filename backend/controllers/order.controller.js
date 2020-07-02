@@ -45,4 +45,11 @@ orderCtrl.editOrder = async (req, res) => {
     });
 }
 
+orderCtrl.onProcess = async (req, res) => {
+    await Order.findByIdAndUpdate(req.params.id, {status: req.body.status, address: req.body.address}, {new: true});
+    res.json({
+        'status': "Order status changed"
+    });
+}
+
 module.exports = orderCtrl;

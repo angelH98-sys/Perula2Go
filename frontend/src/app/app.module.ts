@@ -20,6 +20,8 @@ import { ProductCatalogComponent, DialogContentExampleDialog } from './component
 import { UserComponent } from './components/user/user.component';
 import { ExtraComponent } from './components/extra/extra.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { CartComponent } from './components/cart/cart.component';
+import { UserAddressComponent, AddressDialog } from './components/user.address/user.address.component';
 
 @NgModule({
   declarations: [
@@ -30,8 +32,11 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     ProductCatalogComponent,
     DialogContentExampleDialog,
     UserComponent,
+    AddressDialog,
     ExtraComponent,
-    NavbarComponent
+    NavbarComponent,
+    CartComponent,
+    UserAddressComponent
   ],
   imports: [
     BrowserModule,

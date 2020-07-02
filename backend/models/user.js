@@ -16,6 +16,10 @@ let UserSchema = new Schema({
     address: [{
         'latitude': Number,
         'longitude': Number,
+        'direction': String,
+        'homeNumber': String,
+        'department': String,
+        'city': String,
         'reference': String
     }],
     employee: {

@@ -23,9 +23,21 @@ userCtrl.createUser = (req, res) => {
     });
 }
 
-userCtrl.getUserByEmail = async (req, res) => {
-    const user = await User.find({email: req.params.email});
+userCtrl.editAddress = async (req, res) => {
+    await User.findByIdAndUpdate(req.params.id, {address: req.body}, {new: true});
+    res.json({
+        'status': "Address updated"
+    });
+}
+
+userCtrl.getUserById = async (req, res) => {
+    const user = await User.find({_id: req.params.id});
     res.json(user[0]);
+}
+
+userCtrl.getUserAddress = async (req, res) => {
+    const user = await User.find({_id: req.params.id});
+    res.json(user[0].address);
 }
 
 module.exports = userCtrl;

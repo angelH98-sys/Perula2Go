@@ -1,0 +1,49 @@
+<p *ngIf="!data.address._id" mat-dialog-title class="text-center">Nueva dirección</p>
+<mat-dialog-content>
+    <div class="row">
+        <div class="col-xl-6">
+            <h1 class="mat-h4 mat-subheading-1 mb-2">Selecciona la nueva ubicación de entrega</h1>
+            <agm-map [latitude]="data.address.latitude" [longitude]="data.address.longitude" [zoom]="18" (mapClick)="mapClicked($event)" style="height: 300px;">
+                <agm-marker [latitude]="latMarked" [longitude]="lngMarked"
+                    [markerDraggable]="true">
+                </agm-marker>
+            </agm-map>
+        </div>
+        <div class="col-xl-6">
+            <form>
+                <mat-form-field class="w-100" appearance="outline">
+                    <mat-label>Dirección</mat-label>
+                    <input name="direction" [(ngModel)]="data.address.direction" matInput placeholder="Ej: colonia, calle ..." required>
+                </mat-form-field>
+                <mat-form-field class="w-50" appearance="outline">
+                    <mat-label>No. de casa/local</mat-label>
+                    <input name="homeNumber" [(ngModel)]="data.address.homeNumber" matInput placeholder="Ej: 14, 25H..." required>
+                </mat-form-field>
+                <mat-form-field class="w-75" appearance="outline">
+                    <mat-label>Departamento</mat-label>
+                    <mat-select name="deparment" [(ngModel)]="data.address.department" (selectionChange)="getCities(data.address.deparment)">
+                        <mat-option *ngFor="let item of departments" [value]="item">
+                            {{item}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="w-75" appearance="outline">
+                    <mat-label>Municipio</mat-label>
+                    <mat-select name="city" [(ngModel)]="data.address.city">
+                        <mat-option *ngFor="let item of cities" [value]="item">
+                            {{item}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="w-100" appearance="outline">
+                    <mat-label>Referencia</mat-label>
+                    <textarea name="reference" [(ngModel)]="data.address.reference" matInput style="height: 100px;"></textarea>
+                </mat-form-field>
+            </form>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button color="primary" class="py-2 px-3" mat-button mat-dialog-close>Cancelar</button>
+    <button color="primary" class="py-2 px-3" mat-button [mat-dialog-close]="data" (click)="checkData()">Guardar</button>
+  </mat-dialog-actions>

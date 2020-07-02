@@ -13,6 +13,10 @@ export class Order {
         this.address = {
             'latitude': 0,
             'longitude': 0,
+            'direction': '',
+            'homeNumber': '',
+            'department': '',
+            'city': '',
             'reference': ''
         };
         this.productDetail = [{
@@ -37,6 +41,10 @@ export class Order {
     address: {
         'latitude': Number,
         'longitude': Number,
+        'direction': String,
+        'homeNumber': String,
+        'department': String,
+        'city': String,
         'reference': String
     };
     productDetail: [{

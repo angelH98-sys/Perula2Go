@@ -15,6 +15,10 @@ export class User {
         this.address = [{
             'latitude': 0,
             'longitude': 0,
+            'direction': '',
+            'homeNumber': '',
+            'department': '',
+            'city': '',
             'reference': ''
         }];
         this.employee = {
@@ -40,6 +44,10 @@ export class User {
     address: [{
         'latitude': Number,
         'longitude': Number,
+        'direction': String,
+        'homeNumber': String,
+        'department': String,
+        'city': String,
         'reference': String
     }];
     employee: {

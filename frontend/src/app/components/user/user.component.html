@@ -1,18 +1,18 @@
 <div class="container">
     <div class="row">
-        <div class="col-8">
-            <mat-card class="bg-success my-4">
+        <div class="col-xl-6 mx-auto">
+            <mat-card class="bg-warning my-4">
                 <form (ngSubmit)="addUser()">
-                    <p class="mat-display-4">Registro de usuarios</p>
-                    <mat-form-field class="w-75" appearance="outline">
+                    <h1 class="mat-display-3 my-3">Registro de usuarios</h1>
+                    <mat-form-field class="w-100" appearance="outline">
                         <mat-label>Nombre</mat-label>
                         <input name="name" #name="ngModel" [(ngModel)]="user.name" matInput placeholder="Ej: Pancracio Orantes" required>
                     </mat-form-field>
-                    <mat-form-field class="w-50 mr-1" appearance="outline">
+                    <mat-form-field class="w-100" appearance="outline">
                         <mat-label>Correo electrónico</mat-label>
                         <input name="email" #email="ngModel" [(ngModel)]="user.email" type="email" matInput placeholder="Ej: pancracio@gmail.com" required>
                     </mat-form-field>
-                    <mat-form-field class="w-50 mr-1" appearance="outline">
+                    <mat-form-field class="w-100" appearance="outline">
                         <mat-label>Teléfono</mat-label>
                         <input name="phone" #phone="ngModel" [(ngModel)]="user.phone" matInput placeholder="Ej: 0000-0000" required>
                     </mat-form-field>
@@ -39,7 +39,7 @@
                     </mat-form-field>
                     <p class="mat-h1 ml-3">Foto de perfíl</p>
                     <input name="picture" (change)="getPictureInfo($event)" type="file">
-                    <p class="mat-h1 ml-3 mt-3">Ubicación para entregas</p>
+                    <p class="mat-h1 ml-3 mt-3">Dirección para entregas</p>
                     <mat-card class="w-100">
                         <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" (mapClick)="mapClicked($event)">
                             <agm-marker [latitude]="latMarker" [longitude]="lngMarker"

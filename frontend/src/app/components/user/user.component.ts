@@ -38,8 +38,8 @@ export class UserComponent implements OnInit {
   mapClicked($event: MouseEvent) {
     this.lngMarker = $event.coords.lng;
     this.latMarker = $event.coords.lat;
-    this.user.address[0].longitude = this.lng;
-    this.user.address[0].latitude = this.lat;
+    this.user.address[0].longitude = this.lngMarker;
+    this.user.address[0].latitude = this.latMarker;
   }
 
   getPictureInfo(event) {
@@ -62,15 +62,15 @@ export class UserComponent implements OnInit {
     interface format {
       image: String;
     }
-
-    new Promise(resolve => {
+    console.log(this.user);
+    /*new Promise(resolve => {
       this.userService.uploadImage(image).subscribe((res: format) => {
         this.user.picture = res.image;
         resolve();
       });
     }).then(() => {
       this.userService.postUser(this.user);
-    });
+    });*/
   }
 
 }

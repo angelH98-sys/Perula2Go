@@ -28,8 +28,18 @@ export class UserService {
     });
   }
 
-  getUserByEmail(email: String){
-    return ;
+  putAddress(id: String, address){
+    this.http.put(`${this.URL_API}/address/${id}`, address).subscribe((res: any) => {
+      console.log(res.status);
+    });
+  }
+
+  getUserById(id: String){
+    return this.http.get(`${this.URL_API}/${id}`);
+  }
+
+  getUserAddress(id: String){
+    return this.http.get(`${this.URL_API}/address/${id}`);
   }
 
   uploadImage (image: FormData){

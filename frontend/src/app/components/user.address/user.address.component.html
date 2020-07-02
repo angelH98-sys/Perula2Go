@@ -1,0 +1,50 @@
+<div class="container">
+    <div class="row">
+        <div class="col-xl-6 mx-auto">
+            <mat-card class="my-4 bg-warning">
+                <h1 class="mat-display-3 my-3">Tus direcciones</h1>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="align-middle">
+                                <p class="mat-body mat-body-1 font-weight-bold d-inline">
+                                    Dirección
+                                </p>
+                            </th>
+                            <th scope="col" class="align-middle">
+                                <p class="mat-body mat-body-1 font-weight-bold d-inline">
+                                    No. Casa/local
+                                </p>
+                            </th>
+                            <th scope="col">
+                                <button mat-stroked-button class="py-2 w-100" (click)="openAddressDialog()">Nueva dirección</button>
+                            </th>
+                        </tr>
+                        <ng-template ngFor let-item [ngForOf]="addressList" let-i="index">
+                            <tr>
+                                <td class="align-middle">
+                                    <p class="mat-body mat-body-1 d-inline">
+                                        {{item.direction}}
+                                    </p>
+                                </td>
+                                <td class="align-middle">
+                                    <p class="mat-body mat-body-1 d-inline">
+                                        {{item.homeNumber}}
+                                    </p>
+                                </td>
+                                <td class="text-center">
+                                    <button mat-mini-fab color="primary" class="mx-2" (click)="openAddressDialog(item)">
+                                        <mat-icon>create</mat-icon>
+                                    </button> 
+                                    <button mat-mini-fab color="warn" class="mx-2" (click)="deleteAddress(i)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button> 
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </thead>
+                </table>
+            </mat-card>
+        </div>
+    </div>
+</div>

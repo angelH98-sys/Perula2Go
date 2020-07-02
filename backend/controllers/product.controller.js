@@ -29,4 +29,9 @@ productCtrl.getProductById = async (req, res) => {
     res.json(product);
 }
 
+productCtrl.getProductName = async (req, res) => {
+    const product = await Product.find({_id: req.params.id});
+    res.json(product[0].name);
+}
+
 module.exports = productCtrl;

@@ -28,4 +28,10 @@ export class OrderService {
     });
   }
 
+  onProcess(id, address){
+    this.http.put(`${this.URL_API}/onprocess/${id}`, {status: "En proceso", address: address}).subscribe((res: any) => {
+      console.log(res.status);
+    });
+  }
+
 }

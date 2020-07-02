@@ -3,8 +3,8 @@
         <div class="col-xl-6 mx-auto">
             <mat-card class="bg-warning my-4">
                 <form (ngSubmit)="addProduct()">
-                    <h1 class="mat-display-3 mt-3">Registro de productos</h1>
-                    <mat-form-field class="w-100 mt-n5" appearance="outline">
+                    <h1 class="mat-display-3 my-3">Registro de productos</h1>
+                    <mat-form-field class="w-100" appearance="outline">
                         <mat-label>Nombre</mat-label>
                         <input name="name" #name="ngModel" [(ngModel)]="product.name" matInput type="text" placeholder="Ej: Hamburguesa con queso" required>
                     </mat-form-field>
