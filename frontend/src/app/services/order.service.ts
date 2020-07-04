@@ -22,14 +22,30 @@ export class OrderService {
     return this.http.get(`${this.URL_API}/${userId}`);
   }
 
-  putOrder(order: Order){
-    this.http.put(`${this.URL_API}/${order._id}`, order).subscribe((res: any) => {
+  getOrderByBusiness(business: String){
+    return this.http.get(`${this.URL_API}/business/${business}`);
+  }
+
+  addProductToOrder(_id, totalAmount, wait, productDetail){
+    this.http.put(`${this.URL_API}/${_id}`, {totalAmount, wait, productDetail}).subscribe((res: any) => {
       console.log(res.status);
     });
   }
 
-  onProcess(id, address){
-    this.http.put(`${this.URL_API}/onprocess/${id}`, {status: "En proceso", address: address}).subscribe((res: any) => {
+  assignBusiness(_id, business){
+    this.http.put(`${this.URL_API}/assignbusiness/${_id}`, {business}).subscribe((res: any) => {
+      console.log(res.status);
+    });
+  }
+
+  confirmOrder(id, address, date){
+    this.http.put(`${this.URL_API}/confirm/${id}`, {status: "En cola", address: address, orderDate: date}).subscribe((res: any) => {
+      console.log(res.status);
+    });
+  }
+
+  changeStatus(id, statusName){
+    this.http.put(`${this.URL_API}/changestatus/${id}`, {status: statusName}).subscribe((res: any) => {
       console.log(res.status);
     });
   }

@@ -16,12 +16,12 @@ import { AgmCoreModule } from '@agm/core';
 
 import { BusinessCatalogComponent } from './components/business.catalog/business.catalog.component';
 import { ProductComponent } from './components/product/product.component';
-import { ProductCatalogComponent, DialogContentExampleDialog } from './components/product.catalog/product.catalog.component';
+import { ProductCatalogComponent, ProductDetailDialog } from './components/product.catalog/product.catalog.component';
 import { UserComponent } from './components/user/user.component';
 import { ExtraComponent } from './components/extra/extra.component';
-import { NavbarComponent } from './components/navbar/navbar.component';
 import { CartComponent } from './components/cart/cart.component';
 import { UserAddressComponent, AddressDialog } from './components/user.address/user.address.component';
+import { BusinessOrderComponent } from './components/business.order/business.order.component';
 
 @NgModule({
   declarations: [
@@ -30,13 +30,13 @@ import { UserAddressComponent, AddressDialog } from './components/user.address/u
     BusinessCatalogComponent,
     ProductComponent,
     ProductCatalogComponent,
-    DialogContentExampleDialog,
+    ProductDetailDialog,
     UserComponent,
     AddressDialog,
     ExtraComponent,
-    NavbarComponent,
     CartComponent,
-    UserAddressComponent
+    UserAddressComponent,
+    BusinessOrderComponent
   ],
   imports: [
     BrowserModule,

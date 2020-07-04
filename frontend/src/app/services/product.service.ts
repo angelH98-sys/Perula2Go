@@ -31,6 +31,10 @@ export class ProductService {
     return this.http.get(`${this.URL_API}/name/${id}`);
   }
 
+  getProductByBusiness(business: String){
+    return this.http.get(`${this.URL_API}/business/${business}`);
+  }
+
   uploadImage(image: FormData){
     return this.http.post(this.URL_IMAGE, image);
   }

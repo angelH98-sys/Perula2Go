@@ -7,13 +7,16 @@
       <h1 class="text-center mb-0 mat-display-3">{{data.product.name}}</h1>
       <mat-divider></mat-divider>
       <br>
-      <h1 class="mat-h2 mat-title">
-        {{data.product.description}}
-        <br>
+      <h3 class="mat-h3 mat-subheading-2">{{data.product.description}}</h3>
+      <h2 class="mat-h2 mat-title">
         Tiempo de preparación: <b>{{data.product.productionTime}} minutos</b>
-      </h1>
+      </h2>
       <mat-divider></mat-divider>
       <form>
+        <mat-form-field class="my-3" appearance="outline">
+          <mat-label>Cantidad</mat-label>
+          <input name="qty" [(ngModel)]="data.quantity" type="number" min="1" step="1" matInput (change)="controlChange()">
+        </mat-form-field>
         <ng-template ngFor let-item [ngForOf]="data.extra" let-i="index">
           <br>
           <h1 class="mr-3 mat-h1 mat-headline">{{item.extraName}}</h1>

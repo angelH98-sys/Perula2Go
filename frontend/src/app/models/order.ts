@@ -8,6 +8,7 @@ export class Order {
         this.wait = 0;
         this.customer = "";
         this.employee = "";
+        this.business = "";
         this.qualification = 0;
         this.orderDate = new Date();
         this.address = {
@@ -22,10 +23,12 @@ export class Order {
         this.productDetail = [{
             'product': '',
             'price': 0,
+            'quantity': 0,
             'extra': [{
                 'name': '',
                 'price': 0
-            }]
+            }],
+            'total': 0
         }]
     }
 
@@ -36,6 +39,7 @@ export class Order {
     wait: Number;
     customer: String;
     employee: String;
+    business: String;
     qualification: Number;
     orderDate: Date;
     address: {
@@ -50,9 +54,11 @@ export class Order {
     productDetail: [{
         'product': String,
         'price': Number,
+        'quantity': Number,
         'extra': [{
             'name': String,
             'price': Number
-        }]
+        }],
+        'total': Number
     }]
 }

@@ -20,7 +20,7 @@ export class CartComponent implements OnInit {
   addressList = [];
   addressSelected: String;
 
-  customerId = "5ef8c88b89f9da00d0d7dd74";
+  customerId = "5eff95e7a215a7356006bae9";
   lat = 13.763992;
   lng = -89.049093;
   zoom: Number = 18;
@@ -41,6 +41,8 @@ export class CartComponent implements OnInit {
           this.userService.getUserAddress(this.customerId).subscribe(res => {
             this.addressList = res as [];
             this.addressSelected = this.addressList[0]._id;
+            this.lat = this.addressList[0].latitude;
+            this.lng = this.addressList[0].longitude;
             respond2();
           });
         }));
@@ -62,7 +64,7 @@ export class CartComponent implements OnInit {
 
   confirmOrder(){
     let address = this.addressList.find(element => element._id == this.addressSelected);
-    this.orderService.onProcess(this.order._id, address);
+    this.orderService.confirmOrder(this.order._id, address, new Date());
     let order: Order = new Order();
     order.customer = this.customerId;
     this.orderService.postOrder(order);

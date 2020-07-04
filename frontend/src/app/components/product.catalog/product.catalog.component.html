@@ -1,12 +1,10 @@
-<div class="container-fluid bg-warning position-absolute" style="height: 400px;">
-    <div class="row bg-light h-100">
-        <mat-progress-bar class="my-auto" mode="indeterminate"></mat-progress-bar>
+<div class="container-fluid p-0">
+    <div id="coverContainer" class="w-100" style="background-image: url('{{cover}}');">
+        <div class="row bg-light w-100 h-100" [@fade]="fade">
+            <mat-progress-bar class="my-auto" mode="indeterminate"></mat-progress-bar>
+        </div>
     </div>
-</div>
-<div [@fade]="fadeIn" id="coverContainer" class="container-fluid position-absolute" style="background-image: url('{{cover}}');">
-</div>
-<div class="container-fluid position-absolute mb-3">
-    <div class="container-lg">
+    <div class="container-lg mb-3">
         <div class="row">
             <mat-card id="mainMatCard" class="bg-light shadow-lg col-12">
                 <div id="logoContainer" class="p-0 shadow col-xl-3 col-lg-4 col-md-5 col-sm-7 col-9 mx-auto" style="background-image: url('{{logo}}');">

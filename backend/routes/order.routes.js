@@ -6,8 +6,14 @@ router.post('/', orderCtrl.createOrder);
 
 router.get('/:userId', orderCtrl.getEraserOrder);
 
-router.put('/:id', orderCtrl.editOrder);
+router.get('/business/:business', orderCtrl.getOrderByBusiness);
 
-router.put('/onprocess/:id', orderCtrl.onProcess);
+router.put('/:id', orderCtrl.addProduct);
+
+router.put('/assignbusiness/:id', orderCtrl.assignBusiness);
+
+router.put('/confirm/:id', orderCtrl.confirmOrder);
+
+router.put('/changestatus/:id', orderCtrl.changeStatus);
 
 module.exports = router;

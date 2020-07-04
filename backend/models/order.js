@@ -9,6 +9,7 @@ let OrderSchema = new Schema({
     wait: Number,
     customer: String,
     employee: String,
+    business: String,
     qualification: Number,
     orderDate: Date,
     address: {
@@ -23,10 +24,12 @@ let OrderSchema = new Schema({
     productDetail: [{
         'product': String,
         'price': Number,
+        'quantity': Number,
         'extra': [{
             'name': String,
             'price': Number
-        }]
+        }],
+        'total': Number
     }]
 });
 

@@ -1,14 +1,18 @@
-<div class="container">
-  <div [@listAnimation]="cardList.length" class="row">
-    <div *ngFor="let card of cardList" class="col-4 mt-5">
-      <mat-card class="mx-auto bg-warning col-10" [@zoom]="card.zoom" (mouseover)="zoomIn(card)" (mouseout)="zoomOut(card)" routerLink="/product/catalog/{{card.business._id}}">
-        <img mat-card-image src="../../../assets/business/{{card.business.picture.logo}}">
-        <mat-card-content>
-          <p class="mat-h2 mat-title">
-            {{card.business.name}}
-          </p>
-        </mat-card-content>
-      </mat-card>
+<div class="container-fluid">
+  <div class="container-lg my-4 shadow-lg rounded-lg py-4">
+    <p class="mat-display-3 mb-4 text-center">Restaurantes</p>
+    <mat-divider></mat-divider>
+    <div [@listAnimation]="cardList.length" class="row">
+      <div *ngFor="let card of cardList" class="col-4 mt-5">
+        <mat-card class="mx-auto bg-warning col-10" [@zoom]="card.zoom" (mouseover)="zoomIn(card)" (mouseout)="zoomOut(card)" routerLink="/product/catalog/{{card.business._id}}">
+          <img mat-card-image src="../../../assets/business/{{card.business.picture.logo}}">
+          <mat-card-content>
+            <p class="mat-h2 mat-title">
+              {{card.business.name}}
+            </p>
+          </mat-card-content>
+        </mat-card>
+      </div>
     </div>
   </div>
 </div>

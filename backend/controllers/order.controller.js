@@ -10,6 +10,7 @@ orderCtrl.createOrder = (req, res) => {
         wait: req.body.wait,
         customer: req.body.customer,
         employee: req.body.employee,
+        business: req.body.business,
         qualification: req.body.qualification,
         orderDate: req.body.orderDate,
         address: req.body.address,
@@ -26,30 +27,51 @@ orderCtrl.getEraserOrder = async (req, res) => {
     res.json(order[0]);
 }
 
-orderCtrl.editOrder = async (req, res) => {
-    const order = {
-        status: req.body.status,
-        comment: req.body.comment,
-        totalAmount: req.body.totalAmount,
-        wait: req.body.wait,
-        customer: req.body.customer,
-        employee: req.body.employee,
-        qualification: req.body.qualification,
-        orderDate: req.body.orderDate,
-        address: req.body.address,
-        productDetail: req.body.productDetail
-    };
-    await Order.findByIdAndUpdate(req.params.id, {$set: order}, {new: true});
+orderCtrl.getOrderByBusiness = async (req, res) => {
+    const orders = await Order.find({business: req.params.business}, '_id status orderDate productDetail');
+    res.json(orders);
+}
+
+orderCtrl.assignBusiness = async (req, res) => {
+    await Order.findByIdAndUpdate(req.params.id, {business: req.body.business}, {new: true});
     res.json({
-        'status': "Order updated"
+        'status': 'Business assigned to order'
     });
 }
 
-orderCtrl.onProcess = async (req, res) => {
-    await Order.findByIdAndUpdate(req.params.id, {status: req.body.status, address: req.body.address}, {new: true});
+orderCtrl.toOnProcess = async (req, res) => {
+    await Order.findByIdAndUpdate(req.params.id, {status: 'En proceso'}, {new: true});
+    res.json({
+        'status': 'Order on process'
+    });
+}
+
+orderCtrl.addProduct = async (req, res) => {
+    await Order.findByIdAndUpdate(req.params.id,
+        {
+            totalAmount: req.body.totalAmount,
+            wait: req.body.wait,
+            productDetail: req.body.productDetail
+        }, 
+        {new: true});
+    res.json({
+        'status': "Product added to order"
+    });
+}
+
+orderCtrl.confirmOrder = async (req, res) => {
+    await Order.findByIdAndUpdate(req.params.id, {status: req.body.status, address: req.body.address, orderDate: req.body.orderDate}, {new: true});
+    res.json({
+        'status': "Order confirmed"
+    });
+}
+
+orderCtrl.changeStatus = async (req, res) => {
+    await Order.findByIdAndUpdate(req.params.id, {status: req.body.status}, {new: true});
     res.json({
         'status': "Order status changed"
     });
 }
+
 
 module.exports = orderCtrl;

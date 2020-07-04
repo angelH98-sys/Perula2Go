@@ -10,16 +10,17 @@ userCtrl.createUser = (req, res) => {
         email: req.body.email,
         question: req.body.question,
         answer: req.body.answer,
-        picure: req.body.picture,
+        picture: req.body.picture,
         status: req.body.status,
         userType: req.body.userType,
         phone: req.body.phone,
         address: req.body.address,
         employee: req.body.employee
     });
-    user.save();
-    res.json({
-        'status': 'User saved'
+    user.save((err, newUser) => {
+        res.json({
+            '_id': newUser._id
+        });
     });
 }
 

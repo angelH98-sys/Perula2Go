@@ -8,12 +8,14 @@ import { UserComponent } from './components/user/user.component';
 import { ExtraComponent } from './components/extra/extra.component';
 import { CartComponent } from './components/cart/cart.component';
 import { UserAddressComponent } from './components/user.address/user.address.component';
+import { BusinessOrderComponent } from './components/business.order/business.order.component';
 
 
 const routes: Routes = [
   //{ path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'business', component: BusinessComponent },
   { path: 'business/catalog', component: BusinessCatalogComponent },
+  { path: 'business/orders', component: BusinessOrderComponent },
   { path: 'product/create/:id', component: ProductComponent },
   { path: 'product/catalog/:id', component: ProductCatalogComponent },
   { path: 'extra/create/:id', component: ExtraComponent },

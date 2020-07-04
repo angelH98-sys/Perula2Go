@@ -17,6 +17,10 @@ import {MatChipsModule} from '@angular/material/chips';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatBadgeModule} from '@angular/material/badge';
+import {MatListModule} from '@angular/material/list';
+import {MatTabsModule} from '@angular/material/tabs';
 
 import { NgModule } from '@angular/core';
 
@@ -55,7 +59,11 @@ import { NgModule } from '@angular/core';
         MatChipsModule,
         MatExpansionModule,
         MatSlideToggleModule,
-        MatToolbarModule
+        MatToolbarModule,
+        MatSidenavModule,
+        MatBadgeModule,
+        MatListModule,
+        MatTabsModule
     ]
 })
 export class MaterialModule{}

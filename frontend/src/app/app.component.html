@@ -1,4 +1,21 @@
-<div class="sticky-top">
-    <app-navbar></app-navbar>
-</div>
-<router-outlet></router-outlet>
+<mat-toolbar color="primary" class="sticky-top">
+    <button mat-icon-button (click)="drawer.toggle()">
+        <mat-icon>menu</mat-icon>
+    </button>
+    <span>Perula2Go</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button routerLink="/cart">
+        <mat-icon matBadge="15" matBadgeColor="warn">shopping_cart</mat-icon>
+    </button>
+</mat-toolbar>
+<mat-drawer-container class="example-container" [hasBackdrop]="true">
+    <mat-drawer #drawer mode="push" fixedInViewport="true">
+        <button mat-button class="text-center w-100 py-2" routerLink="/business/catalog" (click)="drawer.toggle()">Restaurantes</button>
+        <button mat-button class="text-center w-100 py-2" routerLink="/business" (click)="drawer.toggle()">Nuevo restaurante</button>
+        <button mat-button class="text-center w-100 py-2" routerLink="/user" (click)="drawer.toggle()">Nuevo usuario</button>
+        <button mat-button class="text-center w-100 py-2" routerLink="/user/address" (click)="drawer.toggle()">Direcciones</button>
+    </mat-drawer>
+    <mat-drawer-content>
+        <router-outlet></router-outlet>
+    </mat-drawer-content>
+</mat-drawer-container>

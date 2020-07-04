@@ -21,6 +21,9 @@ export class UserComponent implements OnInit {
   lng: number = -89.049093;
   zoom: number = 18;
 
+  departments = ["San Salvador", "Cuscatlán"];
+  cities = [];
+
   latMarker;
   lngMarker;
   reference;
@@ -49,9 +52,15 @@ export class UserComponent implements OnInit {
     }
   }
 
-  addUser(){
-    this.user.address[0].reference = this.reference;
+  getCities(department){
+    if(department == "San Salvador"){
+      this.cities = ["San Martín"];
+    }else{
+      this.cities = ["San Bartolomé Perulapía", "San Pedro Perulapán"];
+    }
+  }
 
+  addUser(){
     this.user.password = this.password;
     this.user.userType = "Customer";
     this.user.status = "Active";
@@ -62,15 +71,14 @@ export class UserComponent implements OnInit {
     interface format {
       image: String;
     }
-    console.log(this.user);
-    /*new Promise(resolve => {
+    new Promise(resolve => {
       this.userService.uploadImage(image).subscribe((res: format) => {
         this.user.picture = res.image;
         resolve();
       });
     }).then(() => {
       this.userService.postUser(this.user);
-    });*/
+    });
   }
 
 }

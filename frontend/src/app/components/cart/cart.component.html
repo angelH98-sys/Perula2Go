@@ -15,10 +15,39 @@
                         <p class="mat-h3 mat-subheading-2 text-center text-secondary">{{order.productDetail.length}} producto(s) seleccionado(s)</p>
                         <ng-template [ngIf]="order.totalAmount > 0">
                             <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="align-middle">
+                                            <p class="mat-body mat-body-1 font-weight-bold d-inline">
+                                                Cantidad
+                                            </p>
+                                        </th>
+                                        <th scope="col" class="align-middle">
+                                            <p class="mat-body mat-body-1 font-weight-bold d-inline">
+                                                Producto
+                                            </p>
+                                        </th>
+                                        <th scope="col" class="align-middle">
+                                            <p class="mat-body mat-body-1 font-weight-bold d-inline">
+                                                Precio unitario
+                                            </p>
+                                        </th>
+                                        <th scope="col" class="align-middle">
+                                            <p class="mat-body mat-body-1 font-weight-bold d-inline">
+                                                Sub-total
+                                            </p>
+                                        </th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
                                 <tbody>
                                     <ng-template ngFor let-item [ngForOf]="order.productDetail" let-i="index">
                                         <tr>
-                                            <th scope="row" class="align-middle">1</th>
+                                            <th scope="row" class="align-middle">
+                                                <p class="mat-body mat-body-1 font-weight-bold d-inline">
+                                                    {{item.quantity}}
+                                                </p>
+                                            </th>
                                             <td class="align-middle">
                                                 <p class="mat-body mat-body-1 d-inline">
                                                     {{productNameList[i]}}
@@ -27,6 +56,11 @@
                                             <td class="align-middle">
                                                 <p class="mat-body mat-body-1 font-weight-bold d-inline">
                                                     ${{item.price.toFixed(2)}}
+                                                </p>
+                                            </td>
+                                            <td class="align-middle">
+                                                <p class="mat-body mat-body-1 font-weight-bold d-inline">
+                                                    ${{item.total.toFixed(2)}}
                                                 </p>
                                             </td>
                                             <td class="align-middle">
@@ -48,6 +82,7 @@
                                                         + ${{extra.price.toFixed(2)}}
                                                     </p>
                                                 </td>
+                                                <td></td>
                                                 <td class="align-middle">
                                                     <button mat-icon-button>
                                                         <mat-icon>clear</mat-icon>
@@ -63,6 +98,7 @@
                                                 TOTAL
                                             </p>
                                         </td>
+                                        <td></td>
                                         <td colspan="2" class="align-middle">
                                             <p class="mat-h3 mat-subheading-2 font-weight-bold d-inline">
                                                 ${{order.totalAmount.toFixed(2)}}

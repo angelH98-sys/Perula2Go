@@ -48,8 +48,32 @@
                         </agm-map>
                     </mat-card>
                     <mat-form-field class="w-75 mt-4" appearance="outline">
+                        <mat-label>Direccion</mat-label>
+                        <input name="ref" [(ngModel)]="user.address[0].direction" matInput placeholder="Ej: Colonia, calle, etc...">
+                    </mat-form-field>
+                    <mat-form-field class="w-50" appearance="outline">
+                        <mat-label>No. de casa/local</mat-label>
+                        <input name="homeNumber" [(ngModel)]="user.address[0].homeNumber" matInput placeholder="Ej: 14, 25H..." required>
+                    </mat-form-field>
+                    <mat-form-field class="w-75" appearance="outline">
+                        <mat-label>Departamento</mat-label>
+                        <mat-select name="deparment" [(ngModel)]="user.address[0].department" (selectionChange)="getCities(user.address[0].department)">
+                            <mat-option *ngFor="let item of departments" [value]="item">
+                                {{item}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="w-75" appearance="outline">
+                        <mat-label>Municipio</mat-label>
+                        <mat-select name="city" [(ngModel)]="user.address[0].city">
+                            <mat-option *ngFor="let item of cities" [value]="item">
+                                {{item}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="w-100" appearance="outline">
                         <mat-label>Referencia de ubicación</mat-label>
-                        <input name="ref" #ref="ngModel" [(ngModel)]="reference" matInput placeholder="Ej: Media cuadra abajo de la escuela">
+                        <textarea name="reference" [(ngModel)]="user.address[0].reference" matInput style="height: 100px;" placeholder="Ej: Media cuadra abajo de la escuela"></textarea>
                     </mat-form-field>
                     <button type="submit" mat-stroked-button class="p-4 " id="send">Registrar usuario</button>
                 </form>

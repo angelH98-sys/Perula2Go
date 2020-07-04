@@ -1,0 +1,31 @@
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+mat-drawer{
+    width: 100%;
+}
+
+@media (min-width: 576px) {
+    mat-drawer{
+        width: 200px;
+    }
+}
+
+@media (min-width: 768px) {
+    mat-drawer{
+        width: 200px;
+    }
+}
+
+@media (min-width: 992px) {
+    mat-drawer{
+        width: 250px;
+    }
+}
+
+@media (min-width: 1200px) {
+    mat-drawer{
+        width: 300px;
+    }
+}
