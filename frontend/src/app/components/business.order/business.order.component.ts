@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { OrderService } from 'src/app/services/order.service';
 import { Order } from 'src/app/models/order';
 import { ProductService } from 'src/app/services/product.service';
-import { listAnimation } from 'src/app/animations';
+import { listAnimation } from 'src/app/utilities/animations';
 
 export interface orderCards {
   '_id': Order;
@@ -34,32 +34,29 @@ export class BusinessOrderComponent implements OnInit {
     this.loadOrders();
   }
 
-  loadOrders(){
-    this.productService.getProductByBusiness(this.businessId).subscribe(res => {
-      this.productNames = res as [];
-      this.orderService.getOrderByBusiness(this.businessId).subscribe(res => {
-        (res as []).forEach((element: any) => {
-          let aux;
-          for(let i = 0; i < element.productDetail.length; i++){
-            aux = element.productDetail[i].product;
-            element.productDetail[i].name = this.productNames.find(p => p._id == aux).name;
-          }
-          switch(element.status){
-            case "En cola":{
-              this.incommingOrders.push({'_id': element._id, 'orderDate': element.orderDate, 'productDetail': element.productDetail, 'status': element.status});
-              break;
-            }
-            case "En proceso":{
-              this.onProcessOrders.push({'_id': element._id, 'orderDate': element.orderDate, 'productDetail': element.productDetail, 'status': element.status});
-              break;
-            }
-            case "Lista":{
-              this.finishedOrders.push({'_id': element._id, 'orderDate': element.orderDate, 'productDetail': element.productDetail, 'status': element.status});
-              break;
-            }
-          }
-        });
-      });
+  async loadOrders(){
+    this.productNames = await this.productService.getProductByBusiness(this.businessId).toPromise() as [];
+    let orders = await this.orderService.getOrderByBusiness(this.businessId).toPromise() as [];
+    orders.forEach((element: any) => {
+      let aux;
+      for(let i = 0; i < element.productDetail.length; i++){
+        aux = element.productDetail[i].product;
+        element.productDetail[i].name = this.productNames.find(p => p._id == aux).name;
+      }
+      switch(element.status){
+        case "En cola":{
+          this.incommingOrders.push({'_id': element._id, 'orderDate': element.orderDate, 'productDetail': element.productDetail, 'status': element.status});
+          break;
+        }
+        case "En proceso":{
+          this.onProcessOrders.push({'_id': element._id, 'orderDate': element.orderDate, 'productDetail': element.productDetail, 'status': element.status});
+          break;
+        }
+        case "Lista":{
+          this.finishedOrders.push({'_id': element._id, 'orderDate': element.orderDate, 'productDetail': element.productDetail, 'status': element.status});
+          break;
+        }
+      }
     });
   }
 

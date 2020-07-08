@@ -13,22 +13,8 @@ let UserSchema = new Schema({
     status: String,
     userType: String,
     phone: String,
-    address: [{
-        'latitude': Number,
-        'longitude': Number,
-        'direction': String,
-        'homeNumber': String,
-        'department': String,
-        'city': String,
-        'reference': String
-    }],
-    employee: {
-        'vehicle': String,
-        'dui': String,
-        'driverLicense': String,
-        'status': String,
-        'qualification': Number
-    }
+    address: [],
+    employee: Object
 });
 
 module.exports = mongoose.model('user', UserSchema);

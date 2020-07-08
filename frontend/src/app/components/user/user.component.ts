@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
 
 import { MouseEvent } from '@agm/core';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
 import { OrderService } from 'src/app/services/order.service';
-import { Order } from 'src/app/models/order';
+import { Address } from 'src/app/utilities/address';
+import { FormBuilder, Validators, FormControl, ValidatorFn, FormGroup, ValidationErrors } from '@angular/forms';
+import { FormValidatorsService } from 'src/app/services/form.validators.service';
 
 
 @Component({
@@ -15,7 +16,14 @@ import { Order } from 'src/app/models/order';
 })
 export class UserComponent implements OnInit {
 
-  user: User = new User();
+  hide1 = true;
+  hide2 = true;
+  hide3 = true;
+  hide4 = true;
+
+  personalInformation: any;
+  securityInformation: any;
+  additionalInformation: any;
 
   lat: number = 13.763992;
   lng: number = -89.049093;
@@ -24,32 +32,46 @@ export class UserComponent implements OnInit {
   departments = ["San Salvador", "Cuscatlán"];
   cities = [];
 
-  latMarker;
-  lngMarker;
-  reference;
-
-  password;
-  comprobationPassword;
-  picture;
+  latMarker = 13.763992;
+  lngMarker = -89.049093;
 
   constructor( private userService: UserService,
-    private orderService: OrderService) { }
+    private orderService: OrderService,
+    private formBuilder: FormBuilder,
+    public formValidators: FormValidatorsService) { }
 
   ngOnInit(): void {
+    this.loadForms();
+  }
+
+  loadForms(){
+    this.personalInformation = this.formBuilder.group({
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      phone: ['', [Validators.required, Validators.pattern(/^[6-7]\d{3}-\d{4}$/)]],
+      user: ['', Validators.required]
+    });
+    this.securityInformation = this.formBuilder.group({
+      pass: ['', Validators.required],
+      confirmPass: ['', Validators.required],
+      question: ['', Validators.required],
+      answer: ['', Validators.required]
+    },
+    {
+      validators: this.formValidators.checkPasswords
+    });
+    this.additionalInformation = this.formBuilder.group({
+      direction: ['', Validators.required],
+      homeNumber: ['', Validators.required],
+      department: ['', Validators.required],
+      city: ['', Validators.required],
+      reference: ['', Validators.required]
+    });
   }
 
   mapClicked($event: MouseEvent) {
     this.lngMarker = $event.coords.lng;
     this.latMarker = $event.coords.lat;
-    this.user.address[0].longitude = this.lngMarker;
-    this.user.address[0].latitude = this.latMarker;
-  }
-
-  getPictureInfo(event) {
-    if (event.target.files.length > 0) {
-      const file = event.target.files[0];
-      this.picture = file;
-    }
   }
 
   getCities(department){
@@ -60,25 +82,34 @@ export class UserComponent implements OnInit {
     }
   }
 
-  addUser(){
-    this.user.password = this.password;
-    this.user.userType = "Customer";
-    this.user.status = "Active";
+  addCustomer(){
+    if(this.personalInformation.invalid || this.securityInformation.invalid || this.additionalInformation.invalid) return;
+    
+    let user: User = new User("Customer");
 
-    const image = new FormData();
-    image.append('image', this.picture);
+    user.name = this.personalInformation.get('name').value;
+    user.user = this.personalInformation.get('user').value;
+    user.email = this.personalInformation.get('email').value;
+    user.phone = this.personalInformation.get('phone').value;
 
-    interface format {
-      image: String;
-    }
-    new Promise(resolve => {
-      this.userService.uploadImage(image).subscribe((res: format) => {
-        this.user.picture = res.image;
-        resolve();
-      });
-    }).then(() => {
-      this.userService.postUser(this.user);
-    });
+    user.password = this.securityInformation.get('pass').value;
+    user.question = this.securityInformation.get('question').value;
+    user.answer = this.securityInformation.get('answer').value;
+
+    let address: Address = new Address();
+
+    address.latitude = this.latMarker;
+    address.longitude = this.lngMarker;
+    address.direction = this.additionalInformation.get('direction').value;
+    address.homeNumber = this.additionalInformation.get('homeNumber').value;
+    address.department = this.additionalInformation.get('department').value;
+    address.city = this.additionalInformation.get('city').value;
+    address.reference = this.additionalInformation.get('reference').value;
+
+    user.address.push(address);
+
+    this.userService.postUser(user);
+    
   }
 
 }

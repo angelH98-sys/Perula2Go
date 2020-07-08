@@ -11,26 +11,16 @@ let OrderSchema = new Schema({
     employee: String,
     business: String,
     qualification: Number,
-    orderDate: Date,
-    address: {
-        'latitude': Number,
-        'longitude': Number,
-        'direction': String,
-        'homeNumber': String,
-        'department': String,
-        'city': String,
-        'reference': String
+    statusDate: {
+        'borrador': Date,
+        'enCola': Date,
+        'enProceso': Date,
+        'lista': Date,
+        'enCamino': Date,
+        'entregada': Date
     },
-    productDetail: [{
-        'product': String,
-        'price': Number,
-        'quantity': Number,
-        'extra': [{
-            'name': String,
-            'price': Number
-        }],
-        'total': Number
-    }]
+    address: {},
+    productDetail: []
 });
 
 module.exports = mongoose.model('order', OrderSchema);

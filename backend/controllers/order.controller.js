@@ -2,7 +2,7 @@ const Order = require('../models/order');
 
 const orderCtrl = {}
 
-orderCtrl.createOrder = (req, res) => {
+orderCtrl.createOrder = async (req, res) => {
     const order = new Order({
         status: req.body.status,
         comment: req.body.comment,
@@ -12,11 +12,11 @@ orderCtrl.createOrder = (req, res) => {
         employee: req.body.employee,
         business: req.body.business,
         qualification: req.body.qualification,
-        orderDate: req.body.orderDate,
+        statusDate: req.body.statusDate,
         address: req.body.address,
         productDetail: req.body.productDetail
     });
-    order.save();
+    await order.save();
     res.json({
         'status': 'Order saved'
     });
@@ -37,6 +37,11 @@ orderCtrl.assignBusiness = async (req, res) => {
     res.json({
         'status': 'Business assigned to order'
     });
+}
+
+orderCtrl.getStatusDate = async (req, res) => {
+    const dates = await Order.findById(req.params.id, 'statusDate');
+    res.json(dates);
 }
 
 orderCtrl.toOnProcess = async (req, res) => {
@@ -60,14 +65,14 @@ orderCtrl.addProduct = async (req, res) => {
 }
 
 orderCtrl.confirmOrder = async (req, res) => {
-    await Order.findByIdAndUpdate(req.params.id, {status: req.body.status, address: req.body.address, orderDate: req.body.orderDate}, {new: true});
+    await Order.findByIdAndUpdate(req.params.id, {status: req.body.status, address: req.body.address, statusDate: req.body.statusDate}, {new: true});
     res.json({
         'status': "Order confirmed"
     });
 }
 
 orderCtrl.changeStatus = async (req, res) => {
-    await Order.findByIdAndUpdate(req.params.id, {status: req.body.status}, {new: true});
+    await Order.findByIdAndUpdate(req.params.id, {status: req.body.status, statusDate: req.body.statusDate}, {new: true});
     res.json({
         'status': "Order status changed"
     });

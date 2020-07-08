@@ -1,8 +1,9 @@
 const User = require('../models/user');
+const bcrypt = require("bcrypt");
 
 const userCtrl = {}
 
-userCtrl.createUser = (req, res) => {
+userCtrl.createUser = async (req, res) => {
     const user = new User({
         name: req.body.name,
         user: req.body.user,
@@ -17,7 +18,15 @@ userCtrl.createUser = (req, res) => {
         address: req.body.address,
         employee: req.body.employee
     });
-    user.save((err, newUser) => {
+
+
+    const saltPass = await bcrypt.genSalt();
+    user.password = await bcrypt.hash(user.password, saltPass);
+
+    const saltAnsw = await bcrypt.genSalt();
+    user.answer = await bcrypt.hash(user.answer, saltAnsw);
+    
+    await user.save((err, newUser) => {
         res.json({
             '_id': newUser._id
         });
@@ -34,6 +43,21 @@ userCtrl.editAddress = async (req, res) => {
 userCtrl.getUserById = async (req, res) => {
     const user = await User.find({_id: req.params.id});
     res.json(user[0]);
+}
+
+userCtrl.checkUserName = async (req, res) => {
+    const user = await User.find({user: req.params.user});
+    res.json({'docs': user.length});
+}
+
+userCtrl.checkEmail = async (req, res) => {
+    const user = await User.find({email: req.params.email});
+    res.json({'docs': user.length});
+}
+
+userCtrl.checkPhone = async (req, res) => {
+    const user = await User.find({phone: req.params.phone});
+    res.json({'docs': user.length});
 }
 
 userCtrl.getUserAddress = async (req, res) => {

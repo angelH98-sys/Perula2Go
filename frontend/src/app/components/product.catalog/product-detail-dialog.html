@@ -19,22 +19,19 @@
         </mat-form-field>
         <ng-template ngFor let-item [ngForOf]="data.extra" let-i="index">
           <br>
-          <h1 class="mr-3 mat-h1 mat-headline">{{item.extraName}}</h1>
-          <mat-radio-group name="radio-{{item.extraName}}" [(ngModel)]="item.radioValue" (change)="controlChange()" *ngIf="!item.multiple">
-            <ng-template ngFor let-op [ngForOf]="item.option" let-j="index">
-              <mat-radio-button *ngIf="op.status == 'Disponible'" class="mat-h2 mat-title" value="{{op.name}}">{{op.name}} <b *ngIf="op.price > 0">+ ${{op.price.toFixed(2)}}</b></mat-radio-button>
-              <br>  
-            </ng-template>
-          </mat-radio-group>
+          <h1 class="mr-3 mat-h1 mat-headline">{{item.name}}</h1>
           <ng-template [ngIf]="item.multiple">
             <ng-template ngFor let-op [ngForOf]="item.option" let-j="index">
-              <mat-checkbox *ngIf="op.status == 'Disponible'" (change)="controlChange()" name="check-{{op.name}}" [(ngModel)]="op.selected" class="mat-h2 mat-title">{{op.name}} <b *ngIf="op.price > 0">+ ${{op.price.toFixed(2)}}</b></mat-checkbox>
+              <mat-checkbox (change)="controlChange()" name="check-{{op.name}}" [(ngModel)]="op.selected" class="mat-h2 mat-title">{{op.name}} <b *ngIf="op.price > 0">+ ${{op.price.toFixed(2)}}</b></mat-checkbox>
               <br>
             </ng-template>
           </ng-template>
-          <ng-template #elseBlock>
-            
-          </ng-template>
+          <mat-radio-group name="radio-{{item.name}}" [(ngModel)]="item.radioValue" (change)="controlChange()" *ngIf="!item.multiple">
+            <ng-template ngFor let-op [ngForOf]="item.option">
+              <mat-radio-button class="mat-h2 mat-title" value="{{op.name}}">{{op.name}} <b *ngIf="op.price > 0">+ ${{op.price.toFixed(2)}}</b></mat-radio-button>
+              <br>  
+            </ng-template>
+          </mat-radio-group>
         </ng-template>
       </form>
       <mat-divider></mat-divider>

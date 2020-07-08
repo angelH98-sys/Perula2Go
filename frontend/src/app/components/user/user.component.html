@@ -1,83 +1,175 @@
 <div class="container">
-    <div class="row">
-        <div class="col-xl-6 mx-auto">
-            <mat-card class="bg-warning my-4">
-                <form (ngSubmit)="addUser()">
-                    <h1 class="mat-display-3 my-3">Registro de usuarios</h1>
-                    <mat-form-field class="w-100" appearance="outline">
-                        <mat-label>Nombre</mat-label>
-                        <input name="name" #name="ngModel" [(ngModel)]="user.name" matInput placeholder="Ej: Pancracio Orantes" required>
-                    </mat-form-field>
-                    <mat-form-field class="w-100" appearance="outline">
-                        <mat-label>Correo electrónico</mat-label>
-                        <input name="email" #email="ngModel" [(ngModel)]="user.email" type="email" matInput placeholder="Ej: pancracio@gmail.com" required>
-                    </mat-form-field>
-                    <mat-form-field class="w-100" appearance="outline">
-                        <mat-label>Teléfono</mat-label>
-                        <input name="phone" #phone="ngModel" [(ngModel)]="user.phone" matInput placeholder="Ej: 0000-0000" required>
-                    </mat-form-field>
-                    <mat-form-field class="w-75" appearance="outline">
-                        <mat-label>Usuario</mat-label>
-                        <input name="username" #username="ngModel" [(ngModel)]="user.user" matInput placeholder="Ej: pani777" required>
-                    </mat-form-field>
-                    <mat-form-field class="w-75" appearance="outline">
-                        <mat-label>Contraseña</mat-label>
-                        <input name="pass" #pass="ngModel" [(ngModel)]="password" type="password" matInput required>
-                    </mat-form-field>
-                    <mat-form-field class="w-75" appearance="outline">
-                        <mat-label>Comprobar contraseña</mat-label>
-                        <input name="pass2" #pass2="ngModel" [(ngModel)]="comprobationPassword" type="password" matInput required>
-                    </mat-form-field>
-                    <mat-divider></mat-divider>
-                    <mat-form-field class="w-75 mt-4" appearance="outline">
-                        <mat-label>Pregunta de seguridad</mat-label>
-                        <input name="question" #question="ngModel" [(ngModel)]="user.question" matInput placeholder="Ej: ¿Cuál es mi fruta favorita?">
-                    </mat-form-field>
-                    <mat-form-field class="w-75" appearance="outline">
-                        <mat-label>Respuesta</mat-label>
-                        <input name="answer" #answer="ngModel" [(ngModel)]="user.answer" matInput placeholder="Ej: Sandía">
-                    </mat-form-field>
-                    <p class="mat-h1 ml-3">Foto de perfíl</p>
-                    <input name="picture" (change)="getPictureInfo($event)" type="file">
-                    <p class="mat-h1 ml-3 mt-3">Dirección para entregas</p>
-                    <mat-card class="w-100">
+    <h1 class="mat-display-3 my-3 text-center">Nuevo cliente</h1>
+    <mat-vertical-stepper linear #stepper>
+        <mat-step [stepControl]="personalInformation" editable="true">
+            <form [formGroup]="personalInformation">
+                <ng-template matStepLabel>Información personal</ng-template>
+                <div class="row">
+                    <div class="col-xl-6 col-lg-6 col-md-12">
+                        <mat-form-field class="w-100 my-2" appearance="outline">
+                            <mat-label>Nombre</mat-label>
+                            <input formControlName="name" matInput>
+                            <mat-error *ngIf="personalInformation.get('name').invalid">
+                                {{formValidators.getErrorMessage(personalInformation.get('name'))}}
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field class="w-100 my-2" appearance="outline">
+                            <mat-label>Usuario</mat-label>
+                            <input formControlName="user"  placeholder="Ej: usuarioEjemplo123" 
+                                (focusout)="formValidators.alreadyExistIn(personalInformation.get('user'), 'user', 'users')" matInput>
+                            <mat-error *ngIf="personalInformation.get('user').invalid">
+                                {{formValidators.getErrorMessage(personalInformation.get('user'))}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-12">
+                        <mat-form-field class="w-100 my-2" appearance="outline">
+                            <mat-label>Correo electrónico</mat-label>
+                            <input formControlName="email" type="email" placeholder="Ej: ejemplo@mail.com" 
+                                (focusout)="formValidators.alreadyExistIn(personalInformation.get('email'), 'email', 'users')" matInput>
+                            <mat-error *ngIf="personalInformation.get('email').invalid">
+                                {{formValidators.getErrorMessage(personalInformation.get('email'))}}
+                            </mat-error>
+                            <mat-hint>Formáto valido: ejemplo@mail.com</mat-hint>
+                        </mat-form-field>
+                        <mat-form-field class="w-100 my-2" appearance="outline">
+                            <mat-label>Teléfono</mat-label>
+                            <input formControlName="phone" (keyup)="formValidators.checkFormatPhone(personalInformation.get('phone'))" 
+                                (focusout)="formValidators.alreadyExistIn(personalInformation.get('phone'), 'phone', 'users')" maxlength="9" placeholder="Ej: 0000-0000" matInput>
+                            <mat-error *ngIf="personalInformation.get('phone').invalid">
+                                {{formValidators.getErrorMessage(personalInformation.get('phone'))}}
+                            </mat-error>
+                            <mat-hint>Formáto valido: 1234-1234</mat-hint>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <button mat-stroked-button class="py-2 px-5" matStepperNext>Siguiente</button>
+                </div>
+            </form>
+        </mat-step>
+        <mat-step [stepControl]="securityInformation" editable="true">
+            <form [formGroup]="securityInformation">
+                <ng-template matStepLabel>Información confidencial</ng-template>
+                <div class="row">
+                    <div class="col-xl-6">
+                        <mat-form-field class="w-100 my-2" appearance="outline">
+                            <mat-label>Contraseña</mat-label>
+                            <input formControlName="pass" [type]="hide1 ? 'password' : 'text'" matInput>
+                            <button type="button" mat-icon-button matSuffix (click)="hide1 = !hide1">
+                                <mat-icon>{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                            </button>
+                            <mat-error *ngIf="securityInformation.get('pass').invalid">
+                                {{formValidators.getErrorMessage(securityInformation.get('pass'))}}
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field class="w-100 my-2" appearance="outline">
+                            <mat-label>Comprobar contraseña</mat-label>
+                            <input formControlName="confirmPass" [type]="hide2 ? 'password' : 'text'" matInput>
+                            <button type="button" mat-icon-button matSuffix (click)="hide2 = !hide2">
+                                <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                            </button>
+                            <mat-error *ngIf="securityInformation.get('confirmPass').invalid">
+                                {{formValidators.getErrorMessage(securityInformation.get('confirmPass'))}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-xl-6">
+                        <mat-form-field class="w-100 my-2" appearance="outline">
+                            <mat-label>Pregunta de seguridad</mat-label>
+                            <input formControlName="question" [type]="hide3 ? 'password' : 'text'" placeholder="Ej: ¿Cuál es mi fruta favorita?" matInput>
+                            <button type="button" mat-icon-button matSuffix (click)="hide3 = !hide3">
+                                <mat-icon>{{hide3 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                            </button>
+                            <mat-error *ngIf="securityInformation.get('question').invalid">
+                                {{formValidators.getErrorMessage(securityInformation.get('question'))}}
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field class="w-100 my-2" appearance="outline">
+                            <mat-label>Respuesta</mat-label>
+                            <input formControlName="answer" [type]="hide4 ? 'password' : 'text'" placeholder="Ej: Sandía" matInput>
+                            <button type="button" mat-icon-button matSuffix (click)="hide4 = !hide4">
+                                <mat-icon>{{hide4 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                            </button>
+                            <mat-error *ngIf="securityInformation.get('answer').invalid">
+                                {{formValidators.getErrorMessage(securityInformation.get('answer'))}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <button mat-stroked-button class="py-2 px-5 mx-3" matStepperPrevious>Anterior</button>
+                    <button mat-stroked-button class="py-2 px-5 mx-3" matStepperNext>Siguiente</button>
+                </div>
+            </form>
+        </mat-step>
+        <mat-step [stepControl]="additionalInformation" editable="true">
+            <form [formGroup]="additionalInformation">
+                <ng-template matStepLabel>Información adicional</ng-template>
+                <div class="row">
+                    <div class="col-xl-6 mt-3">
+                        <h1 class="mat-h1 mat-headline">Dirección de entregas</h1>
+                        <p class="mat-body mat-body-1">Selecciona la ubicación para entregar los productos que solicites</p>
                         <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" (mapClick)="mapClicked($event)">
                             <agm-marker [latitude]="latMarker" [longitude]="lngMarker"
                                 [markerDraggable]="true">
+                                <agm-info-window [isOpen]="true">
+                                    <strong>Tu dirección</strong>
+                                </agm-info-window>
                             </agm-marker>
                         </agm-map>
-                    </mat-card>
-                    <mat-form-field class="w-75 mt-4" appearance="outline">
-                        <mat-label>Direccion</mat-label>
-                        <input name="ref" [(ngModel)]="user.address[0].direction" matInput placeholder="Ej: Colonia, calle, etc...">
-                    </mat-form-field>
-                    <mat-form-field class="w-50" appearance="outline">
-                        <mat-label>No. de casa/local</mat-label>
-                        <input name="homeNumber" [(ngModel)]="user.address[0].homeNumber" matInput placeholder="Ej: 14, 25H..." required>
-                    </mat-form-field>
-                    <mat-form-field class="w-75" appearance="outline">
-                        <mat-label>Departamento</mat-label>
-                        <mat-select name="deparment" [(ngModel)]="user.address[0].department" (selectionChange)="getCities(user.address[0].department)">
-                            <mat-option *ngFor="let item of departments" [value]="item">
-                                {{item}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <mat-form-field class="w-75" appearance="outline">
-                        <mat-label>Municipio</mat-label>
-                        <mat-select name="city" [(ngModel)]="user.address[0].city">
-                            <mat-option *ngFor="let item of cities" [value]="item">
-                                {{item}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <mat-form-field class="w-100" appearance="outline">
-                        <mat-label>Referencia de ubicación</mat-label>
-                        <textarea name="reference" [(ngModel)]="user.address[0].reference" matInput style="height: 100px;" placeholder="Ej: Media cuadra abajo de la escuela"></textarea>
-                    </mat-form-field>
-                    <button type="submit" mat-stroked-button class="p-4 " id="send">Registrar usuario</button>
-                </form>
-            </mat-card>
-        </div>
-    </div>
+                    </div>
+                    <div class="col-xl-6">
+                        <mat-form-field class="w-100 my-2" appearance="outline">
+                            <mat-label>Direccion</mat-label>
+                            <input formControlName="direction" placeholder="Ej: Colonia, calle, etc..." matInput>
+                            <mat-error *ngIf="additionalInformation.get('direction').invalid">
+                                {{formValidators.getErrorMessage(additionalInformation.get('direction'))}}</mat-error>
+                        </mat-form-field>
+                        <mat-form-field class="w-100 my-2" appearance="outline">
+                            <mat-label>No. de casa/local</mat-label>
+                            <input formControlName="homeNumber" placeholder="Ej: 14, 25H..." matInput>
+                            <mat-error *ngIf="additionalInformation.get('homeNumber').invalid">
+                                {{formValidators.getErrorMessage(additionalInformation.get('homeNumber'))}}
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field class="w-100 my-2" appearance="outline">
+                            <mat-label>Departamento</mat-label>
+                            <mat-select formControlName="department" (selectionChange)="getCities(additionalInformation.get('department').value)">
+                                <mat-option *ngFor="let item of departments" [value]="item">
+                                    {{item}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="additionalInformation.get('department').invalid">
+                                {{formValidators.getErrorMessage(additionalInformation.get('department'))}}
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field class="w-100 my-2" appearance="outline">
+                            <mat-label>Municipio</mat-label>
+                            <mat-select formControlName="city">
+                                <mat-option *ngFor="let item of cities" [value]="item">
+                                    {{item}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="additionalInformation.get('city').invalid">
+                                {{formValidators.getErrorMessage(additionalInformation.get('city'))}}
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field class="w-100 my-2" appearance="outline">
+                            <mat-label>Referencia de ubicación</mat-label>
+                            <textarea formControlName="reference" style="height: 100px;" 
+                                placeholder="Ej: Media cuadra abajo de la escuela, junto a un parqueo, etc..." matInput></textarea>
+                            <mat-error *ngIf="additionalInformation.get('reference').invalid">
+                                {{formValidators.getErrorMessage(additionalInformation.get('reference'))}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <button mat-stroked-button class="py-2 px-5 mx-3" matStepperPrevious>Anterior</button>
+                    <button mat-stroked-button class="py-2 px-5 mx-3" matStepperNext color="primary" (click)="addCustomer()">Registrar</button>
+                </div>
+            </form>
+        </mat-step>
+    </mat-vertical-stepper>
 </div>

@@ -21,6 +21,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatListModule} from '@angular/material/list';
 import {MatTabsModule} from '@angular/material/tabs';
+import {MatStepperModule} from '@angular/material/stepper';
 
 import { NgModule } from '@angular/core';
 
@@ -63,7 +64,8 @@ import { NgModule } from '@angular/core';
         MatSidenavModule,
         MatBadgeModule,
         MatListModule,
-        MatTabsModule
+        MatTabsModule,
+        MatStepperModule
     ]
 })
 export class MaterialModule{}

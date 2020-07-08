@@ -12,10 +12,8 @@ export class OrderService {
 
   constructor(private http: HttpClient) { }
 
-  postOrder(order: Order){
-    this.http.post(this.URL_API, order).subscribe((res: any) => {
-      console.log(res.status);
-    });
+  async postOrder(order: Order){
+    await this.http.post(this.URL_API, order).toPromise();
   }
 
   getEraserOrder(userId: String){
@@ -38,16 +36,27 @@ export class OrderService {
     });
   }
 
-  confirmOrder(id, address, date){
-    this.http.put(`${this.URL_API}/confirm/${id}`, {status: "En cola", address: address, orderDate: date}).subscribe((res: any) => {
-      console.log(res.status);
-    });
+  async confirmOrder(order: Order, address, statusDate){
+    await this.http.put(`${this.URL_API}/confirm/${order._id}`, {status: "En cola", address: address, statusDate: statusDate}).toPromise();
+    let eraserOrder = new Order();
+    eraserOrder.customer = order.customer;
+    eraserOrder.statusDate.borrador = new Date();
+    await this.http.post(this.URL_API, eraserOrder).toPromise();
   }
 
-  changeStatus(id, statusName){
-    this.http.put(`${this.URL_API}/changestatus/${id}`, {status: statusName}).subscribe((res: any) => {
-      console.log(res.status);
-    });
+  async changeStatus(id, statusName){
+    let res: any = await this.http.get(`${this.URL_API}/statusdate/${id}`).toPromise();
+
+    switch(statusName){
+      case "En proceso":{
+        res.statusDate.enProceso = new Date();
+      }
+      case "Lista":{
+        res.statusDate.lista = new Date();
+      }
+    }
+
+    await this.http.put(`${this.URL_API}/changestatus/${id}`, {status: statusName, statusDate: res.statusDate}).toPromise();
   }
 
 }

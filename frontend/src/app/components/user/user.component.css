@@ -4,3 +4,9 @@ agm-map{
 #send{
     font-size: 30px;
 }
+
+@media (min-width: 992px) {
+    agm-map{
+        height: 450px;
+    }
+}

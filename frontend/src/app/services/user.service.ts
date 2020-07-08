@@ -14,14 +14,14 @@ export class UserService {
 
   constructor( private http: HttpClient) { }
 
-  postUser(user: User){
-    this.http.post(this.URL_API, user).subscribe((res: any) => {
-      let order = new Order();
-      order.customer = res._id;
-      this.http.post(this.URL_API_ORDER, order).subscribe((res: any) => {
-        console.log(res.status);
-      });
-    });
+  async postUser(user: User){
+    const id: any = await this.http.post(this.URL_API, user).toPromise();
+
+    const order: Order = new Order();
+    order.customer = id._id;
+    order.statusDate.borrador = new Date();
+
+    await this.http.post(this.URL_API_ORDER, order).toPromise();
   }
 
   putAddress(id: String, address){
@@ -32,6 +32,18 @@ export class UserService {
 
   getUserById(id: String){
     return this.http.get(`${this.URL_API}/${id}`);
+  }
+
+  checkUser(user: String){
+    return this.http.get(`${this.URL_API}/checkuser/${user}`);
+  }
+
+  checkEmail(email: String){
+    return this.http.get(`${this.URL_API}/checkemail/${email}`);
+  }
+
+  checkPhone(phone: String){
+    return this.http.get(`${this.URL_API}/checkphone/${phone}`);
   }
 
   getUserAddress(id: String){

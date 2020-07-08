@@ -25,8 +25,8 @@ productCtrl.getProduct = async (req, res) => {
 }
 
 productCtrl.getProductById = async (req, res) => {
-    const product = await Product.find({_id: req.params.id});
-    res.json(product);
+    const productName = await Product.findById(req.params.id, 'name');
+    res.json(productName);
 }
 
 productCtrl.getProductName = async (req, res) => {

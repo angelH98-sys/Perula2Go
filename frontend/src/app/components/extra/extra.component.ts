@@ -3,7 +3,7 @@ import { Product } from 'src/app/models/product';
 import { ActivatedRoute } from '@angular/router';
 import { ProductService } from 'src/app/services/product.service';
 import { rejects } from 'assert';
-import { Extra } from 'src/app/models/extra';
+import { Extra, Option } from 'src/app/models/extra';
 import { ExtraService } from 'src/app/services/extra.service';
 
 @Component({
@@ -22,26 +22,23 @@ export class ExtraComponent implements OnInit {
     private extraService: ExtraService) { }
 
   ngOnInit(): void {
-    this.checkProduct();
-    this.extraList.push(new Extra);
+    this.getProductName();
+    this.addExtra();
   }
 
-  checkProduct(){
+  async getProductName(){
     this.id = this.route.snapshot.paramMap.get('id');
-    new Promise((respond, reject) => {
-      this.productService.getProductById(this.id).subscribe(res => {
-        respond(res as Product);
-      })
-    }).then((product: Product) => {
-      this.productName = product[0].name;
-    })
+    const res: any = await this.productService.getProductById(this.id).toPromise() as String;
+    this.productName = res.name;
   }
 
   addOption(i){
-    this.extraList[i].option.push({"name":"","price":0,"status":"Disponible"});
+    this.extraList[i].option.push(new Option());
   }
 
   addExtra(){
+    let extra = new Extra();
+    extra.option.push(new Option());
     this.extraList.push(new Extra());
   }
 

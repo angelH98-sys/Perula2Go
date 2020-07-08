@@ -1,3 +1,59 @@
+import { Address } from '../utilities/address';
+
+class orderDates {
+    constructor(){
+        this.borrador = null;
+        this.enCola = null;
+        this.enProceso = null;
+        this.lista = null;
+        this.enCamino = null;
+        this.entregada = null;
+    }
+    borrador: Date;
+    enCola: Date;
+    enProceso: Date;
+    lista: Date;
+    enCamino: Date;
+    entregada: Date;
+}
+
+export class optionInOrder{
+    constructor(){
+        this.optionId = "";
+        this.name = "";
+        this.price = 0;
+    }
+    optionId: String;
+    name: String;
+    price: Number;
+}
+
+export class extraInOrder {
+    constructor(){
+        this.extraId = "";
+        this.extraName = "";
+        this.option = [];
+    }
+    extraId: String;
+    extraName: String;
+    option: optionInOrder[];
+}
+
+export class productInOrder {
+    constructor(){
+        this.product = "";
+        this.price = 0;
+        this.quantity = 0;
+        this.extra = [];
+        this.total = 0;
+    }
+    product: String;
+    price: Number;
+    quantity: Number;
+    extra: extraInOrder[];
+    total: Number
+}
+
 export class Order {
 
     constructor(){
@@ -10,26 +66,9 @@ export class Order {
         this.employee = "";
         this.business = "";
         this.qualification = 0;
-        this.orderDate = new Date();
-        this.address = {
-            'latitude': 0,
-            'longitude': 0,
-            'direction': '',
-            'homeNumber': '',
-            'department': '',
-            'city': '',
-            'reference': ''
-        };
-        this.productDetail = [{
-            'product': '',
-            'price': 0,
-            'quantity': 0,
-            'extra': [{
-                'name': '',
-                'price': 0
-            }],
-            'total': 0
-        }]
+        this.statusDate = new orderDates();
+        this.address = new Address();
+        this.productDetail = [];
     }
 
     _id: String;
@@ -41,24 +80,7 @@ export class Order {
     employee: String;
     business: String;
     qualification: Number;
-    orderDate: Date;
-    address: {
-        'latitude': Number,
-        'longitude': Number,
-        'direction': String,
-        'homeNumber': String,
-        'department': String,
-        'city': String,
-        'reference': String
-    };
-    productDetail: [{
-        'product': String,
-        'price': Number,
-        'quantity': Number,
-        'extra': [{
-            'name': String,
-            'price': Number
-        }],
-        'total': Number
-    }]
+    statusDate: orderDates;
+    address: Address;
+    productDetail: productInOrder[];
 }

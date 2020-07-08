@@ -8,6 +8,8 @@ router.get('/:userId', orderCtrl.getEraserOrder);
 
 router.get('/business/:business', orderCtrl.getOrderByBusiness);
 
+router.get('/statusdate/:id', orderCtrl.getStatusDate);
+
 router.put('/:id', orderCtrl.addProduct);
 
 router.put('/assignbusiness/:id', orderCtrl.assignBusiness);

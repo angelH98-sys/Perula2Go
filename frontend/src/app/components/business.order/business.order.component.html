@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <div class="container-lg my-4 shadow-lg rounded-lg py-4">
-        <p class="mat-display-3 mb-4 text-center">Ordenes</p>
+        <p class="mat-display-3 mb-4 text-center">Ordenes de hoy</p>
         <mat-divider></mat-divider>
         <mat-tab-group mat-align-tabs="center">
             <mat-tab label="En cola">
@@ -16,7 +16,15 @@
                                     <mat-list-item *ngFor="let product of order.productDetail">
                                         <mat-icon mat-list-icon>restaurant</mat-icon>
                                         <div mat-line><b>{{product.quantity}}x</b> {{product.name}}</div>
-                                        <div *ngFor="let extra of product.extra" mat-line>{{extra.name}}</div>
+                                        <div *ngFor="let extra of product.extra" mat-line>
+                                            {{extra.extraName}}:
+                                            <ng-template ngFor let-option [ngForOf]="extra.option" let-j="index">
+                                                {{option.name}}
+                                                <ng-template [ngIf]="extra.option.length > j + 1">
+                                                    , 
+                                                </ng-template>
+                                            </ng-template>
+                                        </div>
                                       </mat-list-item>
                                 </mat-list>
                             </mat-card-content>
@@ -40,7 +48,15 @@
                                     <mat-list-item *ngFor="let product of order.productDetail">
                                         <mat-icon mat-list-icon>restaurant</mat-icon>
                                         <div mat-line><b>{{product.quantity}}x</b> {{product.name}}</div>
-                                        <div *ngFor="let extra of product.extra" mat-line>{{extra.name}}</div>
+                                        <div *ngFor="let extra of product.extra" mat-line>
+                                            {{extra.extraName}}:
+                                            <ng-template ngFor let-option [ngForOf]="extra.option" let-j="index">
+                                                {{option.name}}
+                                                <ng-template [ngIf]="extra.option.length > j + 1">
+                                                    , 
+                                                </ng-template>
+                                            </ng-template>
+                                        </div>
                                       </mat-list-item>
                                 </mat-list>
                             </mat-card-content>
@@ -64,7 +80,15 @@
                                     <mat-list-item *ngFor="let product of order.productDetail">
                                         <mat-icon mat-list-icon>restaurant</mat-icon>
                                         <div mat-line><b>{{product.quantity}}x</b> {{product.name}}</div>
-                                        <div *ngFor="let extra of product.extra" mat-line>{{extra.name}}</div>
+                                        <div *ngFor="let extra of product.extra" mat-line>
+                                            {{extra.extraName}}:
+                                            <ng-template ngFor let-option [ngForOf]="extra.option" let-j="index">
+                                                {{option.name}}
+                                                <ng-template [ngIf]="extra.option.length > j + 1">
+                                                    , 
+                                                </ng-template>
+                                            </ng-template>
+                                        </div>
                                       </mat-list-item>
                                 </mat-list>
                             </mat-card-content>

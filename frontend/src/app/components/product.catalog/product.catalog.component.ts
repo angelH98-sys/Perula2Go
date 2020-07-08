@@ -4,12 +4,12 @@ import { Product } from 'src/app/models/product';
 import { ProductService } from 'src/app/services/product.service';
 import { BusinessService } from 'src/app/services/business.service';
 import { Business } from 'src/app/models/business';
-import { fade, hoverZoom, listAnimation } from 'src/app/animations';
+import { fade, hoverZoom, listAnimation } from 'src/app/utilities/animations';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ExtraService } from 'src/app/services/extra.service';
 import { Extra } from 'src/app/models/extra';
 import { OrderService } from 'src/app/services/order.service';
-import { Order } from 'src/app/models/order';
+import { Order, productInOrder, extraInOrder, optionInOrder } from 'src/app/models/order';
 
 export interface productCard {
   product: Product;
@@ -17,6 +17,7 @@ export interface productCard {
 }
 
 export interface extra {
+  _id: String;
   name: String;
   multiple: boolean;
   option: option[];
@@ -24,20 +25,10 @@ export interface extra {
 }
 
 export interface option {
+  _id: String;
   name: String;
   price: Number;
   selected: boolean;
-}
-
-export interface productDetail {
-  'product': String,
-  'price': Number,
-  'quantity': Number,
-  'extra': [{
-      'name': String,
-      'price': Number
-  }],
-  'total': Number
 }
 
 @Component({
@@ -92,7 +83,7 @@ export class ProductCatalogComponent implements OnInit {
   }
 
   loadCurrentOrder(){
-    let customerId = "5eff95e7a215a7356006bae9";
+    let customerId = "5f04cad5bb4f752b0c2014ec";
     this.orderService.getEraserOrder(customerId).subscribe(res => {
       this.currentOrder = res as Order;
     });
@@ -106,7 +97,7 @@ export class ProductCatalogComponent implements OnInit {
     card.zoom = 'out';
   }
 
-  openDialog(p: Product) {
+  async openDialog(p: Product) {
     /*
       El modal para añadir productos a la orden en estado borrador necesita 3 argumentos:
         1. Producto a añadir.
@@ -120,51 +111,47 @@ export class ProductCatalogComponent implements OnInit {
         2.  Creamos la lista de extras que se enviarán al modal,
             en donde cada elemento tendrá el formáto de la interfáz "extra"
     */
-    new Promise((respond, reject) => {
-      this.extraService.getExtraByProduct(p._id).subscribe(res => {
-        respond(res as Extra[]);
-      })
-    }).then((list: Extra[]) => {
-      let extras: extra[] = [];//Lista de extras que se enviarán al modal
-      let aux: extra;//Variable que tomará los valores de cada elemento de la lista retornada de extraService
-      let option: option = {//Variable que tomará los valores de cada opción
-        'name': '',
-        'price': 0,
-        'selected': true
-      };
+    let extrasInDb: any = await this.extraService.getExtraByProduct(p._id).toPromise();
+    
+    let extrasToModal: extra[] = [];//Lista de extras que se enviarán al modal
+    let auxExtra: extra;//Variable que tomará los valores de cada elemento de la lista retornada de extraService
+    let auxOption: option;//Variable que tomará los valores de cada opción
 
-      list.forEach(element => {
-
-        aux = {
-          'name':'',
-          'multiple': false,
-          'option': [],
-          'radioValue': ''
-        };
-
-        aux.name = element.name;
-        aux.multiple = element.multiple;
-
-        element.option.forEach(op => {
-          //Recorremos cada option registrada en el extra
-          if(op.status == "Disponible"){
-            option.name = op.name;
-            option.price = op.price;
-            aux.option.push(option);
-          }
-        });
-        extras.push(aux);
-      });
-
-      const dialogRef = this.dialog.open(ProductDetailDialog, {
-        data: {product: p, extra: extras, totalAmount: p.price, quantity: 1}
-      });
-
-      dialogRef.afterClosed().subscribe(result => {
-        if(result){
-          this.productToOrder(result.product, result.extra, result.totalAmount, result.quantity);
+    extrasInDb.forEach((element: Extra) => {
+      auxExtra = {
+        '_id': '',
+        'name':'',
+        'multiple': false,
+        'option': [],
+        'radioValue': ''
+      }
+      auxExtra._id = element._id;
+      auxExtra.name = element.name;
+      auxExtra.multiple = element.multiple;
+      element.option.forEach(op => {
+        if(op.status == "Disponible"){
+          auxOption = {
+            '_id': '',
+            'name': '',
+            'price': 0,
+            'selected': false
+          };
+          auxOption._id = op._id;
+          auxOption.name = op.name;
+          auxOption.price = op.price;
+          auxExtra.option.push(auxOption);
         }
       });
+      extrasToModal.push(auxExtra);
+    });
+    const dialogRef = this.dialog.open(ProductDetailDialog, {
+      data: {product: p, extra: extrasToModal, totalAmount: p.price, quantity: 1}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.productToOrder(result.product, result.extra, result.totalAmount, result.quantity);
+      }
     });
   }
 
@@ -176,79 +163,38 @@ export class ProductCatalogComponent implements OnInit {
         3.  business: Si la orden no tiene registrado un negocio, se asigna el valor del negocio registrado del producto en cuestión
         4.  productDetail
     */
-    let product: productDetail = {
-      'product': "",
-      'price':0,
-      'quantity': 0,
-      'extra': [{
-        'name': "",
-        'price': 0
-      }],
-      'total': 0
-    };
-    
-    let wait = productSelected.productionTime;
+    const product: productInOrder = new productInOrder();
 
-    /*
-      En el constructor de la orden, el array de productDetail se inicializa
-      añadiendo un objeto json.
+    product.product = productSelected._id;
+    product.price = productSelected.price;
+    product.quantity = quantity;
+    product.total = this.decimalAdjust('round', totalAmount, -2);;
 
-      Si la orden solo contiene ese objeto json vacio, por ende tambien los extras contiene solo 1 elemento vacio.
-      Si ese es el caso, se modifica el valor de ese objeto y posteriormente se añaden los nuevos
-    */
+    let extra: extraInOrder = new extraInOrder();
 
-    if(this.currentOrder.productDetail[0].product == ""){
-      /*
-        Si productDetail solo contiene el contructor, se modifica el objeto.
-      */
-      this.currentOrder.productDetail[0].product = productSelected._id;
-      this.currentOrder.productDetail[0].price = productSelected.price;
-      this.currentOrder.productDetail[0].quantity = quantity;
-      this.currentOrder.productDetail[0].total = totalAmount;
-    }else{
-      product.product = productSelected._id;
-      product.price = productSelected.price;
-      product.quantity = quantity;
-      product.total = totalAmount;
-      this.currentOrder.productDetail.push(product);
-    }
-
+    let option: optionInOrder = new optionInOrder();
     extraList.forEach(element => {
       element.option.forEach(op => {
         if(element.radioValue == op.name || op.selected){
-          /*
-            Si existe radioValue, quiere decir que el extra seleccionado no permitia la selección multiple.
-            Si la opción era seleccionada, quiere decir que el extra(s) seleccionado(s) permitian la selección multiple.
-
-            Independientemente de lo antes mencionado, caso afirmativo de alguna de las dos
-            significa que se añade a la lista de extras del producto.
-          */
-          if(this.currentOrder.productDetail[0].product == ""){
-            //Si el primer elemento esta vacio, se le asignan los valores
-            if(this.currentOrder.productDetail[0].extra[0].name == ""){
-              //Si el primer elemento de la lista de extras esta vacio, se le asignan los valores
-              this.currentOrder.productDetail[0].extra[0].name = op.name;
-              this.currentOrder.productDetail[0].extra[0].price = op.price;
-            }else{
-              //Sino, se añade un nuevo objeto
-              this.currentOrder.productDetail[0].extra.push({'name': op.name, 'price': op.price});
-            }
-          }else{
-            //Sino se añade un nuevo objeto
-            if(product.extra.length == 1){
-              //Si el primer elemento de la lista de extras esta vacio, se le asignan los valores
-              product.extra[0].name = op.name;
-              product.extra[0].price = op.price;
-            }else{
-            //Sino se añade un nuevo objeto
-              product.extra.push({'name': op.name, 'price': op.price})
-            }
+          if(extra.extraId != element._id){
+            extra.extraId = element._id;
+            extra.extraName = element.name;
           }
+          option.optionId = op._id;
+          option.name = op.name;
+          option.price = op.price;
+          extra.option.push(option);
+          option = new optionInOrder();
         }
-
       });
+      if(extra != new extraInOrder()){
+        product.extra.push(extra);
+        extra = new extraInOrder();
+      }
     });
+    this.currentOrder.productDetail.push(product);
 
+    let wait = productSelected.productionTime;
     //Se verifica el tiempo de espera
     if(wait > this.currentOrder.wait) this.currentOrder.wait = wait;
 
@@ -260,7 +206,6 @@ export class ProductCatalogComponent implements OnInit {
       this.orderService.assignBusiness(this.currentOrder._id, this.business._id);
     }
 
-    
     this.orderService.addProductToOrder(this.currentOrder._id, this.currentOrder.totalAmount, this.currentOrder.wait, this.currentOrder.productDetail);
   }
 

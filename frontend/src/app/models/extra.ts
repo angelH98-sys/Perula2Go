@@ -1,13 +1,22 @@
+export class Option {
+    constructor(){
+        this._id = "";
+        this.name = "";
+        this.price = 0;
+        this.status = "";
+    }
+    _id: String;
+    name: String;
+    price: Number;
+    status: String;
+}
+
 export class Extra {
 
     constructor(){
         this._id = "";
         this.name = "";
-        this.option = [{
-            "name": "",
-            "price": 0,
-            "status": "Disponible"
-        }];
+        this.option = [];
         this.product = "";
         this.multiple = false;
     }
@@ -16,11 +25,7 @@ export class Extra {
     name: String;
     price: Number;
     status: String;
-    option: [{
-        "name": String,
-        "price": Number,
-        "status": String
-    }];
+    option: Option[];
     product: String;
     multiple: boolean;
 }

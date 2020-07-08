@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { Business } from 'src/app/models/business';
 import { BusinessService } from 'src/app/services/business.service';
-import { hoverZoom, listAnimation } from 'src/app/animations';
+import { hoverZoom, listAnimation } from 'src/app/utilities/animations';
 
 export interface businessCard {
   business: Business;

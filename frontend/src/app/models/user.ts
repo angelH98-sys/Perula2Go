@@ -1,6 +1,25 @@
+import { Address } from '../utilities/address';
+
+export class Employee {
+    constructor(){
+        this.vehicle = "";
+        this.dui = "";
+        this.driverLicense = "";
+        this.status = "";
+        this.qualification = 0;
+    }
+
+    vehicle: String;
+    dui: String;
+    driverLicense: String;
+    status: String;
+    qualification: Number;
+}
+
 export class User {
 
-    constructor(){
+    constructor(userType: String){
+
         this._id = '';
         this.name = '';
         this.user = '';
@@ -9,24 +28,19 @@ export class User {
         this.question = '';
         this.answer = '';
         this.picture = '';
-        this.status = '';
-        this.userType = '';
+        this.status = 'Active';
+        this.userType = userType;
         this.phone = '';
-        this.address = [{
-            'latitude': 0,
-            'longitude': 0,
-            'direction': '',
-            'homeNumber': '',
-            'department': '',
-            'city': '',
-            'reference': ''
-        }];
-        this.employee = {
-            'vehicle': '',
-            'dui': '',
-            'driverLicense': '',
-            'status': '',
-            'qualification': 0
+
+        switch(userType){
+            case "Customer":{
+                this.address = [];
+                break;
+            }
+            case "Employee":{
+                this.employee = new Employee();
+                break;
+            }
         }
     }
 
@@ -41,20 +55,6 @@ export class User {
     status: String;
     userType: String;
     phone: String;
-    address: [{
-        'latitude': Number,
-        'longitude': Number,
-        'direction': String,
-        'homeNumber': String,
-        'department': String,
-        'city': String,
-        'reference': String
-    }];
-    employee: {
-        'vehicle': String,
-        'dui': String,
-        'driverLicense': String,
-        'status': String,
-        'qualification': Number
-    }
+    address: Address[];
+    employee: Employee;
 }

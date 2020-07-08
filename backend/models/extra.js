@@ -4,11 +4,7 @@ const { Schema } = mongoose;
 
 let ExtraSchema = new Schema({
     name: String,
-    option: [{
-        "name": String,
-        "price": Number,
-        "status": String
-    }],
+    option: [],
     product: String,
     multiple: Boolean
 });
