@@ -136,7 +136,7 @@ export class ProductCatalogComponent implements OnInit {
             'price': 0,
             'selected': false
           };
-          auxOption._id = op._id;
+          //auxOption._id = op._id;
           auxOption.name = op.name;
           auxOption.price = op.price;
           auxExtra.option.push(auxOption);

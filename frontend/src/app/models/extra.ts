@@ -1,14 +1,14 @@
 export class Option {
     constructor(){
-        this._id = "";
         this.name = "";
         this.price = 0;
         this.status = "";
+        this.selected = false;
     }
-    _id: String;
     name: String;
     price: Number;
     status: String;
+    selected: Boolean;
 }
 
 export class Extra {
@@ -23,7 +23,6 @@ export class Extra {
 
     _id: String;
     name: String;
-    price: Number;
     status: String;
     option: Option[];
     product: String;

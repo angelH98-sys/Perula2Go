@@ -1,56 +1,106 @@
 <div class="container">
     <div class="row">
-        <div class="col-xl-6 mx-auto">
-            <mat-card class="bg-warning my-4">
-                <form>
-                    <p class="mat-display-1 d-inline mt-4 mr-3">Extras para {{productName}}</p>
-                    <button mat-mini-fab class="d-inline" (click)="addExtra()">+</button>
-                    <br>
-                    <mat-accordion>
-                        <mat-expansion-panel class="mt-4" *ngFor="let extra of extraList; index as i" [expanded]="isLastElement(i)">
+        <form class="col-md-9 col-lg-7 col-xl-6 mx-auto" [formGroup]="extras">
+            <mat-card class="my-4">
+                <div class="row">
+                    <div class="col-8 col-sm-9">
+                        <p class="mat-display-1 mt-4 mb-0 text-white">
+                            Extras para {{productName}}
+                        </p>
+                    </div>
+                    <div class="col-4 col-sm-3">
+                        <button type="button" class="mt-4 mx-auto" mat-fab 
+                            (click)="addExtra()">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                    </div>
+                </div>
+                <mat-accordion>
+                    <ng-container formArrayName="extraList">
+                        <mat-expansion-panel class="mt-4 border border-secondary" 
+                            *ngFor="let extra of getControlsFromArray(extras, 'extraList'); index as i" 
+                            [formGroupName]="i" 
+                            [expanded] = "isLastElement(i, extras, 'extraList')">
                             <mat-expansion-panel-header>
-                            <mat-panel-title>
-                                {{extra.name}}
-                            </mat-panel-title>
-                            <mat-icon (click)="deleteExtra(i)" class="mr-3">delete</mat-icon>
+                                <mat-panel-title>
+                                    {{extra.get('name').value}}
+                                </mat-panel-title>
+                                <ng-template [ngIf]="getElements(extras, 'extraList') > 1">
+                                    <mat-icon (click)="deleteExtra(i)" class="mr-3">
+                                        delete
+                                    </mat-icon>
+                                </ng-template>
                             </mat-expansion-panel-header>
-                        
                             <mat-form-field class="w-100" appearance="outline">
-                                <mat-label>Nombre</mat-label>
-                                <input name="name{{i}}" #name{{i}}="ngModel" [(ngModel)]="extra.name" matInput type="text" placeholder="Ej: Tamaño, sabor de bebida, complementos..." required>
+                                <mat-label>Nombre del complemento</mat-label>
+                                <input formControlName="name" matInput type="text" 
+                                    placeholder="Ej: Tamaño, sabor de bebida, complementos...">
+                                <mat-error *ngIf="extra.get('name').invalid">
+                                    {{formValidators.getErrorMessage(extra.get('name'))}}
+                                </mat-error>
                             </mat-form-field>
-                            <mat-slide-toggle name="multiple{{i}}" #multiple{{i}} [(ngModel)]="extra.multiple">Selección multiple</mat-slide-toggle>
+                            <mat-slide-toggle (change)="toFalse(extra)" formControlName="multiple">
+                                Selección multiple
+                            </mat-slide-toggle>
                             <br>
                             <br>
-                            <p class="mat-h1 ml-3 d-inline mr-3">Opciones</p>
-                            <button mat-mini-fab class="d-inline" (click)="addOption(i)">+</button>
-                            <br>
+                            <div class="row">
+                                <div class="col-8 col-sm-4">
+                                    <p class="mat-h1 mt-3">
+                                        Opciones
+                                    </p>
+                                </div>
+                                <div class="col-4 col-sm-8">
+                                    <button type="button" class="mx-auto" mat-fab 
+                                        (click)="addOption(extra)">
+                                        <mat-icon>add</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
                             <mat-accordion>
-                                <ng-template ngFor let-op [ngForOf]="extra.option" let-j="index">
-                                    <mat-expansion-panel class="mt-4" [expanded]="isLastOptionElement(i, j)">
+                                <ng-container formArrayName="options">
+                                    <mat-expansion-panel class="mt-4"
+                                        *ngFor="let op of getControlsFromArray(extra, 'options'); index as j"
+                                        [formGroupName]="j"
+                                        [expanded] = "isLastElement(j, extra, 'options')">
                                         <mat-expansion-panel-header>
                                             <mat-panel-title>
-                                                {{op.name}}
+                                                {{op.get('name').value}}
                                             </mat-panel-title>
-                                            <mat-icon (click)="deleteOption(i, j)" class="mr-3">delete</mat-icon>
+                                            <ng-template [ngIf]="getElements(extra, 'options') > 1">
+                                                <mat-icon (click)="deleteOption(j, extra)" class="mr-3">
+                                                    delete
+                                                </mat-icon>
+                                            </ng-template>
                                         </mat-expansion-panel-header>
                                         <mat-form-field class="w-100" appearance="outline">
-                                            <mat-label>Nombre</mat-label>
-                                            <input name="opName{{i}}{{j}}" #opName{{i}}{{j}}="ngModel" [(ngModel)]="op.name" matInput type="text" required>
+                                            <mat-label>Nombre de la opción</mat-label>
+                                            <input formControlName="name" matInput type="text">
+                                            <mat-error *ngIf="op.get('name').invalid">
+                                                {{formValidators.getErrorMessage(op.get('name'))}}
+                                            </mat-error>
                                         </mat-form-field>
-                                        <mat-form-field class="w-50" appearance="outline">
+                                        <mat-form-field class="w-50 mr-5" appearance="outline">
                                             <mat-label>Precio</mat-label>
-                                            <input name="opPrice{{i}}{{j}}" #opPrice{{i}}{{j}}="ngModel" [(ngModel)]="op.price" matInput class="text-right" type="number" value="0.00" min="0.00" step="0.01">
+                                            <input formControlName="price" matInput 
+                                                class="text-right" type="number" value="0.00" min="0.00" step="0.01">
                                             <span matPrefix>$</span>
                                         </mat-form-field>
+                                        <mat-slide-toggle (change)="defaultOption(j, extra)" formControlName="selected"
+                                            *ngIf="!extra.get('multiple').value">
+                                            Por defecto
+                                        </mat-slide-toggle>
                                     </mat-expansion-panel>
-                                </ng-template>
+                                </ng-container>
                             </mat-accordion>
                         </mat-expansion-panel>
-                    </mat-accordion>
-                    <button type="submit" mat-stroked-button class="py-4 w-100" id="send" (click)="createExtra()">Registrar extra(s)</button>
-                </form>
+                    </ng-container>
+                </mat-accordion>
+                <button type="button" mat-stroked-button class="py-4 w-100" id="send" color="primary"
+                    (click)="createExtras()">
+                    Registrar extra(s)
+                </button>
             </mat-card>
-        </div>
+        </form>
     </div>
 </div>

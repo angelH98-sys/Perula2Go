@@ -11,10 +11,8 @@ export class ExtraService {
 
   constructor( private http: HttpClient) { }
 
-  postExtra(extraList){
-    this.http.post(this.URL_API, extraList).subscribe((res: any) => {
-      console.log(res.status);
-    })
+  async postExtra(extraList){
+    await this.http.post(this.URL_API, extraList).toPromise();
   }
 
   getExtraByProduct(id){

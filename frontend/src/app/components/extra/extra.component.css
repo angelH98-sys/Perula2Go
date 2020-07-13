@@ -11,4 +11,9 @@ mat-expansion-panel-header-description {
 #send{
   font-size: 30px;
   margin-top: 40px;
+  background-color: white;
+}
+
+mat-card{
+  background-color: #4457C2;
 }

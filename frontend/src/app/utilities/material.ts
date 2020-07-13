@@ -22,6 +22,7 @@ import {MatBadgeModule} from '@angular/material/badge';
 import {MatListModule} from '@angular/material/list';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatStepperModule} from '@angular/material/stepper';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 import { NgModule } from '@angular/core';
 
@@ -65,7 +66,8 @@ import { NgModule } from '@angular/core';
         MatBadgeModule,
         MatListModule,
         MatTabsModule,
-        MatStepperModule
+        MatStepperModule,
+        MatSnackBarModule
     ]
 })
 export class MaterialModule{}
