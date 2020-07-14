@@ -25,7 +25,7 @@ businessCtrl.getBusiness = async (req, res) => {
 }
 
 businessCtrl.getBusinessById = async (req, res) => {
-    const business = await Business.find({_id: req.params.id});
+    const business = await Business.findById(req.params.id);
     res.json(business);
 }
 

@@ -16,21 +16,6 @@ export interface productCard {
   zoom: String;
 }
 
-export interface extra {
-  _id: String;
-  name: String;
-  multiple: boolean;
-  option: option[];
-  radioValue: String;
-}
-
-export interface option {
-  _id: String;
-  name: String;
-  price: Number;
-  selected: boolean;
-}
-
 @Component({
   selector: 'app-product-catalog',
   templateUrl: './product.catalog.component.html',
@@ -62,8 +47,17 @@ export class ProductCatalogComponent implements OnInit {
     this.loadCurrentOrder();
   }
 
-  loadData(){
+  async loadData(){
     const id = this.route.snapshot.paramMap.get('id');
+    let products: Product[] = await this.productService.getProducts(id).toPromise() as Product[];
+    products.forEach(element => {
+      this.cardList.push({'product': element,'zoom':'out'});
+    });
+    this.business = await this.businessService.getBusinessById(id).toPromise() as Business;
+    this.cover = "../../../assets/business/" + this.business.picture.cover;
+    this.logo = "../../../assets/business/" + this.business.picture.logo;
+    this.fade = "out";
+    /*
     new Promise((response, reject) => {
       this.productService.getProducts(id).subscribe(res => {
         let productList = res as Product[];
@@ -79,14 +73,15 @@ export class ProductCatalogComponent implements OnInit {
         this.logo = "../../../assets/business/" + this.business.picture.logo;
         this.fade = "out";
       })
-    });
+    });*/
   }
 
-  loadCurrentOrder(){
+  async loadCurrentOrder(){
     let customerId = "5f04cad5bb4f752b0c2014ec";
-    this.orderService.getEraserOrder(customerId).subscribe(res => {
+    this.currentOrder = await this.orderService.getEraserOrder(customerId).toPromise() as Order;
+    /*this.orderService.getEraserOrder(customerId).subscribe(res => {
       this.currentOrder = res as Order;
-    });
+    });*/
   }
 
   zoomIn(card: productCard){
@@ -105,47 +100,10 @@ export class ProductCatalogComponent implements OnInit {
         3. Sub-total de costo del producto((precio del mismo + extras) * cantidad)
         4. Cantidad de productos(junto con extras seleccionados) a añadir a la orden
     */
-    /* 
-      El procedimiento es el siguiente:
-        1.  Obtenemos los extras del producto que se recibio como parámetro
-        2.  Creamos la lista de extras que se enviarán al modal,
-            en donde cada elemento tendrá el formáto de la interfáz "extra"
-    */
     let extrasInDb: any = await this.extraService.getExtraByProduct(p._id).toPromise();
     
-    let extrasToModal: extra[] = [];//Lista de extras que se enviarán al modal
-    let auxExtra: extra;//Variable que tomará los valores de cada elemento de la lista retornada de extraService
-    let auxOption: option;//Variable que tomará los valores de cada opción
-
-    extrasInDb.forEach((element: Extra) => {
-      auxExtra = {
-        '_id': '',
-        'name':'',
-        'multiple': false,
-        'option': [],
-        'radioValue': ''
-      }
-      auxExtra._id = element._id;
-      auxExtra.name = element.name;
-      auxExtra.multiple = element.multiple;
-      element.option.forEach(op => {
-        if(op.status == "Disponible"){
-          auxOption = {
-            '_id': '',
-            'name': '',
-            'price': 0,
-            'selected': false
-          };
-          //auxOption._id = op._id;
-          auxOption.name = op.name;
-          auxOption.price = op.price;
-          auxExtra.option.push(auxOption);
-        }
-      });
-      extrasToModal.push(auxExtra);
-    });
     const dialogRef = this.dialog.open(ProductDetailDialog, {
-      data: {product: p, extra: extrasToModal, totalAmount: p.price, quantity: 1}
+      data: {product: p, extra: extrasInDb, totalAmount: p.price, quantity: 1}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -155,7 +113,7 @@ export class ProductCatalogComponent implements OnInit {
     });
   }
 
-  productToOrder(productSelected: Product, extraList: extra[], totalAmount, quantity){
+  productToOrder(productSelected: Product, extraList: Extra[], totalAmount, quantity){
     /*
       Este método se encarga de modificar 3 atributos de la orden:
         1.  totalAmount: se suma el Sub-total, proporcionado por el modal, a la cantidad que esta registrada en la orden
@@ -163,35 +121,27 @@ export class ProductCatalogComponent implements OnInit {
         3.  business: Si la orden no tiene registrado un negocio, se asigna el valor del negocio registrado del producto en cuestión
         4.  productDetail
     */
-    const product: productInOrder = new productInOrder();
+    let product: productInOrder = new productInOrder();
 
-    product.product = productSelected._id;
+    product.businessId = this.business._id;
+    product.productId = productSelected._id;
     product.price = productSelected.price;
     product.quantity = quantity;
     product.total = this.decimalAdjust('round', totalAmount, -2);;
 
-    let extra: extraInOrder = new extraInOrder();
+    let extraSelected: extraInOrder[] = [];
+    let optionSelected: optionInOrder[] = [];
 
-    let option: optionInOrder = new optionInOrder();
-    extraList.forEach(element => {
-      element.option.forEach(op => {
-        if(element.radioValue == op.name || op.selected){
-          if(extra.extraId != element._id){
-            extra.extraId = element._id;
-            extra.extraName = element.name;
-          }
-          option.optionId = op._id;
-          option.name = op.name;
-          option.price = op.price;
-          extra.option.push(option);
-          option = new optionInOrder();
-        }
+    extraList.forEach(extra => {
+      optionSelected = [];
+      extra.option.forEach(option => {
+        if(option.selected) optionSelected.push({'name': option.name, 'price': option.price});
       });
-      if(extra != new extraInOrder()){
-        product.extra.push(extra);
-        extra = new extraInOrder();
-      }
+      if(optionSelected.length > 0) extraSelected.push({'name': extra.name, 'option': optionSelected});
     });
+
+    product.extra = extraSelected;
+
     this.currentOrder.productDetail.push(product);
 
     let wait = productSelected.productionTime;
@@ -201,12 +151,10 @@ export class ProductCatalogComponent implements OnInit {
     //Sumamos el total con el subtotal del producto nuevo
     this.currentOrder.totalAmount += this.decimalAdjust('round', totalAmount, -2);
 
-    if(this.currentOrder.business == ""){//Si acaso no existe un registro del negocio en la orden, se modifica su valor
-      this.currentOrder.business = this.business._id;
-      this.orderService.assignBusiness(this.currentOrder._id, this.business._id);
-    }
+    this.currentOrder.totalAmount = this.decimalAdjust('round', this.currentOrder.totalAmount, -2);
 
-    this.orderService.addProductToOrder(this.currentOrder._id, this.currentOrder.totalAmount, this.currentOrder.wait, this.currentOrder.productDetail);
+    this.orderService.addProductToOrder(this.currentOrder._id, this.currentOrder.totalAmount, 
+      this.currentOrder.wait, this.currentOrder.productDetail);
   }
 
   decimalAdjust(type, value, exp) {
@@ -238,17 +186,77 @@ export class ProductCatalogComponent implements OnInit {
 export class ProductDetailDialog {
 
   constructor(public dialogRef: MatDialogRef<ProductDetailDialog>,
-    @Inject(MAT_DIALOG_DATA) public data) {}
+    @Inject(MAT_DIALOG_DATA) public data) {
+      this.defaulOptions();
+      }
+  
+  /*
+      Este dialog se encarga de alimentar el atributo 'productDetail' de las ordenes.
+      Se muestra la información del producto, los extras que desea seleccionar y la
+      cantidad de productos con la misma configuración que desea.
+
+      Para satisfacer dichos requisitos, se opto por la implementación de 3 controles:
+      1. Input de tipo numérico para obtener la cantidad de elementos que desea.
+      2. RadioButtons para la selección de los extras que no permiten opción multiple.
+      3. Checkbox para la selección de los extras que permiten opción multiple.
+
+      Para los radio buttons, existen las opciones seleccionadas por defecto proveenientes
+      de los parametros de este dialog.
+      Sin embargo, no fue posible establecerlas directamente modificando la propiedad checked
+      o selected, así que se recurrió a la variable auxiliar 'optionValues' que contiene el nombre
+      de la opción seleccionada por defecto y el id del extra al que pertenece.
+  */
+  optionValues: {'name': String, 'extraId': String}[] = [];
   
   controlChange(){
+    /*
+      Método que realiza realiza el calculo del monto total a pagar
+    */
+    this.checkOptions();
     this.data.totalAmount = this.data.product.price;
-    this.data.extra.forEach(element => {
+    this.data.extra.forEach((element: Extra) => {
       element.option.forEach(op => {
-        if(element.radioValue == op.name || op.selected){
+        if(op.selected && op.price > 0){
           this.data.totalAmount += op.price;
         }
       });
     });
     this.data.totalAmount *= this.data.quantity;
+  }
+
+  checkOptions(){
+    /*
+      Método que se encarga de cambiar el atributo "selected" a todas aquellas
+      opciones (radioButtons) que se encuentren almacenadas en el array optionValues
+    */
+    this.optionValues.forEach(element => {
+      this.data.extra.forEach((extra: Extra) => {
+        if(extra._id == element.extraId){
+          for(let i = 0; i < extra.option.length; i++){
+            if(extra.option[i].name == element.name){
+              extra.option[i].selected = true;
+            }else{
+              extra.option[i].selected = false;
+            }
+          }
+        }
+      });
+    });
+  }
+
+  defaulOptions(){
+    /*
+      Método que se encarga de llenar el array optionValues con
+      las opciones seleccionadas por defecto
+    */
+    const extras: Extra[] = this.data.extra;
+    let extra: Extra;
+    for(let i = 0; i < extras.length; i++){
+      extra = extras[i];
+      extra.option.forEach(option => {
+        if(option.selected) this.optionValues[i] = {'name':option.name, 'extraId': extra._id};
+      });
+    };
+    this.controlChange();
   }
 }

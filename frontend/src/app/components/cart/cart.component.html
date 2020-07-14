@@ -78,7 +78,7 @@
                                                     </p>
                                                 </td>
                                                 <td class="align-middle">
-                                                    <p class="mat-body mat-body-1 text-secondary d-inline">
+                                                    <p *ngIf="option.price > 0" class="mat-body mat-body-1 text-secondary d-inline">
                                                         + ${{option.price.toFixed(2)}}
                                                     </p>
                                                 </td>

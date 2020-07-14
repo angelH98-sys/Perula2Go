@@ -44,7 +44,7 @@ export class CartComponent implements OnInit {
     this.lng = this.addressList[0].longitude;
 
     this.order.productDetail.forEach(async element => {
-      let name = await this.productService.getProductName(element.product).toPromise() as String;
+      let name = await this.productService.getProductName(element.productId).toPromise() as String;
       this.productNameList.push(name)
     });
   }

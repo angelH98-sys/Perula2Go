@@ -19,39 +19,49 @@ class orderDates {
 
 export class optionInOrder{
     constructor(){
-        this.optionId = "";
         this.name = "";
         this.price = 0;
     }
-    optionId: String;
     name: String;
     price: Number;
 }
 
 export class extraInOrder {
     constructor(){
-        this.extraId = "";
-        this.extraName = "";
+        this.name = "";
         this.option = [];
     }
-    extraId: String;
-    extraName: String;
+    name: String;
     option: optionInOrder[];
 }
 
 export class productInOrder {
     constructor(){
-        this.product = "";
+        this.businessId = "";
+        this.productId = "";
         this.price = 0;
         this.quantity = 0;
         this.extra = [];
         this.total = 0;
+        this.status = "enCola";
+        this.statusDate = {
+            'enCola': new Date(),
+            'enProceso': null,
+            'listo': null
+        }
     }
-    product: String;
+    businessId: String;
+    productId: String;
     price: Number;
     quantity: Number;
     extra: extraInOrder[];
-    total: Number
+    total: Number;
+    status: String;
+    statusDate: {
+        'enCola': Date,
+        'enProceso': Date,
+        'listo': Date,
+    }
 }
 
 export class Order {
@@ -64,7 +74,6 @@ export class Order {
         this.wait = 0;
         this.customer = "";
         this.employee = "";
-        this.business = "";
         this.qualification = 0;
         this.statusDate = new orderDates();
         this.address = new Address();
@@ -78,7 +87,6 @@ export class Order {
     wait: Number;
     customer: String;
     employee: String;
-    business: String;
     qualification: Number;
     statusDate: orderDates;
     address: Address;

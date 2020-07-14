@@ -9,18 +9,19 @@
             <mat-card id="mainMatCard" class="bg-light shadow-lg col-12">
                 <div id="logoContainer" class="p-0 shadow col-xl-3 col-lg-4 col-md-5 col-sm-7 col-9 mx-auto" style="background-image: url('{{logo}}');">
                 </div>
-                <p class="mt-4 mb-4 display-2 mat-display-2 text-center">{{business.name}}</p>
+                <p class="mt-4 mb-4 mat-display-2 text-center">{{business.name}}</p>
                 <mat-divider></mat-divider>
                 <div [@listAnimation]="cardList.length" class="row">
                     <div *ngFor="let card of cardList" class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 mt-5">
-                        <mat-card class="mx-auto bg-warning col-10" [@zoom]="card.zoom" (mouseover)="zoomIn(card)" (mouseout)="zoomOut(card)" (click)="openDialog(card.product)">
+                        <mat-card class="mx-auto main-color col-10" [@zoom]="card.zoom" (mouseover)="zoomIn(card)" (mouseout)="zoomOut(card)" (click)="openDialog(card.product)">
                             <img mat-card-image src="../../../assets/product/{{card.product.picture}}">
                             <mat-card-content>
-                                <p class="mat-h1 mat-headline">
+                                <p class="mat-h2 mat-title text-white">
                                     {{card.product.name}}
                                 </p>
-                                <p class="mat-h2 mat-title">
-                                    ${{card.product.price.toFixed(2)}}
+                                <mat-divider></mat-divider>
+                                <p class="mat-h4 mat-subheading-1 text-white mt-4 pt-1">
+                                    Precio: ${{card.product.price.toFixed(2)}}
                                 </p>
                             </mat-card-content>
                         </mat-card>

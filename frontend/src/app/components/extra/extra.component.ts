@@ -227,6 +227,7 @@ export class ExtraComponent implements OnInit {
       extAux.status = "Disponible";
       extAux.product = this.id;
 
+      aux = false;
       for(let j = 0; j < this.getElements(extra.controls[i], 'options'); j++){
         opAux = new Option();
 
@@ -258,7 +259,6 @@ export class ExtraComponent implements OnInit {
 
       extraList.push(extAux);
     }
-    console.log(extraList);
     this.extraService.postExtra(extraList);
   }
 }

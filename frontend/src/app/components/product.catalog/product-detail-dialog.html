@@ -1,17 +1,19 @@
 <mat-dialog-content>
   <div class="row">
-    <div class="col-xl-6 col-lg-6 col-md-6">
+    <div class="col-xl-6 col-lg-6 col-md-6 position-sticky">
+      <p class="mat-display-1 text-center mb-3">{{data.product.name}}</p>
+      <mat-divider></mat-divider>
+      <br>
+      <h3 class="mat-h3 mat-subheading-2">
+        Descripción: {{data.product.description}}
+        <br>
+        <ng-template [ngIf]="data.product.productionTime > 0">
+          Tiempo de preparación: <b>{{data.product.productionTime}} minutos</b>
+        </ng-template>
+      </h3>
       <img class="img-fluid mb-3" src="../../../assets/product/{{data.product.picture}}">
     </div>
     <div class="col-xl-6 col-lg-6 col-md-6">
-      <h1 class="text-center mb-0 mat-display-3">{{data.product.name}}</h1>
-      <mat-divider></mat-divider>
-      <br>
-      <h3 class="mat-h3 mat-subheading-2">{{data.product.description}}</h3>
-      <h2 class="mat-h2 mat-title">
-        Tiempo de preparación: <b>{{data.product.productionTime}} minutos</b>
-      </h2>
-      <mat-divider></mat-divider>
       <form>
         <mat-form-field class="my-3" appearance="outline">
           <mat-label>Cantidad</mat-label>
@@ -19,16 +21,19 @@
         </mat-form-field>
         <ng-template ngFor let-item [ngForOf]="data.extra" let-i="index">
           <br>
-          <h1 class="mr-3 mat-h1 mat-headline">{{item.name}}</h1>
+          <h2 class="mr-3 mat-h2 mat-title">{{item.name}}</h2>
           <ng-template [ngIf]="item.multiple">
             <ng-template ngFor let-op [ngForOf]="item.option" let-j="index">
-              <mat-checkbox (change)="controlChange()" name="check-{{op.name}}" [(ngModel)]="op.selected" class="mat-h2 mat-title">{{op.name}} <b *ngIf="op.price > 0">+ ${{op.price.toFixed(2)}}</b></mat-checkbox>
+              <mat-checkbox (change)="controlChange()" name="check-{{op.name}}" [(ngModel)]="op.selected" 
+                class="mat-h3 mat-subheading-2">{{op.name}} <b *ngIf="op.price > 0">+ ${{op.price.toFixed(2)}}</b></mat-checkbox>
               <br>
             </ng-template>
           </ng-template>
-          <mat-radio-group name="radio-{{item.name}}" [(ngModel)]="item.radioValue" (change)="controlChange()" *ngIf="!item.multiple">
+          <mat-radio-group name="radio-{{item.name}}" [(ngModel)]="optionValues[i].name" (change)="controlChange()" *ngIf="!item.multiple">
             <ng-template ngFor let-op [ngForOf]="item.option">
-              <mat-radio-button class="mat-h2 mat-title" value="{{op.name}}">{{op.name}} <b *ngIf="op.price > 0">+ ${{op.price.toFixed(2)}}</b></mat-radio-button>
+              <mat-radio-button class="mat-h3 mat-subheading-2" [value]="op.name">
+                {{op.name}} <b *ngIf="op.price > 0">+ ${{op.price.toFixed(2)}}</b>
+              </mat-radio-button>
               <br>  
             </ng-template>
           </mat-radio-group>
@@ -36,7 +41,9 @@
       </form>
       <mat-divider></mat-divider>
       <br>
-      <h1 class="text-center mat-h1 mat-headline">Total: <b>${{data.totalAmount.toFixed(2)}}</b></h1>
+      <h2 class="text-center mat-h2 mat-title">
+        Total: <b>${{data.totalAmount.toFixed(2)}}</b>
+      </h2>
     </div>
   </div>
 </mat-dialog-content>
