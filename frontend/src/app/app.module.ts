@@ -19,7 +19,7 @@ import { ProductComponent } from './components/product/product.component';
 import { ProductCatalogComponent, ProductDetailDialog } from './components/product.catalog/product.catalog.component';
 import { UserComponent } from './components/user/user.component';
 import { ExtraComponent } from './components/extra/extra.component';
-import { CartComponent } from './components/cart/cart.component';
+import { CartComponent, QuantityModificatorDialog } from './components/cart/cart.component';
 import { UserAddressComponent, AddressDialog } from './components/user.address/user.address.component';
 import { BusinessOrderComponent } from './components/business.order/business.order.component';
 
@@ -35,6 +35,7 @@ import { BusinessOrderComponent } from './components/business.order/business.ord
     AddressDialog,
     ExtraComponent,
     CartComponent,
+    QuantityModificatorDialog,
     UserAddressComponent,
     BusinessOrderComponent
   ],

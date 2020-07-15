@@ -36,11 +36,27 @@ export class OrderService {
     });
   }
 
-  async confirmOrder(order: Order, address, statusDate){
-    await this.http.put(`${this.URL_API}/confirm/${order._id}`, {status: "En cola", address: address, statusDate: statusDate}).toPromise();
+  async confirmOrder(order: Order){
+    await this.http.put(`${this.URL_API}/confirm/${order._id}`,{
+      order: order
+    }).toPromise();
+    
     let eraserOrder = new Order();
     eraserOrder.customer = order.customer;
     eraserOrder.statusDate.borrador = new Date();
+
+    await this.http.post(this.URL_API, eraserOrder).toPromise();
+  }
+
+  async updateAndConfirmOrder(order: Order){
+    await this.http.put(`${this.URL_API}/updateandconfirm/${order._id}`,{
+      order: order
+    }).toPromise();
+    
+    let eraserOrder = new Order();
+    eraserOrder.customer = order.customer;
+    eraserOrder.statusDate.borrador = new Date();
+    
     await this.http.post(this.URL_API, eraserOrder).toPromise();
   }
 

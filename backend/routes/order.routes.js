@@ -16,6 +16,8 @@ router.put('/assignbusiness/:id', orderCtrl.assignBusiness);
 
 router.put('/confirm/:id', orderCtrl.confirmOrder);
 
+router.put('/updateandconfirm/:id', orderCtrl.updateAndConfirmOrder);
+
 router.put('/changestatus/:id', orderCtrl.changeStatus);
 
 module.exports = router;

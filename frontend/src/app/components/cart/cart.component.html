@@ -64,13 +64,14 @@
                                                 </p>
                                             </td>
                                             <td class="align-middle">
-                                                <button mat-mini-fab color="primary">
+                                                <button type="button" mat-mini-fab color="primary"
+                                                    (click)="editProduct(i)">
                                                     <mat-icon>delete</mat-icon>
                                                 </button>
                                             </td>
                                         </tr>
-                                        <ng-template ngFor let-extra [ngForOf]="item.extra">
-                                            <tr *ngFor="let option of extra.option">
+                                        <ng-template ngFor let-extra [ngForOf]="item.extra" let-j="index">
+                                            <tr *ngFor="let option of extra.option; index as k">
                                                 <th scope="row"></th>
                                                 <td class="align-middle">
                                                     <p class="mat-body mat-body-1 text-secondary d-inline">
@@ -84,7 +85,7 @@
                                                 </td>
                                                 <td></td>
                                                 <td class="align-middle">
-                                                    <button mat-icon-button>
+                                                    <button type="button" mat-icon-button (click)="deleteExtra(i, j, k)">
                                                         <mat-icon>clear</mat-icon>
                                                     </button>
                                                 </td>
@@ -130,6 +131,13 @@
                         </mat-select>
                     </mat-form-field>
                 </mat-card>
+            </div>
+        </div>
+        <div *ngIf="isModified" class="row">
+            <div class="col-xl-3 mx-auto">
+                <button mat-raised-button color="warn" class="mb-3 py-2 w-100" (click)="loadOrder()">
+                    <h1 class="mat-h1 mat-headline m-0">Cancelar cambios</h1>
+                </button>
             </div>
         </div>
         <div class="row">

@@ -65,7 +65,26 @@ orderCtrl.addProduct = async (req, res) => {
 }
 
 orderCtrl.confirmOrder = async (req, res) => {
-    await Order.findByIdAndUpdate(req.params.id, {status: req.body.status, address: req.body.address, statusDate: req.body.statusDate}, {new: true});
+    let order = req.body.order;
+    await Order.findByIdAndUpdate(req.params.id,{
+        status: order.status,
+        address: order.address,
+        statusDate: order.statusDate
+    }, {new: true});
+    res.json({
+        'status': "Order confirmed"
+    });
+}
+
+orderCtrl.updateAndConfirmOrder = async (req, res) => {
+    let order = req.body.order;
+    await Order.findByIdAndUpdate(req.params.id,{
+        status: order.status,
+        address: order.address,
+        statusDate: order.statusDate,
+        totalAmount: order.totalAmount,
+        productDetail: order.productDetail
+    }, {new: true});
     res.json({
         'status': "Order confirmed"
     });

@@ -1,0 +1,11 @@
+<div mat-dialog-content>
+    <p>Cuantos {{data.name}} deseas eliminar ?</p>
+    <mat-form-field appearance="outline">
+        <input type="number" matInput [(ngModel)]="data.quantity" 
+            step="1" min="1" max="{{maxQuantity}}">
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancelar</button>
+    <button mat-button [mat-dialog-close]="data">Eliminar</button>
+</div>
