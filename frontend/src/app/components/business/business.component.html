@@ -1,127 +1,279 @@
 <div class="container">
-    <div class="row">
-        <div class="col-8">
-            <mat-card class="bg-warning my-4">
-                <form (ngSubmit)="addBusiness()">
-                    <p class="mat-display-4">Registro de negocios</p>
-                    <mat-form-field class="w-75" appearance="outline">
-                        <mat-label>Nombre</mat-label>
-                        <input name="name" #name="ngModel" [(ngModel)]="business.name" matInput placeholder="Ej: Pupuseria La Chela" required>
-                    </mat-form-field>
-                    <mat-form-field class="w-75" appearance="outline">
-                        <mat-label>Descripción</mat-label>
-                        <textarea name="description" #description="ngModel" [(ngModel)]="business.description" matInput></textarea>
-                    </mat-form-field>
-                    <mat-form-field class="w-50 mr-1" appearance="outline">
-                        <mat-label>Teléfono</mat-label>
-                        <input name="phone" #phone="ngModel" [(ngModel)]="business.phone" matInput placeholder="Ej: 0000-0000" required>
-                    </mat-form-field>
-                    <mat-form-field class="w-50" appearance="outline">
-                        <mat-label>Tipo de negocio</mat-label>
-                        <mat-select name="type" #type="ngModel" [(ngModel)]="business.type">
-                            <mat-option value="Restaurante">Restaurante</mat-option>
-                            <mat-option value="Ferretería">Ferretería</mat-option>
-                            <mat-option value="Farmacia">Farmacia</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <p class="mat-h1 ml-3">Horario de atención</p>
-                    <section>
-                        <mat-radio-group name="type" #type="ngModel" [(ngModel)]="scheduleType">
-                            <mat-radio-button class="mr-3" value="general">General</mat-radio-button>
-                            <mat-radio-button value="detallado">Detallado</mat-radio-button>
-                        </mat-radio-group>
-                    </section>
-                    <div *ngIf="scheduleType=='general'">
-                        <mat-form-field class="w-25 mr-3" appearance="outline">
-                            <mat-label>De</mat-label>
-                            <input name="generalStart" #generalStart="ngModel" [(ngModel)]="general.start" matInput type="time">
+    <h1 class="mat-display-3 my-3 text-center">
+        Nuevo negocio
+    </h1>
+    <mat-vertical-stepper linear #stepper>
+        <mat-step [stepControl]="businessInformation" editable="true">
+            <form [formGroup]="businessInformation">
+                <ng-template matStepLabel>
+                    Información del negocio
+                </ng-template>
+                <div class="row">
+                    <div class="col-xl-6 col-lg-6 col-md-12">
+                        <mat-form-field class="w-100 my-2" appearance="outline">
+                            <mat-label>
+                                Nombre del negocio
+                            </mat-label>
+                            <input type="text" matInput formControlName="name"
+                                (focusout)="formValidators.alreadyExistIn(businessInformation.get('name'), 'name', 'businesses')">
+                            <mat-error *ngIf="businessInformation.get('name').invalid">
+                                {{formValidators.getErrorMessage(businessInformation.get('name'))}}
+                            </mat-error>
                         </mat-form-field>
-                        <mat-form-field class="w-25" appearance="outline">
-                            <mat-label>Hasta</mat-label>
-                            <input name="generalEnd" #generalEnd="ngModel" [(ngModel)]="general.end" matInput type="time">
+                        <mat-form-field class="w-100 my-2" appearance="outline">
+                            <mat-label>
+                                Teléfono
+                            </mat-label>
+                            <input formControlName="phone" 
+                                (keyup)="formValidators.checkFormatPhone(businessInformation.get('phone'))" 
+                                (focusout)="formValidators.alreadyExistIn(businessInformation.get('phone'), 'phone', 'businesses')"
+                                maxlength="9" placeholder="Ej: 0000-0000" matInput>
+                            <mat-error *ngIf="businessInformation.get('phone').invalid">
+                                {{formValidators.getErrorMessage(businessInformation.get('phone'))}}
+                            </mat-error>
+                            <mat-hint>Formáto valido: 1234-1234</mat-hint>
                         </mat-form-field>
-                    </div>
-                    <div *ngIf="scheduleType=='detallado'">
-                        <p class="mat-h2 ml-3">Lunes</p>
-                        <mat-form-field class="w-25 mr-3" appearance="outline">
-                            <mat-label>De</mat-label>
-                            <input name="mondayStart" #mondayStart="ngModel" [(ngModel)]="business.schedule.monday.start" matInput type="time">
-                        </mat-form-field>
-                        <mat-form-field class="w-25" appearance="outline">
-                            <mat-label>Hasta</mat-label>
-                            <input name="mondayEnd" #mondayEnd="ngModel" [(ngModel)]="business.schedule.monday.end" matInput type="time">
-                        </mat-form-field>
-                        <p class="mat-h2 ml-3">Martes</p>
-                        <mat-form-field class="w-25 mr-3" appearance="outline">
-                            <mat-label>De</mat-label>
-                            <input name="tuesdayStart" #tuesdayStart="ngModel" [(ngModel)]="business.schedule.tuesday.start" matInput type="time">
-                        </mat-form-field>
-                        <mat-form-field class="w-25" appearance="outline">
-                            <mat-label>Hasta</mat-label>
-                            <input name="tuesdayEnd" #tuesdayEnd="ngModel" [(ngModel)]="business.schedule.tuesday.end" matInput type="time">
-                        </mat-form-field>
-                        <p class="mat-h2 ml-3">Miercoles</p>
-                        <mat-form-field class="w-25 mr-3" appearance="outline">
-                            <mat-label>De</mat-label>
-                            <input name="wednesdayStart" #wednesdayStart="ngModel" [(ngModel)]="business.schedule.wednesday.start" matInput type="time">
-                        </mat-form-field>
-                        <mat-form-field class="w-25" appearance="outline">
-                            <mat-label>Hasta</mat-label>
-                            <input name="wednesdayEnd" #wednesdayEnd="ngModel" [(ngModel)]="business.schedule.wednesday.end" matInput type="time">
-                        </mat-form-field>
-                        <p class="mat-h2 ml-3">Jueves</p>
-                        <mat-form-field class="w-25 mr-3" appearance="outline">
-                            <mat-label>De</mat-label>
-                            <input name="thursdayStart" #thursdayStart="ngModel" [(ngModel)]="business.schedule.thursday.start" matInput type="time">
-                        </mat-form-field>
-                        <mat-form-field class="w-25" appearance="outline">
-                            <mat-label>Hasta</mat-label>
-                            <input name="thursdayEnd" #thursdayEnd="ngModel" [(ngModel)]="business.schedule.thursday.end" matInput type="time">
-                        </mat-form-field>
-                        <p class="mat-h2 ml-3">Viernes</p>
-                        <mat-form-field class="w-25 mr-3" appearance="outline">
-                            <mat-label>De</mat-label>
-                            <input name="fridayStart" #fridayStart="ngModel" [(ngModel)]="business.schedule.friday.start" matInput type="time">
-                        </mat-form-field>
-                        <mat-form-field class="w-25" appearance="outline">
-                            <mat-label>Hasta</mat-label>
-                            <input name="fridayEnd" #fridayEnd="ngModel" [(ngModel)]="business.schedule.friday.end" matInput type="time">
-                        </mat-form-field>
-                        <p class="mat-h2 ml-3">Sábado</p>
-                        <mat-form-field class="w-25 mr-3" appearance="outline">
-                            <mat-label>De</mat-label>
-                            <input name="saturdayStart" #saturdayStart="ngModel" [(ngModel)]="business.schedule.saturday.start" matInput type="time">
-                        </mat-form-field>
-                        <mat-form-field class="w-25" appearance="outline">
-                            <mat-label>Hasta</mat-label>
-                            <input name="saturdayEnd" #saturdayEnd="ngModel" [(ngModel)]="business.schedule.saturday.end" matInput type="time">
-                        </mat-form-field>
-                        <p class="mat-h2 ml-3">Domingo</p>
-                        <mat-form-field class="w-25 mr-3" appearance="outline">
-                            <mat-label>De</mat-label>
-                            <input name="sundayStart" #sundayStart="ngModel" [(ngModel)]="business.schedule.sunday.start" matInput type="time">
-                        </mat-form-field>
-                        <mat-form-field class="w-25" appearance="outline">
-                            <mat-label>Hasta</mat-label>
-                            <input name="sundayEnd" #sundayEnd="ngModel" [(ngModel)]="business.schedule.sunday.end" matInput type="time">
+                        <mat-form-field class="w-100 my-2" appearance="outline">
+                            <mat-label>
+                                Tipo de negocio
+                            </mat-label>
+                            <mat-select formControlName="type">
+                                <mat-option *ngFor="let item of businessTypes" [value]="item">
+                                    {{item}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="businessInformation.get('type').invalid">
+                                {{formValidators.getErrorMessage(businessInformation.get('type'))}}
+                            </mat-error>
                         </mat-form-field>
                     </div>
-                    <p class="mat-h1 ml-3">Fotos del negocio</p>
-                    <p class="mat-h2 ml-2">Portada</p>
-                    <input type="file" name="cover" (change)="getCoverInfo($event)">
-                    <p class="mat-h2 ml-2">Logo</p>
-                    <input type="file" name="logo" (change)="getLogoInfo($event)">
-                    <p class="mat-h1 ml-3 mt-3">Ubicación</p>
-                    <mat-card class="w-100">
+                    <div class="col-xl-6 col-lg-6 col-md-12">
+                        <p class="mat-h3 mat-subheading-2 my-2">Logo</p>
+                        <input name="logo" type="file" formControlName="logo"
+                            (change)="checkImage($event, businessInformation.get('logo'), 'logo')">
+                        <mat-error *ngIf="businessInformation.get('logo').invalid">
+                            {{formValidators.getErrorMessage(businessInformation.get('logo'))}}
+                        </mat-error>
+                        <p class="mat-h3 mat-subheading-2 my-2">Imagen de portada</p>
+                        <input name="cover" type="file" formControlName="cover"
+                            (change)="checkImage($event, businessInformation.get('cover'), 'cover')">
+                        <mat-error *ngIf="businessInformation.get('cover').invalid">
+                            {{formValidators.getErrorMessage(businessInformation.get('cover'))}}
+                        </mat-error>
+                        <mat-form-field class="w-100 my-2" appearance="outline">
+                            <mat-label>
+                                Descripción
+                            </mat-label>
+                            <textarea formControlName="description" matInput></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-2 col-lg-3 col-md-4 col-sm-12">
+                        <button mat-stroked-button class="py-2 my-2 w-100" matStepperNext>Siguiente</button>
+                    </div>
+                </div>
+            </form>
+        </mat-step>
+        <mat-step [stepControl]="scheduleInformation" editable="true">
+            <form [formGroup]="scheduleInformation">
+                <ng-template matStepLabel>
+                    Horarios de atención
+                </ng-template>
+                <div class="row">
+                    <div class="col-xl-12 my-4">
+                        <mat-slide-toggle (change)="changeScheduleType()" formControlName="isDetailed">
+                            Horario detallado
+                        </mat-slide-toggle>
+                    </div>
+                </div>
+                <div *ngIf="!scheduleInformation.get('isDetailed').value" class="row">
+                    <div class="col-xl-6 col-lg-6 col-md-12" formGroupName="general">
+                        <div class="row">
+                            <div class="col-sm-6 col-12">
+                                <mat-form-field appearance="outline"
+                                    style="width: 95%;">
+                                    <mat-label>Desde</mat-label>
+                                    <input formControlName="start" matInput type="time"
+                                        (focusout)="formValidators.
+                                            checkTimeFormat(scheduleInformation.controls['general'].get('start'))">
+                                    <mat-error *ngIf="scheduleInformation.controls['general'].get('start').invalid">
+                                        {{formValidators.getErrorMessage(
+                                            scheduleInformation.controls['general'].get('start')
+                                            )}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-6 col-12">
+                                <mat-form-field appearance="outline"
+                                    style="width: 95%;">
+                                    <mat-label>Hasta</mat-label>
+                                    <input formControlName="end" matInput type="time"
+                                        (focusout)="formValidators.
+                                            checkTimeFormat(scheduleInformation.controls['general'].get('end'))">
+                                    <mat-error *ngIf="scheduleInformation.controls['general'].get('end').invalid">
+                                        {{formValidators.getErrorMessage(
+                                            scheduleInformation.controls['general'].get('end'))}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <ng-template [ngIf]="scheduleInformation.get('isDetailed').value">
+                    <div *ngFor="let item of auxiliarArray; index as i" class="row">
+                        <div *ngIf="(i % 2) == 0" class="col-xl-6 col-lg-6 col-md-12" formGroupName="{{item}}">
+                            <p class="mat-body mat-body-1 mt-2">{{item}}</p>
+                            <div class="row">
+                                <div class="col-sm-6 col-12">
+                                    <mat-form-field appearance="outline"
+                                        style="width: 95%;">
+                                        <mat-label>Desde</mat-label>
+                                        <input formControlName="start" matInput type="time"
+                                            (focusout)="formValidators.
+                                                checkTimeFormat(scheduleInformation.controls[item].get('start'))">
+                                        <mat-error *ngIf="scheduleInformation.controls[item].get('start').invalid">
+                                            {{formValidators.getErrorMessage(
+                                                scheduleInformation.controls[item].get('start')
+                                                )}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-sm-6 col-12">
+                                    <mat-form-field appearance="outline"
+                                        style="width: 95%;">
+                                        <mat-label>Hasta</mat-label>
+                                        <input formControlName="end" matInput type="time"
+                                            (focusout)="formValidators.
+                                                checkTimeFormat(scheduleInformation.controls[item].get('end'))">
+                                        <mat-error *ngIf="scheduleInformation.controls[item].get('end').invalid">
+                                            {{formValidators.getErrorMessage(
+                                                scheduleInformation.controls[item].get('end'))}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="(i % 2) == 0 && 6 > i" class="col-xl-6 col-lg-6 col-md-12">
+                            <div formGroupName="{{auxiliarArray[i+1]}}">
+                                <p class="mat-body mat-body-1 mt-2">{{auxiliarArray[i + 1]}}</p>
+                                <div class="row">
+                                    <div class="col-sm-6 col-12">
+                                        <mat-form-field appearance="outline"
+                                            style="width: 95%;">
+                                            <mat-label>Desde</mat-label>
+                                            <input formControlName="start" matInput type="time"
+                                                (focusout)="formValidators.
+                                                    checkTimeFormat(scheduleInformation.controls[auxiliarArray[i+1]].get('start'))">
+                                            <mat-error *ngIf="scheduleInformation.controls[auxiliarArray[i+1]].get('start').invalid">
+                                                {{formValidators.getErrorMessage(
+                                                    scheduleInformation.controls[auxiliarArray[i+1]].get('start')
+                                                    )}}
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-sm-6 col-12">
+                                        <mat-form-field appearance="outline"
+                                            style="width: 95%;">
+                                            <mat-label>Hasta</mat-label>
+                                            <input formControlName="end" matInput type="time"
+                                                (focusout)="formValidators.
+                                                    checkTimeFormat(scheduleInformation.controls[auxiliarArray[i+1]].get('end'))">
+                                            <mat-error *ngIf="scheduleInformation.controls[auxiliarArray[i+1]].get('end').invalid">
+                                                {{formValidators.getErrorMessage(
+                                                    scheduleInformation.controls[auxiliarArray[i+1]].get('end'))}}
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+                <div class="row">
+                    <div class="col-xl-2 col-lg-3 col-md-4 col-sm-12">
+                        <button mat-stroked-button class="py-2 my-2 w-100" matStepperPrevious>Anterior</button>
+                    </div>
+                    <div class="col-xl-2 col-lg-3 col-md-4 col-sm-12">
+                        <button mat-stroked-button class="py-2 my-2 w-100" matStepperNext>Siguiente</button>
+                    </div>
+                </div>
+            </form>
+        </mat-step>
+        <mat-step [stepControl]="addressInformation" editable="true">
+            <form [formGroup]="addressInformation">
+                <ng-template matStepLabel>
+                    Dirección del negocio
+                </ng-template>
+                <div class="row">
+                    <div class="col-xl-6 col-lg-6 col-md-12 mt-3">
+                        <h1 class="mat-h1 mat-headline">Ubicación</h1>
+                        <p class="mat-body mat-body-1">Selecciona la ubicación de tu negocio en el mapa</p>
                         <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" (mapClick)="mapClicked($event)">
-                            <agm-marker [latitude]="business.address.latitude" [longitude]="business.address.longitude"
+                            <agm-marker [latitude]="latMarker" [longitude]="lngMarker"
                                 [markerDraggable]="true">
+                                <agm-info-window [isOpen]="true">
+                                    <strong>Tu negocio</strong>
+                                </agm-info-window>
                             </agm-marker>
                         </agm-map>
-                    </mat-card>
-                    <button type="submit" mat-stroked-button class="p-4" id="send">Registrar negocio</button>
-                </form>
-            </mat-card>
-        </div>
-    </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-12">
+                        <mat-form-field class="w-100 my-2" appearance="outline">
+                            <mat-label>Direccion</mat-label>
+                            <input formControlName="direction" placeholder="Ej: Colonia, calle, etc..." matInput>
+                            <mat-error *ngIf="addressInformation.get('direction').invalid">
+                                {{formValidators.getErrorMessage(addressInformation.get('direction'))}}</mat-error>
+                        </mat-form-field>
+                        <mat-form-field class="w-100 my-2" appearance="outline">
+                            <mat-label>No. de casa/local</mat-label>
+                            <input formControlName="homeNumber" placeholder="Ej: 14, 25H..." matInput>
+                            <mat-error *ngIf="addressInformation.get('homeNumber').invalid">
+                                {{formValidators.getErrorMessage(addressInformation.get('homeNumber'))}}
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field class="w-100 my-2" appearance="outline">
+                            <mat-label>Departamento</mat-label>
+                            <mat-select formControlName="department" 
+                                (selectionChange)="getCities(addressInformation.get('department').value)">
+                                <mat-option *ngFor="let item of departments" [value]="item">
+                                    {{item}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="addressInformation.get('department').invalid">
+                                {{formValidators.getErrorMessage(addressInformation.get('department'))}}
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field class="w-100 my-2" appearance="outline">
+                            <mat-label>Municipio</mat-label>
+                            <mat-select formControlName="city">
+                                <mat-option *ngFor="let item of cities" [value]="item">
+                                    {{item}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="addressInformation.get('city').invalid">
+                                {{formValidators.getErrorMessage(addressInformation.get('city'))}}
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field class="w-100 my-2" appearance="outline">
+                            <mat-label>Referencia de ubicación</mat-label>
+                            <textarea formControlName="reference" style="height: 100px;" 
+                                placeholder="Ej: Media cuadra abajo de la escuela, junto a un parqueo, etc..." matInput></textarea>
+                            <mat-error *ngIf="addressInformation.get('reference').invalid">
+                                {{formValidators.getErrorMessage(addressInformation.get('reference'))}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-2 col-lg-3 col-md-4 col-sm-12">
+                        <button mat-stroked-button class="py-2 my-2 w-100" matStepperPrevious>Anterior</button>
+                    </div>
+                    <div class="col-xl-2 col-lg-3 col-md-4 col-sm-12">
+                        <button mat-raised-button class="py-2 my-2 w-100" (click)="addBusiness()" matStepperNext color="primary">Registrar</button>
+                    </div>
+                </div>
+            </form>
+        </mat-step>
+    </mat-vertical-stepper>
 </div>

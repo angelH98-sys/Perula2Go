@@ -46,6 +46,11 @@ export class UserService {
     return this.http.get(`${this.URL_API}/checkphone/${phone}`);
   }
 
+  checkUserById(id: String){
+    return this.http.get(`${this.URL_API}/checkuserbyid/${id}`);
+  }
+
+
   getUserAddress(id: String){
     return this.http.get(`${this.URL_API}/address/${id}`);
   }

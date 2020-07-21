@@ -41,8 +41,18 @@ userCtrl.editAddress = async (req, res) => {
 }
 
 userCtrl.getUserById = async (req, res) => {
-    const user = await User.find({_id: req.params.id});
-    res.json(user[0]);
+    const user = await User.findById(req.params.id);
+    res.json(user);
+}
+
+userCtrl.checkUserById = async (req, res) => {
+    let user;
+    try{
+        user = await User.findById(req.params.id, 'name');
+    }catch(e){
+        user = null;
+    }
+    res.json(user);
 }
 
 userCtrl.checkUserName = async (req, res) => {

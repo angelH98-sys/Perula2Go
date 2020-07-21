@@ -13,7 +13,7 @@ import { BusinessOrderComponent } from './components/business.order/business.ord
 
 const routes: Routes = [
   //{ path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-  { path: 'business', component: BusinessComponent },
+  { path: 'business/create/:id', component: BusinessComponent },
   { path: 'business/catalog', component: BusinessCatalogComponent },
   { path: 'business/orders', component: BusinessOrderComponent },
   { path: 'product/create/:id', component: ProductComponent },

@@ -28,10 +28,16 @@ export class BusinessService {
     return this.http.get(this.URL_GET_BY_ID + id);
   }
 
-  postBusiness(business: Business){
-    this.http.post(this.URL_API, business).subscribe((res: any) => {
-      console.log(res.status);
-    });
+  async postBusiness(business: Business){
+    await this.http.post(this.URL_API, business).toPromise();
+  }
+
+  checkPhone(phone: String){
+    return this.http.get(`${this.URL_API}/checkphone/${phone}`);
+  }
+
+  checkName(name: String){
+    return this.http.get(`${this.URL_API}/checkname/${name}`);
   }
 
   uploadImage (image: FormData){

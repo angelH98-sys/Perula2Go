@@ -6,6 +6,8 @@ router.post('/', userCtrl.createUser);
 
 router.get('/:id', userCtrl.getUserById);
 
+router.get('/checkuserbyid/:id', userCtrl.checkUserById);
+
 router.get('/checkuser/:user', userCtrl.checkUserName);
 
 router.get('/checkemail/:email', userCtrl.checkEmail);

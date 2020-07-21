@@ -7,10 +7,8 @@ let BusinessSchema = new Schema({
     description: String,
     phone: String,
     type: String,
-    address: {
-        'latitude': Number,
-        'longitude': Number
-    },
+    address: Object,
+    status: String,
     schedule:{
         'monday': {
             'start': String,
@@ -46,7 +44,7 @@ let BusinessSchema = new Schema({
         'logo': String
     },
     user: [{
-        'user': String,
+        'userId': String,
         'role': String
     }]
 });

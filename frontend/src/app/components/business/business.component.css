@@ -1,5 +1,5 @@
 agm-map {
-    height: 500px;
+    height: 300px;
 }
 textarea {
     height: 100px;
@@ -7,4 +7,10 @@ textarea {
 #send{
     font-size: 30px;
     margin-top: 40px;
+}
+
+@media (min-width: 992px) {
+    agm-map{
+        height: 450px;
+    }
 }

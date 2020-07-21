@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { UserService } from './user.service';
+import { BusinessService } from './business.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FormValidatorsService {
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService,
+    private businessService: BusinessService) { }
 
   checkPasswords(formGroup: FormGroup) {
       let pass = formGroup.get('pass').value;
@@ -15,6 +17,14 @@ export class FormValidatorsService {
       if(pass.trim().length > 0 && confirmPass.trim().length > 0 && pass != confirmPass){
           formGroup.get('confirmPass').setErrors({notSame: true})
       }   
+  }
+
+  checkTimeFormat(control: FormControl){
+    let time = control.value;
+    let regex = new RegExp('^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$');
+    if(!regex.test(time)){
+      control.setErrors({invalidTime: true});
+    }
   }
   
   checkFormatPhone(control: FormControl){
@@ -59,6 +69,20 @@ export class FormValidatorsService {
             }
             case "phone":{
               this.checkPhoneInUsers(formControl);
+              break;
+            }
+          }
+          break;
+        }
+        case "businesses":{
+          switch(name){
+            case "name":{
+              this.checkNameInBusiness(formControl);
+              break;
+            }
+            case "phone":{
+              this.checkPhoneInBusiness(formControl);
+              break;
             }
           }
           break;
@@ -66,6 +90,8 @@ export class FormValidatorsService {
       }
     }
   }
+
+  //Users
 
   private checkUserInUsers(formControl: FormControl){
     this.userService.checkUser(formControl.value).subscribe((res: any) => {
@@ -81,6 +107,20 @@ export class FormValidatorsService {
 
   private checkPhoneInUsers(formControl: FormControl){
     this.userService.checkPhone(formControl.value).subscribe((res: any) => {
+      if(res.docs == 1) formControl.setErrors({'invalidPhone': true});;
+    });
+  }
+
+  //Businesses
+
+  private checkNameInBusiness(formControl: FormControl){
+    this.businessService.checkName(formControl.value).subscribe((res: any) => {
+      if(res.docs == 1) formControl.setErrors({'invalidBusinessName': true});;
+    });
+  }
+
+  private checkPhoneInBusiness(formControl: FormControl){
+    this.businessService.checkPhone(formControl.value).subscribe((res: any) => {
       if(res.docs == 1) formControl.setErrors({'invalidPhone': true});;
     });
   }
@@ -114,6 +154,22 @@ export class FormValidatorsService {
         }
         case "invalidPhone":{
           return "Este teléfono ya existe en Perula2Go";
+          break;
+        }
+        case "invalidBusinessName":{
+          return "Este negocio ya existe en Perula2Go";
+          break;
+        }
+        case "invalidTime":{
+          return "Formato de tiempo invalido";
+          break;
+        }
+        case "invalidImageSize":{
+          return "Tamaño máximo de imagen: 200KB";
+          break;
+        }
+        case "invalidImageType":{
+          return "Formato de imagen inválido";
           break;
         }
       }
