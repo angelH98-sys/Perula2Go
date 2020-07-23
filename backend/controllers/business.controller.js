@@ -35,6 +35,15 @@ businessCtrl.checkName = async (req, res) => {
     res.json({'docs': business.length});
 }
 
+businessCtrl.checkBusinessById = async (req, res) => {
+    try{
+        const business = await Business.findById(req.params.id, 'name');
+        res.json(business.name);
+    }catch(e){
+        res.json(null);
+    }
+}
+
 businessCtrl.checkPhone = async (req, res) => {
     const business = await Business.find({phone: req.params.phone});
     res.json({'docs': business.length});

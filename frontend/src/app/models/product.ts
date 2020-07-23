@@ -1,3 +1,14 @@
+export class PromotionInformation{
+    constructor(){
+        this.isPermanent = null;
+        this.start = null;
+        this.end = null;
+    }
+    isPermanent: Boolean;
+    start: Date;
+    end: Date;
+}
+
 export class Product {
 
     constructor(){
@@ -8,7 +19,8 @@ export class Product {
         this.business = "";
         this.picture = "";
         this.category = "";
-        this.status = "";
+        this.promotionData = new PromotionInformation();
+        this.status = "Disponible";
         this.productionTime = 0;
     }
 
@@ -19,6 +31,7 @@ export class Product {
     business: String;
     picture: String;
     category: String;
+    promotionData: PromotionInformation;
     status: String;
     productionTime: Number;
 }

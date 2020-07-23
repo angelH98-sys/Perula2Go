@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { UserService } from './user.service';
 import { BusinessService } from './business.service';
+import { ProductService } from './product.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,15 +10,8 @@ import { BusinessService } from './business.service';
 export class FormValidatorsService {
 
   constructor(private userService: UserService,
-    private businessService: BusinessService) { }
-
-  checkPasswords(formGroup: FormGroup) {
-      let pass = formGroup.get('pass').value;
-      let confirmPass = formGroup.get('confirmPass').value;
-      if(pass.trim().length > 0 && confirmPass.trim().length > 0 && pass != confirmPass){
-          formGroup.get('confirmPass').setErrors({notSame: true})
-      }   
-  }
+    private businessService: BusinessService,
+    private productService: ProductService) { }
 
   checkTimeFormat(control: FormControl){
     let time = control.value;
@@ -54,7 +48,23 @@ export class FormValidatorsService {
     control.setValue(validValue);
   }
 
-  alreadyExistIn(formControl: FormControl, name: String, collectionName: String){
+  checkFormatPrice(control: FormControl){
+    let price = control.value;
+    let regex = new RegExp('^[0-9]+(\.[0-9]{1,2})?$')
+    if(!regex.test(price)){
+      control.setErrors({invalidPrice: true});
+    }
+  }
+
+  moreThanCeroPrice(control: FormControl){
+    let price: Number = control.value;
+
+    if(price <= 0){
+      control.setErrors({invalidPriceValue: true});
+    }
+  }
+
+  alreadyExistIn(formControl: FormControl, name: String, collectionName: String, extraInfo ? : String){
     if(formControl.dirty){
       switch(collectionName){
         case "users":{
@@ -87,7 +97,43 @@ export class FormValidatorsService {
           }
           break;
         }
+        case "products":{
+          switch(name){
+            case "name":{
+              this.checkNameInProducts(extraInfo, formControl);
+              break;
+            }
+          }
+          break;
+        }
       }
+    }
+  }
+
+  checkDateFormat(control: FormControl){
+    let date: Date = new Date(control.value);
+    if(date.toString() == "Invalid Date"){
+      control.setErrors({invalidDate: true});
+    }
+  }
+
+  checkPastDate(control: FormControl){
+    //let value: Date = this.stringToDate(control.value);
+    let value: Date = new Date(control.value);
+    value.setDate(value.getDate() + 1);
+    let now: Date = new Date();
+    if(now > value){
+      control.setErrors({isPastDate: true});
+    }
+  }
+
+  checkEndPromotionDate(startControl: FormControl, endControl: FormControl){
+    let start: Date = new Date(startControl.value);
+    start.setDate(start.getDate() + 1);
+    let end: Date = new Date(endControl.value);
+    end.setDate(end.getDate() + 1);
+    if(start > end){
+      endControl.setErrors({invalidEndDate: true});
     }
   }
 
@@ -111,6 +157,15 @@ export class FormValidatorsService {
     });
   }
 
+  checkPasswords(formGroup: FormGroup) {
+    let pass = formGroup.get('pass').value;
+    let confirmPass = formGroup.get('confirmPass').value;
+    if(pass.trim().length > 0 && confirmPass.trim().length > 0 && pass != confirmPass){
+        formGroup.get('confirmPass').setErrors({notSame: true})
+    }   
+  }
+
+
   //Businesses
 
   private checkNameInBusiness(formControl: FormControl){
@@ -121,8 +176,17 @@ export class FormValidatorsService {
 
   private checkPhoneInBusiness(formControl: FormControl){
     this.businessService.checkPhone(formControl.value).subscribe((res: any) => {
-      if(res.docs == 1) formControl.setErrors({'invalidPhone': true});;
+      if(res.docs == 1) formControl.setErrors({'invalidPhone': true});
     });
+  }
+
+  //Products
+
+  private async checkNameInProducts(businessId: String, control: FormControl){
+    let product = await this.productService.getProductInBusiness(businessId, control.value).toPromise();
+    if(product != null){
+      control.setErrors({invalidProductName: true});
+    }
   }
 
   getErrorMessage(control: FormControl){
@@ -130,47 +194,54 @@ export class FormValidatorsService {
       switch(error){
         case "required":{
           return "Campo requerido";
-          break;
         }
         case "email":{
           return "Formato de correo electrónico erroneo";
-          break;
         }
         case "pattern":{
-          return "Formáto de telefono erroneo";
-          break;
+          return "Formáto incorrecto";
         }
         case "notSame":{
           return "Las contraseñas no coinciden";
-          break;
         }
         case "invalidUser":{
           return "Este usuario ya existe en Perula2Go";
-          break;
         }
         case "invalidEmail":{
           return "Este correo electrónico ya existe en Perula2Go";
-          break;
         }
         case "invalidPhone":{
           return "Este teléfono ya existe en Perula2Go";
-          break;
         }
         case "invalidBusinessName":{
           return "Este negocio ya existe en Perula2Go";
-          break;
         }
         case "invalidTime":{
           return "Formato de tiempo invalido";
-          break;
         }
         case "invalidImageSize":{
           return "Tamaño máximo de imagen: 200KB";
-          break;
         }
         case "invalidImageType":{
           return "Formato de imagen inválido";
-          break;
+        }
+        case "invalidPrice":{
+          return "Formato de precio inválido";
+        }
+        case "invalidDate":{
+          return "Formato de fecha incorrecto";
+        }
+        case "isPastDate":{
+          return "La fecha debe ser la actual o alguna futura";
+        }
+        case "invalidEndDate":{
+          return "La fecha debe ser igual o superior a la fecha de inicio";
+        }
+        case "invalidPriceValue":{
+          return "El precio debe ser superior a $0.00";
+        }
+        case "invalidProductName":{
+          return "Ya existe un producto con este nombre en Perula2Go";
         }
       }
     }

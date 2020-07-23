@@ -25,7 +25,11 @@ export class BusinessService {
   }
 
   getBusinessById(id: String){
-    return this.http.get(this.URL_GET_BY_ID + id);
+    return this.http.get(`${this.URL_API}/${id}`);
+  }
+
+  checkBusinessById(id: String){
+    return this.http.get(`${this.URL_API}/checkbusiness/${id}`);
   }
 
   async postBusiness(business: Business){

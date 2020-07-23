@@ -8,6 +8,8 @@ router.get('/catalog', businessCtrl.getBusiness);
 
 router.get('/:id', businessCtrl.getBusinessById);
 
+router.get('/checkbusiness/:id', businessCtrl.checkBusinessById);
+
 router.get('/checkphone/:phone', businessCtrl.checkPhone);
 
 router.get('/checkname/:name', businessCtrl.checkName);

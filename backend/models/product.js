@@ -9,6 +9,11 @@ let ProductSchema = new Schema({
     business: String,
     picture: String,
     category: String,
+    promotionData: {
+        'isPermanent': Boolean,
+        'start': Date,
+        'end': Date
+    },
     status: String,
     productionTime: Number
 });

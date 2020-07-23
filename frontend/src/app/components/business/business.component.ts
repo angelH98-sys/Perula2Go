@@ -33,8 +33,8 @@ export class BusinessComponent implements OnInit {
 
   businessTypes = ["Restaurante", "Ferretería", "Farmácia"];
 
-  cover = "";
-  logo = "";
+  cover;
+  logo;
 
   businessInformation: any;
   scheduleInformation: any;
@@ -214,13 +214,17 @@ export class BusinessComponent implements OnInit {
     const logo = new FormData();
     logo.append('image', this.logo);
 
-    let res;
-    res = await this.businessService.uploadImage(cover).toPromise();
-    business.picture.cover = res.image;
 
-    res = await this.businessService.uploadImage(logo).toPromise();
-    business.picture.logo = res.image;
-    
+    let res;
+
+    if(this.cover != undefined){
+      res = await this.businessService.uploadImage(cover).toPromise();
+      business.picture.cover = res.image;
+    }
+    if(this.logo != undefined){
+      res = await this.businessService.uploadImage(logo).toPromise();
+      business.picture.logo = res.image;
+    }
     this.businessService.postBusiness(business);
   }
 

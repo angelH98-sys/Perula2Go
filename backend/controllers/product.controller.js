@@ -30,8 +30,23 @@ productCtrl.getProductById = async (req, res) => {
 }
 
 productCtrl.getProductName = async (req, res) => {
-    const product = await Product.find({_id: req.params.id});
-    res.json(product[0].name);
+    try{
+        const product = await Product.findById(req.params.id, 'name');
+        res.json(product.name);
+    }catch(e){
+        res.json(null);
+    }
+}
+
+productCtrl.getProductInBusiness = async (req, res) => {
+    try{
+        const product = await Product.findOne({
+            business: req.params.businessid,
+            name: req.params.name}, '_id');
+        res.json(product._id);
+    }catch(e){
+        res.json(null);
+    }
 }
 
 productCtrl.getProductByBusiness = async (req, res) => {

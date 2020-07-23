@@ -1,63 +1,90 @@
 <div class="container">
     <div class="row">
-        <div class="col-xl-6 mx-auto">
+        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 mx-auto">
             <mat-card class="my-4">
-                <form (ngSubmit)="addProduct()">
+                <form [formGroup]="productInformation" (ngSubmit)="checkFormValidation()">
                     <h1 class="mat-display-3 my-3">
                         Registro de productos
                     </h1>
                     <mat-form-field class="w-100" appearance="outline">
                         <mat-label>Nombre</mat-label>
-                        <input name="name" #name="ngModel" [(ngModel)]="product.name"
-                            matInput type="text" placeholder="Ej: Hamburguesa con queso" required>
+                        <input formControlName="name"
+                            matInput type="text" placeholder="Ej: Hamburguesa con queso">
+                        <mat-error *ngIf="productInformation.get('name').invalid">
+                            {{formValidators.getErrorMessage(productInformation.get('name'))}}
+                        </mat-error>
                     </mat-form-field>
                     <mat-form-field class="w-100 mr-3" appearance="outline">
                         <mat-label>Descripción</mat-label>
-                        <textarea name="description" #description="ngModel" 
-                            [(ngModel)]="product.description" matInput></textarea>
+                        <textarea formControlName="description" matInput></textarea>
                     </mat-form-field>
                     <p class="mat-h1 ml-3">Foto del producto</p>
-                    <input type="file" (change)="getPictureInfo($event)">
-                    <mat-form-field class="w-100 mt-5" appearance="outline">
+                    <input formControlName="picture" type="file" 
+                        (change)="checkImage($event, productInformation.get('picture'))">
+                    <mat-error *ngIf="productInformation.get('name').invalid">
+                        {{formValidators.getErrorMessage(productInformation.get('picture'))}}
+                    </mat-error>
+                    <mat-form-field class="w-100 mt-4" appearance="outline">
                         <mat-label>Categoria</mat-label>
-                        <mat-select name="categories" #categories="ngModel" [(ngModel)]="product.category">
-                            <mat-option value="Promoción">Promoción</mat-option>
-                            <mat-option value="Para compartir">Para compartir</mat-option>
-                            <mat-option value="Combo">Combo</mat-option>
-                            <mat-option value="Individual">Individual</mat-option>
-                            <mat-option value="Extra">Extra</mat-option>
+                        <mat-select (selectionChange)="checkCategory()" formControlName="category">
+                            <mat-option *ngFor="let item of categoryList" [value]="item">
+                                {{item}}
+                            </mat-option>
                         </mat-select>
+                        <mat-error *ngIf="productInformation.get('category').invalid">
+                            {{formValidators.getErrorMessage(productInformation.get('category'))}}
+                        </mat-error>
                     </mat-form-field>
+                    <ng-template [ngIf]="productInformation.get('category').value == 'Promoción'">
+                        <div formGroupName="promotionData">
+                            <p class="mat-h1 ml-3">Duración de promoción</p>
+                            <mat-slide-toggle class="ml-3" (change)="permanentChange()" formControlName="isPermanent">
+                                Ofertarla permanentemente
+                            </mat-slide-toggle>
+                            <mat-form-field class="w-100 mt-4" appearance="outline">
+                                <mat-label>Aplicar desde</mat-label>
+                                <input formControlName="start" matInput type="date">
+                                <mat-error *ngIf="isStartInvalid()">
+                                    {{formValidators.getErrorMessage(getStart())}}
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field *ngIf="!isPermanentValue()" class="w-100" appearance="outline">
+                                <mat-label>Hasta</mat-label>
+                                <input formControlName="end" matInput type="date">
+                                <mat-error *ngIf="isEndInvalid()">
+                                    {{formValidators.getErrorMessage(getEnd())}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </ng-template>
                     <br>
-                    <mat-form-field class="w-25 mr-5" appearance="outline">
-                        <mat-label>Precio</mat-label>
-                        <input name="price" #price="ngModel" [(ngModel)]="product.price"
-                            matInput class="text-right" type="number" value="0.00" min="0.00" step="0.01">
-                        <span matPrefix>$</span>
-                    </mat-form-field>
-                    <mat-form-field class="w-25" appearance="outline">
-                        <mat-label>Preparación</mat-label>
-                        <input name="productionTime" #productionTime="ngModel" 
-                            [(ngModel)]="product.productionTime" matInput class="text-left" 
-                            type="number" value="0" min="0" step="1">
-                        <span matSuffix>min</span>
-                    </mat-form-field>
-                    <br>
-                    <!--p class="mat-h1 ml-3 d-inline mr-3">Tamaño del producto</p>
-                    <button mat-mini-fab class="d-inline" (click)="addSize()">+</button>
-                    <div *ngFor="let size of sizeList; index as i">
-                        <mat-form-field class="w-50 mr-4" appearance="outline">
-                        <mat-label>Nombre</mat-label>
-                            <input matInput name="sizeName{{i}}" [(ngModel)]="size.name" placeholder="Ej: Mediano, Grande..." type="text">
-                        </mat-form-field>
-                        <mat-form-field class="w-25" appearance="outline">
-                            <input matInput name="sizePrice{{i}}" class="text-right" type="number" value="0.00" min="0.00" step="0.01" [(ngModel)]="size.price">
-                            <span matPrefix>$</span>
-                        </mat-form-field>
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                            <mat-form-field class="w-75" appearance="outline">
+                                <mat-label>Precio</mat-label>
+                                <input formControlName="price" matInput class="text-right" 
+                                    type="number" value="0.00" min="0.00" step="0.01">
+                                <span matPrefix>$</span>
+                                <mat-error *ngIf="productInformation.get('price').invalid">
+                                    {{formValidators.getErrorMessage(productInformation.get('price'))}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                            <mat-form-field class="w-75" appearance="outline">
+                                <mat-label>Preparación</mat-label>
+                                <input formControlName="productionTime" 
+                                    matInput class="text-left" 
+                                    type="number" value="0" min="0" step="1">
+                                <span matSuffix>minutos</span>
+                                <mat-error *ngIf="productInformation.get('productionTime').invalid">
+                                    {{formValidators.getErrorMessage(productInformation.get('productionTime'))}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
                     </div>
-                    <br-->
                     <button type="submit" mat-raised-button class="py-4 w-100"
-                        color="primary" id="send">
+                        color="primary" id="send" [disabled]="productInformation.invalid">
                         Registrar producto
                     </button>
                 </form>
