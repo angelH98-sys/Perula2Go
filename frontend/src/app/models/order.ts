@@ -2,7 +2,7 @@ import { Address } from '../utilities/address';
 
 class orderDates {
     constructor(){
-        this.borrador = null;
+        this.borrador = new Date();
         this.enCola = null;
         this.enProceso = null;
         this.lista = null;
@@ -66,13 +66,13 @@ export class productInOrder {
 
 export class Order {
 
-    constructor(){
+    constructor(customer = ""){
         this._id = "";
-        this.status = "Borrador";
+        this.status = "Draft";
         this.comment = "";
         this.totalAmount = 0;
         this.wait = 0;
-        this.customer = "";
+        this.customer = customer;
         this.employee = "";
         this.qualification = 0;
         this.statusDate = new orderDates();

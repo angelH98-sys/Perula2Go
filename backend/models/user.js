@@ -7,14 +7,9 @@ let UserSchema = new Schema({
     user: String,
     password: String,
     email: String,
-    question: String,
-    answer: String,
-    picture: String,
     status: String,
     userType: String,
-    phone: String,
-    address: [],
-    employee: Object
+    phone: String
 });
 
 module.exports = mongoose.model('user', UserSchema);

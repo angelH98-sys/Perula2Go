@@ -1,60 +1,27 @@
-import { Address } from '../utilities/address';
-
-export class Employee {
-    constructor(){
-        this.vehicle = "";
-        this.dui = "";
-        this.driverLicense = "";
-        this.status = "";
-        this.qualification = 0;
-    }
-
-    vehicle: String;
-    dui: String;
-    driverLicense: String;
-    status: String;
-    qualification: Number;
-}
+import { Form, FormGroup } from "@angular/forms";
 
 export class User {
 
-    constructor(userType: String){
+    constructor(form: FormGroup){
 
-        this._id = '';
-        this.name = '';
-        this.user = '';
-        this.password = '';
-        this.email = '';
-        this.question = '';
-        this.answer = '';
-        this.picture = '';
+        this.name = form.get('name').value;
+        this.user = form.get('user').value;
+        this.password = form.get('pass').value;
+        this.email = form.get('email').value;
+        this.phone = form.get('phone').value;
         this.status = 'Active';
-        this.userType = userType;
-        this.phone = '';
-
-        switch(userType){
-            case "Customer":{
-                this.address = [];
-                break;
-            }
-            case "Employee":{
-                this.employee = new Employee();
-                break;
-            }
-        }
+        this.userType = 'Customer';
     }
 
     _id: String;
+
     name: String;
-    user: String;
-    password: String;
     email: String;
-    question: String;
-    answer: String;
-    picture: String;
+    phone: String;
+    user: String;
+
+    password: String;
+    
     status: String;
     userType: String;
-    phone: String;
-    address: Address[];
-    employee: Employee;
 }

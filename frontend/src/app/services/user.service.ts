@@ -15,13 +15,19 @@ export class UserService {
   constructor( private http: HttpClient) { }
 
   async postUser(user: User){
-    const id: any = await this.http.post(this.URL_API, user).toPromise();
 
-    const order: Order = new Order();
-    order.customer = id._id;
-    order.statusDate.borrador = new Date();
+    let customer: any = await this.http.post(this.URL_API, user).toPromise();
 
-    await this.http.post(this.URL_API_ORDER, order).toPromise();
+    if(customer._id){
+      //Solo para desarrollo de registro de clientes
+      return true;
+    }else{
+      return false;
+    }
+
+    //const order: Order = new Order(customer._id);
+
+    //await this.http.post(this.URL_API_ORDER, order).toPromise();
   }
 
   putAddress(id: String, address){
@@ -34,16 +40,28 @@ export class UserService {
     return this.http.get(`${this.URL_API}/${id}`);
   }
 
-  checkUser(user: String){
-    return this.http.get(`${this.URL_API}/checkuser/${user}`);
+  async checkUser(user: String){
+    
+    let response: any;
+    response = await this.http.get(`${this.URL_API}/checkuser/${user}`).toPromise();
+
+    return response.docs;
   }
 
-  checkEmail(email: String){
-    return this.http.get(`${this.URL_API}/checkemail/${email}`);
+  async checkEmail(email: String){
+
+    let response: any;
+    response = await this.http.get(`${this.URL_API}/checkemail/${email}`).toPromise();
+
+    return response.docs;
   }
 
-  checkPhone(phone: String){
-    return this.http.get(`${this.URL_API}/checkphone/${phone}`);
+  async checkPhone(phone: String){
+
+    let response: any;
+    response = await this.http.get(`${this.URL_API}/checkphone/${phone}`).toPromise();
+
+    return response.docs;
   }
 
   checkUserById(id: String){

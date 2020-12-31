@@ -67,23 +67,6 @@ export class FormValidatorsService {
   alreadyExistIn(formControl: FormControl, name: String, collectionName: String, extraInfo ? : String){
     if(formControl.dirty){
       switch(collectionName){
-        case "users":{
-          switch(name){
-            case "user":{
-              this.checkUserInUsers(formControl);
-              break;
-            }
-            case "email":{
-              this.checkEmailInUsers(formControl);
-              break;
-            }
-            case "phone":{
-              this.checkPhoneInUsers(formControl);
-              break;
-            }
-          }
-          break;
-        }
         case "businesses":{
           switch(name){
             case "name":{
@@ -139,28 +122,37 @@ export class FormValidatorsService {
 
   //Users
 
-  private checkUserInUsers(formControl: FormControl){
-    this.userService.checkUser(formControl.value).subscribe((res: any) => {
-      if(res.docs == 1) formControl.setErrors({'invalidUser': true});;
-    });
+  async userAvailableInUsers(formGroup: FormGroup){
+
+    //Verificamos si el usuario esta disponible en la tabla users
+    let user = formGroup.get('user').value;
+    let response = await this.userService.checkUser(user);
+    if(response == 1) formGroup.get('user').setErrors({'invalidUser': true});
   }
 
-  private checkEmailInUsers(formControl: FormControl){
-    this.userService.checkEmail(formControl.value).subscribe((res: any) => {
-      if(res.docs == 1) formControl.setErrors({'invalidEmail': true});;
-    });
+  async emailAvailableInUsers(formGroup: FormGroup){
+
+    //Verificamos si el email esta disponible en la tabla users
+    let email = formGroup.get('email').value;
+    let response = await this.userService.checkEmail(email);
+    if(response == 1) formGroup.get('email').setErrors({'invalidEmail': true});
   }
 
-  private checkPhoneInUsers(formControl: FormControl){
-    this.userService.checkPhone(formControl.value).subscribe((res: any) => {
-      if(res.docs == 1) formControl.setErrors({'invalidPhone': true});;
-    });
+  async phoneAvailableInUsers(formGroup: FormGroup){
+
+    //Verificamos si el teléfono esta disponible en la tabla users
+    let phone = formGroup.get('phone').value;
+    let response = await this.userService.checkPhone(phone);
+    if(response == 1) formGroup.get('phone').setErrors({'invalidPhone': true});
   }
 
   checkPasswords(formGroup: FormGroup) {
+
+    //Verificamos si ambas contraseñas son semejantes
     let pass = formGroup.get('pass').value;
     let confirmPass = formGroup.get('confirmPass').value;
-    if(pass.trim().length > 0 && confirmPass.trim().length > 0 && pass != confirmPass){
+
+    if( pass.trim().length > 0 && confirmPass.trim().length > 0 && pass != confirmPass){
         formGroup.get('confirmPass').setErrors({notSame: true})
     }   
   }

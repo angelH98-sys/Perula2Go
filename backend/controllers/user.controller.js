@@ -9,22 +9,14 @@ userCtrl.createUser = async (req, res) => {
         user: req.body.user,
         password: req.body.password,
         email: req.body.email,
-        question: req.body.question,
-        answer: req.body.answer,
-        picture: req.body.picture,
         status: req.body.status,
         userType: req.body.userType,
-        phone: req.body.phone,
-        address: req.body.address,
-        employee: req.body.employee
+        phone: req.body.phone
     });
 
 
     const saltPass = await bcrypt.genSalt();
     user.password = await bcrypt.hash(user.password, saltPass);
-
-    const saltAnsw = await bcrypt.genSalt();
-    user.answer = await bcrypt.hash(user.answer, saltAnsw);
     
     await user.save((err, newUser) => {
         res.json({

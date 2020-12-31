@@ -4,3 +4,20 @@
  .main-color{
     background-color: #4457C2;
 }
+
+/*SnackBar Styles*/
+.success{
+    background-color: #3f51b5;
+}
+
+.failed{
+    background-color: #f44336;
+}
+
+.snackbar {
+    color: white;
+}
+.snackbar span{
+    color: white;
+    font-weight: bold;
+}
