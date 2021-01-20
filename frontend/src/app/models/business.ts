@@ -1,57 +1,17 @@
+import { FormGroup } from '@angular/forms';
 import { Address } from '../utilities/address';
 
-export class Schedule {
-
-    constructor(){
-        this.monday = {'start':'','end':''};
-        this.tuesday = {'start':'','end':''};
-        this.wednesday = {'start':'','end':''};
-        this.thursday = {'start':'','end':''};
-        this.friday = {'start':'','end':''};
-        this.saturday = {'start':'','end':''};
-        this.sunday = {'start':'','end':''};
-    }
-
-    monday: {
-        'start': String,
-        'end': String
-    };
-    tuesday:{
-        'start': String,
-        'end': String
-    };
-    wednesday: {
-        'start': String,
-        'end': String
-    };
-    thursday: {
-        'start': String,
-        'end': String
-    };
-    friday: {
-        'start': String,
-        'end': String
-    };
-    saturday:{
-        'start': String,
-        'end': String
-    };
-    sunday: {
-        'start': String,
-        'end': String
-    }
-}
-
 export class Business {
-    constructor(){
-        this._id = '';
-        this.name = '';
-        this.description = '';
-        this.phone = '';
-        this.type = '';
-        this.address = new Address();
-        this.schedule = new Schedule;
+
+    constructor(form?: FormGroup, schedule?: any){
+        let values = form.value;
+        this.name = values.name;
+        this.description = values.description;
+        this.phone = values.phone;
+        this.type = values.type;
+        this.address = undefined;
         this.status = "Pendiente";
+        this.schedule = schedule;
         this.picture = {
             'cover': '',
             'logo': ''
@@ -60,12 +20,12 @@ export class Business {
     }
 
     _id: String;
-    name: String;
+    name: String;   
     description: String;
     phone: String;
     type: String;
     address: Address;
-    schedule: Schedule;
+    schedule: {'isOpen': boolean, 'start': Date, 'end': Date}[];
     status: String;
     picture: {
         'cover': String,

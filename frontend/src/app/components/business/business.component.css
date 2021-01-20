@@ -14,3 +14,7 @@ textarea {
         height: 450px;
     }
 }
+
+.time-form-field{
+    width: 95%;
+}

@@ -63,12 +63,12 @@ export class UserComponent implements OnInit {
 
     if(this.userForm.invalid){
 
-      this.alert.failed('No fue posible registrar el usuario')
+      this.alert.failed('Ups... revisa los campos del formulario');
       this.buttonMessage = "Registrar";
       return;
     }
     let user: User = new User(this.userForm);
-    console.log(user);
+    
     let query = await this.userService.postUser(user);
 
     if(query){

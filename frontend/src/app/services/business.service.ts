@@ -13,11 +13,7 @@ export class BusinessService {
   readonly URL_GET_BY_ID = 'http://localhost:3000/business/';
   readonly URL_IMAGE = 'http://localhost:3000/fileUpload/business';
 
-  businesses: Business[];
-  selectedBusiness: Business;
-
-  constructor( private http: HttpClient ) { 
-    this.selectedBusiness = new Business();
+  constructor( private http: HttpClient ) {
   }
 
   getBusiness(){
@@ -32,19 +28,48 @@ export class BusinessService {
     return this.http.get(`${this.URL_API}/checkbusiness/${id}`);
   }
 
-  async postBusiness(business: Business){
-    await this.http.post(this.URL_API, business).toPromise();
+  async postBusiness(business: Business, logo: FormData, cover: FormData){
+    /**
+     * Post de un nuevo negocio a la base de datos.
+     * Además de subir imagenes a servidor.
+     */
+    try{
+
+      let logoName: any = await this.uploadImage(logo);
+      business.picture.logo = logoName.image;
+
+      let coverName: any = await this.uploadImage(cover);
+      business.picture.cover = coverName.image;
+  
+      return await this.http.post(this.URL_API, business).toPromise();
+
+    }catch(exc){
+
+      return false;
+    }
   }
 
-  checkPhone(phone: String){
-    return this.http.get(`${this.URL_API}/checkphone/${phone}`);
+  async checkPhone(phone: String){
+
+    let response: any;
+    response = await this.http.get(`${this.URL_API}/checkphone/${phone}`).toPromise(); 
+    return response.docs;
   }
 
-  checkName(name: String){
-    return this.http.get(`${this.URL_API}/checkname/${name}`);
+  async checkName(name: String){
+    
+    let response: any;
+    response = await this.http.get(`${this.URL_API}/checkname/${name}`).toPromise();
+    return response.docs;
   }
 
   uploadImage (image: FormData){
-      return this.http.post(this.URL_IMAGE, image);
+    if(image != undefined){
+
+      return this.http.post(this.URL_IMAGE, image).toPromise();
+    }else{
+      
+      return false;
+    }
   }
 }

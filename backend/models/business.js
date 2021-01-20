@@ -9,36 +9,16 @@ let BusinessSchema = new Schema({
     type: String,
     address: Object,
     status: String,
-    schedule:{
-        'monday': {
-            'start': String,
-            'end': String
-        },
-        'tuesday':{
-            'start': String,
-            'end': String
-        },
-        'wednesday': {
-            'start': String,
-            'end': String
-        },
-        'thursday': {
-            'start': String,
-            'end': String
-        },
-        'friday': {
-            'start': String,
-            'end': String
-        },
-        'saturday':{
-            'start': String,
-            'end': String
-        },
-        'sunday': {
-            'start': String,
-            'end': String
-        }
-    },
+    schedule: [],
+    /**
+     * El array tendría almacenados 7 elementos (simulando los días de la semana)
+     * Cada item contendría el siguiente objeto:
+     * {
+     *  open    -> indicando si el negocio esta abierto ese día
+     *  start   -> indicando la hora de apertura
+     *  end     -> indicando la hora de clausura
+     * }
+     */
     picture: {
         'cover': String,
         'logo': String

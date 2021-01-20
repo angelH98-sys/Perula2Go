@@ -1,279 +1,297 @@
 <div class="container">
-    <h1 class="mat-display-3 my-3 text-center">
-        Nuevo negocio
-    </h1>
-    <mat-vertical-stepper linear #stepper>
-        <mat-step [stepControl]="businessInformation" editable="true">
-            <form [formGroup]="businessInformation">
-                <ng-template matStepLabel>
-                    Información del negocio
-                </ng-template>
-                <div class="row">
-                    <div class="col-xl-6 col-lg-6 col-md-12">
-                        <mat-form-field class="w-100 my-2" appearance="outline">
-                            <mat-label>
-                                Nombre del negocio
-                            </mat-label>
-                            <input type="text" matInput formControlName="name"
-                                (focusout)="formValidators.alreadyExistIn(businessInformation.get('name'), 'name', 'businesses')">
-                            <mat-error *ngIf="businessInformation.get('name').invalid">
-                                {{formValidators.getErrorMessage(businessInformation.get('name'))}}
-                            </mat-error>
-                        </mat-form-field>
-                        <mat-form-field class="w-100 my-2" appearance="outline">
-                            <mat-label>
-                                Teléfono
-                            </mat-label>
-                            <input formControlName="phone" 
-                                (keyup)="formValidators.checkFormatPhone(businessInformation.get('phone'))" 
-                                (focusout)="formValidators.alreadyExistIn(businessInformation.get('phone'), 'phone', 'businesses')"
-                                maxlength="9" placeholder="Ej: 0000-0000" matInput>
-                            <mat-error *ngIf="businessInformation.get('phone').invalid">
-                                {{formValidators.getErrorMessage(businessInformation.get('phone'))}}
-                            </mat-error>
-                            <mat-hint>Formáto valido: 1234-1234</mat-hint>
-                        </mat-form-field>
-                        <mat-form-field class="w-100 my-2" appearance="outline">
-                            <mat-label>
-                                Tipo de negocio
-                            </mat-label>
-                            <mat-select formControlName="type">
-                                <mat-option *ngFor="let item of businessTypes" [value]="item">
-                                    {{item}}
-                                </mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="businessInformation.get('type').invalid">
-                                {{formValidators.getErrorMessage(businessInformation.get('type'))}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-                    <div class="col-xl-6 col-lg-6 col-md-12">
-                        <p class="mat-h3 mat-subheading-2 my-2">Logo</p>
-                        <input name="logo" type="file" formControlName="logo"
-                            (change)="checkImage($event, businessInformation.get('logo'), 'logo')">
-                        <mat-error *ngIf="businessInformation.get('logo').invalid">
-                            {{formValidators.getErrorMessage(businessInformation.get('logo'))}}
+    <mat-card>
+
+        <h1 class="mat-display-3 my-3 text-center">
+            Registro de negocios
+        </h1>
+
+        <form [formGroup]="bsnsForm">
+
+            <div class="row">
+
+                <div class="col-xl-6 col-lg-6 col-md-12">
+                    
+                    <mat-form-field appearance="outline" class="w-100 my-2">
+    
+                        <mat-label>
+                            Nombre del negocio
+                        </mat-label>
+                        <input type="text" matInput formControlName="name">
+                        <mat-error *ngIf="bsnsForm.get('name').invalid">
+                            {{
+                                validator.getErrorMessage(bsnsForm.get('name'))
+                            }}
                         </mat-error>
-                        <p class="mat-h3 mat-subheading-2 my-2">Imagen de portada</p>
-                        <input name="cover" type="file" formControlName="cover"
-                            (change)="checkImage($event, businessInformation.get('cover'), 'cover')">
-                        <mat-error *ngIf="businessInformation.get('cover').invalid">
-                            {{formValidators.getErrorMessage(businessInformation.get('cover'))}}
+    
+                    </mat-form-field>
+    
+                    <mat-form-field appearance="outline" class="w-100 my-2">
+                    
+                        <mat-label>
+                            Teléfono
+                        </mat-label>
+                        <input formControlName="phone" 
+                            (keyup)="validator.checkFormatPhone(bsnsForm.get('phone'))" 
+                            maxlength="9" placeholder="Ej: 0000-0000" matInput>
+                        <mat-error *ngIf="bsnsForm.get('phone').invalid">
+                            {{
+                                validator.getErrorMessage(bsnsForm.get('phone'))
+                            }}
                         </mat-error>
-                        <mat-form-field class="w-100 my-2" appearance="outline">
-                            <mat-label>
-                                Descripción
-                            </mat-label>
-                            <textarea formControlName="description" matInput></textarea>
-                        </mat-form-field>
-                    </div>
+                        <mat-hint>Formáto valido: 1234-1234</mat-hint>
+                    
+                    </mat-form-field>
+    
+                    <mat-form-field appearance="outline" class="w-100 my-2">
+                    
+                        <mat-label>
+                            Tipo de negocio
+                        </mat-label>
+                        <mat-select formControlName="type">
+                            <mat-option *ngFor="let item of businessTypes" 
+                                [value]="item">
+                                {{
+                                    item
+                                }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="bsnsForm.get('type').invalid">
+                            {{
+                                validator.getErrorMessage(bsnsForm.get('type'))
+                            }}
+                        </mat-error>
+                    
+                    </mat-form-field>
+
                 </div>
-                <div class="row">
-                    <div class="col-xl-2 col-lg-3 col-md-4 col-sm-12">
-                        <button mat-stroked-button class="py-2 my-2 w-100" matStepperNext>Siguiente</button>
-                    </div>
+
+                <div class="col-xl-6 col-lg-6 col-md-12">
+
+                    <p class="mat-h3 mat-subheading-2 my-2">
+                        Logo
+                    </p>
+                    <input name="logo" type="file" formControlName="logo"
+                        (change)="checkImage($event)">
+                    <mat-error *ngIf="bsnsForm.get('logo').invalid">
+                        {{
+                            validator.getErrorMessage(bsnsForm.get('logo'))
+                        }}
+                    </mat-error>
+                    
+                    <p class="mat-h3 mat-subheading-2 my-2">
+                        Imagen de portada
+                    </p>
+                    <input name="cover" type="file" formControlName="cover"
+                        (change)="checkImage($event)">
+                    <mat-error *ngIf="bsnsForm.get('cover').invalid">
+                        {{
+                            validator.getErrorMessage(bsnsForm.get('cover'))
+                        }}
+                    </mat-error>
+
+                    <mat-form-field class="w-100 my-2" appearance="outline">
+                        <mat-label>
+                            Descripción
+                        </mat-label>
+                        <textarea formControlName="description" matInput>
+                        </textarea>
+                    </mat-form-field>
+
                 </div>
-            </form>
-        </mat-step>
-        <mat-step [stepControl]="scheduleInformation" editable="true">
-            <form [formGroup]="scheduleInformation">
-                <ng-template matStepLabel>
-                    Horarios de atención
-                </ng-template>
-                <div class="row">
-                    <div class="col-xl-12 my-4">
-                        <mat-slide-toggle (change)="changeScheduleType()" formControlName="isDetailed">
-                            Horario detallado
-                        </mat-slide-toggle>
-                    </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-xl-12 my-4">
+
+                    <p class="mat-h2 text-center">
+                        Horarios de atención
+                    </p>
+                    <mat-slide-toggle (change)="changeScheduleType()" 
+                        formControlName="isDetailed">
+                        Horario detallado
+                    </mat-slide-toggle>
+
                 </div>
-                <div *ngIf="!scheduleInformation.get('isDetailed').value" class="row">
-                    <div class="col-xl-6 col-lg-6 col-md-12" formGroupName="general">
-                        <div class="row">
-                            <div class="col-sm-6 col-12">
-                                <mat-form-field appearance="outline"
-                                    style="width: 95%;">
-                                    <mat-label>Desde</mat-label>
-                                    <input formControlName="start" matInput type="time"
-                                        (focusout)="formValidators.
-                                            checkTimeFormat(scheduleInformation.controls['general'].get('start'))">
-                                    <mat-error *ngIf="scheduleInformation.controls['general'].get('start').invalid">
-                                        {{formValidators.getErrorMessage(
-                                            scheduleInformation.controls['general'].get('start')
-                                            )}}
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-                            <div class="col-sm-6 col-12">
-                                <mat-form-field appearance="outline"
-                                    style="width: 95%;">
-                                    <mat-label>Hasta</mat-label>
-                                    <input formControlName="end" matInput type="time"
-                                        (focusout)="formValidators.
-                                            checkTimeFormat(scheduleInformation.controls['general'].get('end'))">
-                                    <mat-error *ngIf="scheduleInformation.controls['general'].get('end').invalid">
-                                        {{formValidators.getErrorMessage(
-                                            scheduleInformation.controls['general'].get('end'))}}
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
+
+                <div *ngIf="!bsnsForm.get('isDetailed').value" 
+                    class="col-xl-6 col-lg-6 col-md-12">
+
+                    <div class="row">
+
+                        <div class="col-sm-6 col-12">
+
+                            <mat-form-field appearance="outline"
+                                class="time-form-field">
+                                <mat-label>Desde</mat-label>
+                                <input formControlName="generalStart" 
+                                    matInput type="time">
+                                <mat-error 
+                                    *ngIf="bsnsForm.get('generalStart').invalid">
+                                    {{
+                                        validator.getErrorMessage(bsnsForm.get('generalStart'))
+                                    }}
+                                </mat-error>
+                            </mat-form-field>
+
                         </div>
+
+                        <div class="col-sm-6 col-12">
+
+                            <mat-form-field appearance="outline"
+                                class="time-form-field">
+                                <mat-label>Hasta</mat-label>
+                                <input formControlName="generalEnd" 
+                                    matInput type="time">
+                                <mat-error *ngIf="bsnsForm.get('generalEnd').invalid">
+                                    {{
+                                        validator.getErrorMessage(bsnsForm.get('generalEnd'))
+                                    }}
+                                </mat-error>
+                            </mat-form-field>
+
+                        </div>
+
                     </div>
+
                 </div>
-                <ng-template [ngIf]="scheduleInformation.get('isDetailed').value">
-                    <div *ngFor="let item of auxiliarArray; index as i" class="row">
-                        <div *ngIf="(i % 2) == 0" class="col-xl-6 col-lg-6 col-md-12" formGroupName="{{item}}">
-                            <p class="mat-body mat-body-1 mt-2">{{item}}</p>
+                
+            </div>
+
+            <ng-template [ngIf]="bsnsForm.get('isDetailed').value">
+
+                <div *ngFor="let item of dayName; index as i" class="row">
+
+                    <ng-template [ngIf]="(i % 2) == 0">
+
+                        <div class="col-xl-6 col-lg-6 col-md-12">
+
+                            <p class="mat-body mat-body-1 mt-2">
+                                {{
+                                    item
+                                }}
+                            </p>
                             <div class="row">
+
+                                <div class="col-xl-12">
+                                    <mat-slide-toggle 
+                                        formControlName="isOpen{{i}}"
+                                        (change)="restartTimeControl(i)">
+                                        Abierto
+                                    </mat-slide-toggle>
+                                </div>
                                 <div class="col-sm-6 col-12">
-                                    <mat-form-field appearance="outline"
-                                        style="width: 95%;">
-                                        <mat-label>Desde</mat-label>
-                                        <input formControlName="start" matInput type="time"
-                                            (focusout)="formValidators.
-                                                checkTimeFormat(scheduleInformation.controls[item].get('start'))">
-                                        <mat-error *ngIf="scheduleInformation.controls[item].get('start').invalid">
-                                            {{formValidators.getErrorMessage(
-                                                scheduleInformation.controls[item].get('start')
-                                                )}}
+                                    <mat-form-field appearance="outline" 
+                                        class="time-form-field">
+                                        <mat-label>
+                                            Desde
+                                        </mat-label>
+                                        <input formControlName="start{{i}}" 
+                                            matInput type="time">
+                                        <mat-error 
+                                            *ngIf="bsnsForm.get('start' + i).invalid">
+                                            {{
+                                                validator.getErrorMessage(bsnsForm.get('start' + i))
+                                            }}
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
                                 <div class="col-sm-6 col-12">
                                     <mat-form-field appearance="outline"
-                                        style="width: 95%;">
-                                        <mat-label>Hasta</mat-label>
-                                        <input formControlName="end" matInput type="time"
-                                            (focusout)="formValidators.
-                                                checkTimeFormat(scheduleInformation.controls[item].get('end'))">
-                                        <mat-error *ngIf="scheduleInformation.controls[item].get('end').invalid">
-                                            {{formValidators.getErrorMessage(
-                                                scheduleInformation.controls[item].get('end'))}}
+                                        class="time-form-field">
+                                        <mat-label>
+                                            Hasta
+                                        </mat-label>
+                                        <input formControlName="end{{i}}" 
+                                            matInput type="time">
+                                        <mat-error 
+                                            *ngIf="bsnsForm.get('end' + i).invalid">
+                                            {{
+                                                validator.getErrorMessage(bsnsForm.get('end' + i))
+                                            }}
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
+
                             </div>
+
                         </div>
-                        <div *ngIf="(i % 2) == 0 && 6 > i" class="col-xl-6 col-lg-6 col-md-12">
-                            <div formGroupName="{{auxiliarArray[i+1]}}">
-                                <p class="mat-body mat-body-1 mt-2">{{auxiliarArray[i + 1]}}</p>
-                                <div class="row">
-                                    <div class="col-sm-6 col-12">
-                                        <mat-form-field appearance="outline"
-                                            style="width: 95%;">
-                                            <mat-label>Desde</mat-label>
-                                            <input formControlName="start" matInput type="time"
-                                                (focusout)="formValidators.
-                                                    checkTimeFormat(scheduleInformation.controls[auxiliarArray[i+1]].get('start'))">
-                                            <mat-error *ngIf="scheduleInformation.controls[auxiliarArray[i+1]].get('start').invalid">
-                                                {{formValidators.getErrorMessage(
-                                                    scheduleInformation.controls[auxiliarArray[i+1]].get('start')
-                                                    )}}
-                                            </mat-error>
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-sm-6 col-12">
-                                        <mat-form-field appearance="outline"
-                                            style="width: 95%;">
-                                            <mat-label>Hasta</mat-label>
-                                            <input formControlName="end" matInput type="time"
-                                                (focusout)="formValidators.
-                                                    checkTimeFormat(scheduleInformation.controls[auxiliarArray[i+1]].get('end'))">
-                                            <mat-error *ngIf="scheduleInformation.controls[auxiliarArray[i+1]].get('end').invalid">
-                                                {{formValidators.getErrorMessage(
-                                                    scheduleInformation.controls[auxiliarArray[i+1]].get('end'))}}
-                                            </mat-error>
-                                        </mat-form-field>
-                                    </div>
+                        
+                        <div *ngIf="6 > i"
+                            class="col-xl-6 col-lg-6 col-md-12">
+
+                            <p class="mat-body mat-body-1 mt-2">
+                                {{
+                                    dayName[i + 1]
+                                }}
+                            </p>
+                            <div class="row">
+
+                                <div class="col-xl-12">
+                                    <mat-slide-toggle 
+                                        formControlName="isOpen{{i + 1}}"
+                                        (change)="restartTimeControl(i + 1)">
+                                        Abierto
+                                    </mat-slide-toggle>
+                                </div>  
+                                <div class="col-sm-6 col-12">
+                                    <mat-form-field appearance="outline"
+                                        class="time-form-field">
+                                        <mat-label>
+                                            Desde
+                                        </mat-label>
+                                        <input formControlName="start{{i + 1}}" 
+                                            matInput type="time">
+                                        <mat-error 
+                                            *ngIf="bsnsForm.get('start' + (i + 1)).invalid">
+                                            {{
+                                                validator.getErrorMessage(bsnsForm.get('start' + (i + 1)))
+                                            }}
+                                        </mat-error>
+                                    </mat-form-field>
                                 </div>
+                                <div class="col-sm-6 col-12">
+                                    <mat-form-field appearance="outline"
+                                        class="time-form-field">
+                                        <mat-label>
+                                            Hasta
+                                        </mat-label>
+                                        <input formControlName="end{{i + 1}}" 
+                                            matInput type="time">
+                                        <mat-error 
+                                            *ngIf="bsnsForm.get('end' + (i + 1)).invalid">
+                                            {{
+                                                validator.getErrorMessage(bsnsForm.get('end' + (i + 1)))
+                                            }}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
                             </div>
+
                         </div>
-                    </div>
-                </ng-template>
-                <div class="row">
-                    <div class="col-xl-2 col-lg-3 col-md-4 col-sm-12">
-                        <button mat-stroked-button class="py-2 my-2 w-100" matStepperPrevious>Anterior</button>
-                    </div>
-                    <div class="col-xl-2 col-lg-3 col-md-4 col-sm-12">
-                        <button mat-stroked-button class="py-2 my-2 w-100" matStepperNext>Siguiente</button>
-                    </div>
+
+                    </ng-template>
+
                 </div>
-            </form>
-        </mat-step>
-        <mat-step [stepControl]="addressInformation" editable="true">
-            <form [formGroup]="addressInformation">
-                <ng-template matStepLabel>
-                    Dirección del negocio
-                </ng-template>
-                <div class="row">
-                    <div class="col-xl-6 col-lg-6 col-md-12 mt-3">
-                        <h1 class="mat-h1 mat-headline">Ubicación</h1>
-                        <p class="mat-body mat-body-1">Selecciona la ubicación de tu negocio en el mapa</p>
-                        <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" (mapClick)="mapClicked($event)">
-                            <agm-marker [latitude]="latMarker" [longitude]="lngMarker"
-                                [markerDraggable]="true">
-                                <agm-info-window [isOpen]="true">
-                                    <strong>Tu negocio</strong>
-                                </agm-info-window>
-                            </agm-marker>
-                        </agm-map>
-                    </div>
-                    <div class="col-xl-6 col-lg-6 col-md-12">
-                        <mat-form-field class="w-100 my-2" appearance="outline">
-                            <mat-label>Direccion</mat-label>
-                            <input formControlName="direction" placeholder="Ej: Colonia, calle, etc..." matInput>
-                            <mat-error *ngIf="addressInformation.get('direction').invalid">
-                                {{formValidators.getErrorMessage(addressInformation.get('direction'))}}</mat-error>
-                        </mat-form-field>
-                        <mat-form-field class="w-100 my-2" appearance="outline">
-                            <mat-label>No. de casa/local</mat-label>
-                            <input formControlName="homeNumber" placeholder="Ej: 14, 25H..." matInput>
-                            <mat-error *ngIf="addressInformation.get('homeNumber').invalid">
-                                {{formValidators.getErrorMessage(addressInformation.get('homeNumber'))}}
-                            </mat-error>
-                        </mat-form-field>
-                        <mat-form-field class="w-100 my-2" appearance="outline">
-                            <mat-label>Departamento</mat-label>
-                            <mat-select formControlName="department" 
-                                (selectionChange)="getCities(addressInformation.get('department').value)">
-                                <mat-option *ngFor="let item of departments" [value]="item">
-                                    {{item}}
-                                </mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="addressInformation.get('department').invalid">
-                                {{formValidators.getErrorMessage(addressInformation.get('department'))}}
-                            </mat-error>
-                        </mat-form-field>
-                        <mat-form-field class="w-100 my-2" appearance="outline">
-                            <mat-label>Municipio</mat-label>
-                            <mat-select formControlName="city">
-                                <mat-option *ngFor="let item of cities" [value]="item">
-                                    {{item}}
-                                </mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="addressInformation.get('city').invalid">
-                                {{formValidators.getErrorMessage(addressInformation.get('city'))}}
-                            </mat-error>
-                        </mat-form-field>
-                        <mat-form-field class="w-100 my-2" appearance="outline">
-                            <mat-label>Referencia de ubicación</mat-label>
-                            <textarea formControlName="reference" style="height: 100px;" 
-                                placeholder="Ej: Media cuadra abajo de la escuela, junto a un parqueo, etc..." matInput></textarea>
-                            <mat-error *ngIf="addressInformation.get('reference').invalid">
-                                {{formValidators.getErrorMessage(addressInformation.get('reference'))}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xl-2 col-lg-3 col-md-4 col-sm-12">
-                        <button mat-stroked-button class="py-2 my-2 w-100" matStepperPrevious>Anterior</button>
-                    </div>
-                    <div class="col-xl-2 col-lg-3 col-md-4 col-sm-12">
-                        <button mat-raised-button class="py-2 my-2 w-100" (click)="addBusiness()" matStepperNext color="primary">Registrar</button>
-                    </div>
-                </div>
-            </form>
-        </mat-step>
-    </mat-vertical-stepper>
+
+            </ng-template>
+
+
+            <div class="row">
+
+                <button mat-raised-button color="primary" 
+                    class="col-11 py-2 mx-auto mt-1"
+                    type="button"
+                    (click)="addBusiness()"
+                    [disabled]="bsnsForm.invalid || buttonMessage == 'Enviando...'">
+                    {{buttonMessage}}
+                </button>
+
+            </div>
+
+        </form>
+
+    </mat-card>
 </div>

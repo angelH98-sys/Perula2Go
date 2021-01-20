@@ -13,12 +13,44 @@ export class FormValidatorsService {
     private businessService: BusinessService,
     private productService: ProductService) { }
 
-  checkTimeFormat(control: FormControl){
-    let time = control.value;
+  checkTimeFormat(formGroup: FormGroup){
+    
+    let values = formGroup.value;
     let regex = new RegExp('^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$');
-    if(!regex.test(time)){
-      control.setErrors({invalidTime: true});
+    let isDetailed = values.isDetailed;
+    let start: string;
+    let end: string;
+    let isOpen: boolean;
+
+    if(!isDetailed){
+
+      start = values.generalStart;
+      if(!regex.test(start))
+        formGroup.get('generalStart').setErrors({invalidTime: true});
+
+      end = values.generalEnd;
+      if(!regex.test(end))
+        formGroup.get('generalEnd').setErrors({invalidTime: true});
+
+    }else{
+
+      for(let i = 0; i <= 6; i++){
+
+        isOpen = values[`isOpen${i}`];
+        if(isOpen){
+
+          start = values[`start${i}`];
+          if(!regex.test(start))
+            formGroup.get(`start${i}`).setErrors({invalidTime: true});
+  
+          end = values[`end${i}`];
+          if(!regex.test(end))
+            formGroup.get(`end${i}`).setErrors({invalidTime: true});
+        }
+      }
     }
+    
+    
   }
   
   checkFormatPhone(control: FormControl){
@@ -67,19 +99,6 @@ export class FormValidatorsService {
   alreadyExistIn(formControl: FormControl, name: String, collectionName: String, extraInfo ? : String){
     if(formControl.dirty){
       switch(collectionName){
-        case "businesses":{
-          switch(name){
-            case "name":{
-              this.checkNameInBusiness(formControl);
-              break;
-            }
-            case "phone":{
-              this.checkPhoneInBusiness(formControl);
-              break;
-            }
-          }
-          break;
-        }
         case "products":{
           switch(name){
             case "name":{
@@ -160,16 +179,20 @@ export class FormValidatorsService {
 
   //Businesses
 
-  private checkNameInBusiness(formControl: FormControl){
-    this.businessService.checkName(formControl.value).subscribe((res: any) => {
-      if(res.docs == 1) formControl.setErrors({'invalidBusinessName': true});;
-    });
+  async nameAvailableInBusiness(formGroup: FormGroup){
+
+    let name = formGroup.get('name').value;
+    let response = await this.businessService.checkName(name);
+
+    if(response == 1) formGroup.get('name').setErrors({'invalidBusinessName': true});
   }
 
-  private checkPhoneInBusiness(formControl: FormControl){
-    this.businessService.checkPhone(formControl.value).subscribe((res: any) => {
-      if(res.docs == 1) formControl.setErrors({'invalidPhone': true});
-    });
+  async phoneAvailableInBusiness(formGroup: FormGroup){
+
+    let phone = formGroup.get('phone').value;
+    let response = await this.businessService.checkPhone(phone);
+    
+    if(response == 1) formGroup.get('phone').setErrors({'invalidPhone': true});
   }
 
   //Products

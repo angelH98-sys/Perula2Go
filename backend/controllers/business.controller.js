@@ -14,12 +14,14 @@ businessCtrl.createBusiness = async (req, res) => {
         picture: req.body.picture,
         user: req.body.user
     });
-    await business.save();
-    res.json({
-        'status': "Business saved"
-    });
-}
 
+    await business.save((error, document) => {
+        res.json({
+            'error': error,
+            'document': document
+        });
+    });
+} 
 businessCtrl.getBusiness = async (req, res) => {
     const businesses = await Business.find();
     res.json(businesses);
