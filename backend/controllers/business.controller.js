@@ -16,10 +16,7 @@ businessCtrl.createBusiness = async (req, res) => {
     });
 
     await business.save((error, document) => {
-        res.json({
-            'error': error,
-            'document': document
-        });
+        res.json({error, document});
     });
 } 
 businessCtrl.getBusiness = async (req, res) => {

@@ -16,14 +16,9 @@ export class UserService {
 
   async postUser(user: User){
 
-    let customer: any = await this.http.post(this.URL_API, user).toPromise();
+    let response: any = await this.http.post(this.URL_API, user).toPromise();
 
-    if(customer._id){
-      //Solo para desarrollo de registro de clientes
-      return true;
-    }else{
-      return false;
-    }
+    return response;
 
     //const order: Order = new Order(customer._id);
 

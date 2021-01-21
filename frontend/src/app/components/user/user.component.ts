@@ -41,7 +41,7 @@ export class UserComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required, Validators.pattern(/^[6-7]\d{3}-\d{4}$/)]],
       user: ['', Validators.required],
-      pass: ['', Validators.required],
+      pass: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)]],
       confirmPass: ['', Validators.required]
     },
     {
@@ -57,9 +57,9 @@ export class UserComponent implements OnInit {
      * Así se impide que el usuario vuelva a hacer click mientras
      * concluye la ejecución del método checkFields.
      */
-    this.buttonMessage = "Enviando...";
+    //this.buttonMessage = "Enviando...";
 
-    await this.checkFields();
+    //  await this.checkFields();
 
     if(this.userForm.invalid){
 
@@ -69,24 +69,19 @@ export class UserComponent implements OnInit {
     }
     let user: User = new User(this.userForm);
     
-    let query = await this.userService.postUser(user);
+    let response: any = await this.userService.postUser(user);
 
-    if(query){
+    if(response.error){
+
+      this.validator.setErrors(response.error, this.userForm);
+      this.alert.failed('Ups... revisa los campos del formulario');
+      this.buttonMessage = "Registrar";
+    }else{
+
       this.alert.success('Usuario registrado exitosamente');
       this.router.navigate(['/']);//Retorno auxiliar
-    }else{
-      this.alert.failed('No fue posible registrar el usuario')
-      this.buttonMessage = "Registrar";
     }
 
-  }
-
-  async checkFields(){
-    
-    //Validaciones con base de datos
-    await this.validator.userAvailableInUsers(this.userForm);
-    await this.validator.emailAvailableInUsers(this.userForm);
-    await this.validator.phoneAvailableInUsers(this.userForm);
   }
 
 }

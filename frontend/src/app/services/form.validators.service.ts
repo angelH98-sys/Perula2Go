@@ -141,30 +141,6 @@ export class FormValidatorsService {
 
   //Users
 
-  async userAvailableInUsers(formGroup: FormGroup){
-
-    //Verificamos si el usuario esta disponible en la tabla users
-    let user = formGroup.get('user').value;
-    let response = await this.userService.checkUser(user);
-    if(response == 1) formGroup.get('user').setErrors({'invalidUser': true});
-  }
-
-  async emailAvailableInUsers(formGroup: FormGroup){
-
-    //Verificamos si el email esta disponible en la tabla users
-    let email = formGroup.get('email').value;
-    let response = await this.userService.checkEmail(email);
-    if(response == 1) formGroup.get('email').setErrors({'invalidEmail': true});
-  }
-
-  async phoneAvailableInUsers(formGroup: FormGroup){
-
-    //Verificamos si el teléfono esta disponible en la tabla users
-    let phone = formGroup.get('phone').value;
-    let response = await this.userService.checkPhone(phone);
-    if(response == 1) formGroup.get('phone').setErrors({'invalidPhone': true});
-  }
-
   checkPasswords(formGroup: FormGroup) {
 
     //Verificamos si ambas contraseñas son semejantes
@@ -204,6 +180,44 @@ export class FormValidatorsService {
     }
   }
 
+  //Errores provenientes del controlador
+  setErrors(error, formGroup: FormGroup){
+    /**
+     * Método encagado de interpretar los errores provenientes de las consultas
+     * realizadas a la base de datos.
+     * Cuando se ejecuta, a cada error encontrado le compete un control.
+     * 
+     */
+
+     /**
+      * El objet "error" puede contener 2 posibles estructuras:
+      * -Error por dato único: será el único error que almacene el objeto "error"
+      * -Objeto de errores: errores tales como required o patrones se mostrarán
+      *                   en un solo objeto.
+      */
+    if(error.errors){
+      
+      let controls = Object.keys(error.errors);
+      
+      controls.forEach((control: any) => {
+        
+        switch(control.kind){
+
+          case "required":{
+            formGroup.get(control).setErrors({required: true});
+          }
+          case "pattern":{
+            formGroup.get(control).setErrors({pattern: true});
+          }
+        }
+      });
+    }else{
+      
+      let controlName = Object.keys(error.keyPattern);
+      formGroup.get(controlName[0]).setErrors({fieldAlreadyExist: true});
+    }
+  }
+
   getErrorMessage(control: FormControl){
     for(let error in control.errors){
       switch(error){
@@ -218,12 +232,6 @@ export class FormValidatorsService {
         }
         case "notSame":{
           return "Las contraseñas no coinciden";
-        }
-        case "invalidUser":{
-          return "Este usuario ya existe en Perula2Go";
-        }
-        case "invalidEmail":{
-          return "Este correo electrónico ya existe en Perula2Go";
         }
         case "invalidPhone":{
           return "Este teléfono ya existe en Perula2Go";
@@ -257,6 +265,9 @@ export class FormValidatorsService {
         }
         case "invalidProductName":{
           return "Ya existe un producto con este nombre en Perula2Go";
+        }
+        case "fieldAlreadyExist":{
+          return "Ya existe en Perula2Go";
         }
       }
     }

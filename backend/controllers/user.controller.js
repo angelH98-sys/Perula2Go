@@ -14,15 +14,48 @@ userCtrl.createUser = async (req, res) => {
         phone: req.body.phone
     });
 
+    let errors = user.validateSync();
+    
+    if(errors != undefined){
+        
+        res.json({"error": errors, "document": undefined});
+    }
+
+    /**
+     * Al encriptar la contraseña antes de enviarla a la BD, impide la validación
+     * dentro del esquema.
+     * 
+     * Si se recibiera una contaseña vacia caería en la valiación con validateSync()
+     * por ser un campo requerido. Sin embargo, si solo se ingresara una letra o
+     * espacios vacios se encriptaría y ya no pudiera respetar el patrón planteado.
+     * 
+     * Debido a esta situación se valida de esta manera y se envía en un formáto
+     * similar al que retorna MongoDB para no afectar los sub-procesos planteados
+     * en el frontend.
+     */
+    let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if(!regex.test(user.password)){
+        errors = {
+            "error": {
+                "errors": {
+                    "password": {
+                        "kind": "pattern"
+                    }
+                }
+            }
+        }
+
+        res.json({"error": errors, "document": undefined});
+    }
 
     const saltPass = await bcrypt.genSalt();
     user.password = await bcrypt.hash(user.password, saltPass);
     
-    await user.save((err, newUser) => {
-        res.json({
-            '_id': newUser._id
-        });
+
+    await user.save((error, document) => {
+        res.json({error, document});
     });
+    
 }
 
 userCtrl.editAddress = async (req, res) => {
