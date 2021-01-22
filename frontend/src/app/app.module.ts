@@ -23,6 +23,10 @@ import { CartComponent, QuantityModificatorDialog } from './components/cart/cart
 import { UserAddressComponent, AddressDialog } from './components/user.address/user.address.component';
 import { BusinessOrderComponent } from './components/business.order/business.order.component';
 
+//Modals
+import { InfoDialog } from './modals/modals';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,7 +41,8 @@ import { BusinessOrderComponent } from './components/business.order/business.ord
     CartComponent,
     QuantityModificatorDialog,
     UserAddressComponent,
-    BusinessOrderComponent
+    BusinessOrderComponent,
+    InfoDialog
   ],
   imports: [
     BrowserModule,

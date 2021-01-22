@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
-import { FormBuilder, Validators, FormControl, ValidatorFn, FormGroup, ValidationErrors } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { FormValidatorsService } from 'src/app/services/form.validators.service';
 import { AlertsService } from 'src/app/utilities/alerts.service';
 import { Router } from '@angular/router';
