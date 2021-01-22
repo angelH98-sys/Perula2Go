@@ -14,7 +14,7 @@ businessCtrl.createBusiness = async (req, res) => {
         picture: req.body.picture,
         user: req.body.user
     });
-
+    
     await business.save((error, document) => {
         res.json({error, document});
     });

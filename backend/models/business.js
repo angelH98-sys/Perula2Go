@@ -1,24 +1,49 @@
 const mongoose = require('mongoose');
+const { stringify } = require('uuid');
 
 const { Schema } = mongoose;
 
 let BusinessSchema = new Schema({
-    name: String,
+    name: {
+        type: String,
+        unique: true,
+        required: true
+    },
     description: String,
-    phone: String,
-    type: String,
-    address: Object,
-    status: String,
-    schedule: [],
-    /**
-     * El array tendría almacenados 7 elementos (simulando los días de la semana)
-     * Cada item contendría el siguiente objeto:
-     * {
-     *  open    -> indicando si el negocio esta abierto ese día
-     *  start   -> indicando la hora de apertura
-     *  end     -> indicando la hora de clausura
-     * }
-     */
+    phone: {
+        type: String,
+        unique: true,
+        required: true,
+        validate: {
+            validator: p => {
+                return /^[6-7]\d{3}-\d{4}$/.test(p);
+            },
+            message: "Formato erróneo",
+            type: "pattern"
+        }
+    },
+    type: {
+        type: String,
+        required: true
+    },
+    address: {
+        latitude: Number,
+        longitude: Number,
+        direction: String,
+        homeNumber: String,
+        department: String,
+        city: String,
+        reference: String
+    },
+    status: {
+        type: String,
+        required: true
+    },
+    schedule: [{
+        isOpen: Boolean,
+        start: Date,
+        end: Date
+    }],
     picture: {
         'cover': String,
         'logo': String
